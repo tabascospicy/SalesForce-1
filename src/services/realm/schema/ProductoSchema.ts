@@ -1,0 +1,80 @@
+
+ const Producto = {
+  name:"producto",
+  properties:{
+    id: 'int?' ,
+    adm_empresa_id: 'int?',
+    codigo: 'string?' ,
+    referencia: 'string?' ,
+    nombre: 'string?',
+    descripcion: 'string?',
+    talla: 'string?',
+    color: 'string?',
+    descuento: 'string?',
+    serial_estatico: 'int?',
+    serial_dinamico: 'int?',
+    existencia_minima: 'string?',
+    existencia_maxima: 'string?',
+    adm_tipos_conceptos_id: 'int?',
+    adm_ubicacion_id: 'int?',
+    costo: 'int?',
+    ultimo_costo: 'string?',
+    costo_mayor: 'string?',
+    costo_promedio: 'string?',
+    fecha_at: 'string?',
+    fecha_in: 'string?',
+    fecha_uc: 'string?',
+    adm_grupos_id: 'int?',
+    adm_subgrupos_id: 'int?' ,
+    presentacion: 'string?',
+    adm_unidades_id: 'int?' ,
+    fecha_hora: 'int?',
+    adm_marcas_id: 'int?' ,
+    estado:  'int?',
+    pvp: 'string?',
+    precio_a: 'string?',
+    precio_b: 'string?',
+    precio_c: 'string?',
+    precio_dolar: 'string?',
+    utilidad: 'string?',
+    utilidad_a: 'string?',
+    utilidad_b: 'string?',
+    utilidad_c: 'string?',
+    utilidad_dolar: 'string?',
+    costo_dolar: 'string?',
+    precio_variable: 'int?',
+    retiene:  'int?',
+    farm_principio_activo_id: 'int?',
+    imagen: 'string?',
+    costo_adicional: 'string?',
+    costo_adicional2: 'string?',
+    cant_ensamblado: 'string?',
+    licor:  'int?',
+    porcentaje: 'int?',
+    visible_pv:  'int?',
+    visible_web:  'int?',
+    rest_areas_id: 'int?',
+    setcortesia:  'int?',
+    exento:  'int?',
+    merma:  'int?',
+    existencia_c: 'int?',
+    obviar_ajuste:  'int?',
+    iva:  'int?',
+    empaque:'int?',
+    uso:'string?',
+    oferta:'int?',
+    existencias:'existencia[]'
+  }
+}
+
+
+const existencia = {
+  name:"existencia",
+  properties:{
+    id: 'int?',
+    adm_depositos_id: 'int?',
+    existencia:'string'
+  }
+}
+
+export default {Producto,existencia};

@@ -1,0 +1,19 @@
+{
+  "name": "FuerzaVentas",
+  "displayName": "FuerzaVentas",
+  "version": "2.0.1",
+    "orientation": "portrait",
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "package": "com.fuerzaventas",
+      "versionCode": 1
+    }
+}

@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "jsx": "react-native",
+    "allowJs": true,
+    "lib": ["dom", "esnext","es6"],
+    "moduleResolution": "node",
+    "noEmit": true,
+    "skipLibCheck": true,
+    "baseUrl": "src",
+    "types": [".tsx",".ts",".d.ts"], 
+    "typeRoots": ["types","interface"],
+    "resolveJsonModule": true,
+    "strict": true
+  },
+  "include": ["./src"],
+	"exclude": ["node_modules","**/*.spec.ts","declarations"],
+}
