@@ -1,15 +1,15 @@
 namespace DB {
-  export type DBmodels =
+  export type models =
     | 'usuario'
     | 'tenant'
     | 'grupo'
-    |'zona'
-    |'Banco'
+    | 'zona'
+    | 'Banco'
     | 'subgrupo'
     | 'marcas'
     | 'sesion'
     | 'existencia'
-    |'TipoPago'
+    | 'TipoPago'
     | 'planes_pago'
     | 'realizados'
     | 'PendienteD'
@@ -72,10 +72,10 @@ type Factura = {
   detalles: DetalleFactura[];
 };
 type TipoFactura = {
-    id: number;
-    nombre: string;
-    inicial: string;
-}
+  id: number;
+  nombre: string;
+  inicial: string;
+};
 
 type DetalleFactura = {
   id: number;
@@ -163,12 +163,12 @@ type Product = {
   oferta: number;
 };
 type MensajeContent = {
-  title:string,
-  body:string,
-  visible:boolean,
-  render:React.FC | null,
-  actions?:React.FC|null,
-}
+  title: string;
+  body: string;
+  visible: boolean;
+  render: React.FC | null;
+  actions?: React.FC | null;
+};
 type Empresa = {
   nombre?: string;
   correo?: string;
@@ -212,9 +212,9 @@ type Empresa = {
   tipo_plan_id?: number;
 };
 type StatusPedido = {
-  nombre:string;
-  id:number
-}
+  nombre: string;
+  id: number;
+};
 type VisualState = {
   isCartOpen: boolean;
   isMenuOpen: boolean;
@@ -241,7 +241,7 @@ type Cliente = {
   limite_credito: number;
   telefono_contacto: string;
   nombre_comercial: string;
-  adm_zonas_id:number | null
+  adm_zonas_id: number | null;
 };
 interface Cart {
   total: number;
@@ -310,13 +310,13 @@ type IPago = {
   codigo_referencia?: number;
   imagen?: string;
   adm_clientes_id?: number;
-  metodo?:string;
-  banco_origen?:string;
+  metodo?: string;
+  banco_origen?: string;
 };
 
 type PedidosToServer = {
   id?: string | number;
-  adm_empresa_id:  number;
+  adm_empresa_id: number;
   fecha_at: string;
   fecha_in: string;
   usuario_id: string | number;
@@ -337,41 +337,41 @@ type DetallesToServer = {
   fecha_at: string;
   fecha_in: string;
 };
-type Transform ={
-  translateX: any
-}
+type Transform = {
+  translateX: any;
+};
 type UiContext = {
   cliente?: Cliente;
   total?: number;
-  selectedFactura?:Factura;
-  transformCarrito:unknown;
-  productosQr?:unknown;
+  selectedFactura?: Factura;
+  transformCarrito: unknown;
+  productosQr?: unknown;
   filter?: Filtro;
   selectedView?: string;
   selectedProduct?: UiProduct;
-  isOnline :boolean;
-  seeMessage?:MensajeContent;
+  isOnline: boolean;
+  seeMessage?: MensajeContent;
   carrito?: Product[];
   descuento?: PlanPago;
   ofertas: number[];
   lista?: Array<Product>;
-  qr:boolean;
-  ButtonActionFactura?:{action:React.FC<{}> | null};
-  handleSelectedFactura?:(x:Factura)=>void;
-  handleFilter?:(x:Filtro)=>void;
-  handleButtonActionFactura?:(x:any)=>void;
-  handleSelectedProduct:(x:UiProduct)=>void;
-  handleSelectedView:(x:string)=>void;
-  handleDescuento?: (x:PlanPago)=>void;
-  handleCDestino:(x:Cliente)=>void;
-  handleLista:(x:Product[])=>void;
+  qr: boolean;
+  ButtonActionFactura?: {action: React.FC<{}> | null};
+  handleSelectedFactura?: (x: Factura) => void;
+  handleFilter?: (x: Filtro) => void;
+  handleButtonActionFactura?: (x: any) => void;
+  handleSelectedProduct: (x: UiProduct) => void;
+  handleSelectedView: (x: string) => void;
+  handleDescuento?: (x: PlanPago) => void;
+  handleCDestino: (x: Cliente) => void;
+  handleLista: (x: Product[]) => void;
   toggleCarrito: () => void;
   resetCarrito?: () => void;
-  showQr:()=>void;
-  pressed:()=>void;
-  hideMensaje:()=>void;
-  showMensaje:(mensaje:MensajeContent)=>void;
-  isNetworkAvailable?:(check?:boolean)=>Promise<boolean>;
+  showQr: () => void;
+  pressed: () => void;
+  hideMensaje: () => void;
+  showMensaje: (mensaje: MensajeContent) => void;
+  isNetworkAvailable?: (check?: boolean) => Promise<boolean>;
   addProduct?: (x: Product, cantidad: number) => void;
   deleteProduct?: (x: Product) => void;
   ExtraFunction?: React.RefObject<VoidFunction>;
@@ -397,7 +397,7 @@ type selected = 'adm_grupos_id' | 'adm_subgrupos_id' | 'adm_marcas_id';
 type placeholder = {
   nombre: string;
   login: string;
-}
+};
 type DbContext = {
   productos?: Product[];
   percent: number;
@@ -409,19 +409,19 @@ type DbContext = {
   empresa?: Empresa;
   SesionState?: SesionState;
   ImageSrc?: React.MutableRefObject<string>;
-  handleCall?:(x:CallStatus)=>void;
-  handleFecha:(x:string)=>void;
-  handleTenant?:(x:string)=>void;
-  handleSesionState?:(x:SesionState)=>void;
-  handleUsuario?:(x:IUsuario | placeholder)=>void;
+  handleCall?: (x: CallStatus) => void;
+  handleFecha: (x: string) => void;
+  handleTenant?: (x: string) => void;
+  handleSesionState?: (x: SesionState) => void;
+  handleUsuario?: (x: IUsuario | placeholder) => void;
   CheckAndStart?: () => void;
   cerrarSesion?: () => void;
   CallApi?: () => Promise<void>;
   AskPedidos?: (id: number) => Promise<void>;
-  getTenant?:()=>string;
+  getTenant?: () => string;
   VerificarSesion?: () => boolean;
   VerificarStorage?: () => boolean;
-  VerificarFecha?:()=>void;
+  VerificarFecha?: () => void;
 };
 
 type CallStatus = {
@@ -438,8 +438,8 @@ type PlanPago = {
 };
 
 type Theme = {
-  "primary-font":string;
-  "terceary-font":string,
+  'primary-font': string;
+  'terceary-font': string;
   primary: string;
   buttonLight: string;
   ButtonStrong: string;
@@ -460,112 +460,139 @@ type result = {
   nombre: string;
 };
 type RouteParamsList = {
-  Pagar:{factura:Factura},
-  Sesion:any,
-  Login:any,
-  Clientes:any,
-  Load:any,
-  Pedidos:any,
-  Empresa:any,
-  Cliente:any,
-  Factura:any,
-  Checkout:any,
-  Agregar:any,
-  Producto:any,
-  MinifiedList:any
-}
+  Pagar: {factura: Factura};
+  Sesion: any;
+  Login: any;
+  Clientes: any;
+  Load: any;
+  Pedidos: any;
+  Empresa: any;
+  Cliente: any;
+  Factura: any;
+  Checkout: any;
+  Agregar: any;
+  Producto: any;
+  MinifiedList: any;
+};
 type GenericType = {
-  id:number,
-  nombre:string
-}
+  id: number;
+  nombre: string;
+};
 type TipoPago = GenericType;
 
-type Banco = GenericType
+type Banco = GenericType;
 
-
- type ICobranza =  {
-  id?:number ,
-  fecha_at : string , //
-  documento  : number,//
-  tipo : string,//
-  adm_clientes_id  : number,//
-  monto_documento  : number ,//
-  monto_documento_dolar?: number,
-  saldo_deudor  : number,//
-  saldo_deudor_dolar?: number ,//
-  pago: number ,//
-  pago_dolar : number ,//
-  descuento  : number ,//
-  descuento_dolar : number ,//
-  retencion  : number ,//
-  retencion_dolar?: number ,//
-  tasa:number  ,//
-  devuelto ?:number  ,
-  contabilizado? : number ,
-  revisado?:number  ,
-}
+type ICobranza = {
+  id?: number;
+  fecha_at: string; //
+  documento: number; //
+  tipo: string; //
+  adm_clientes_id: number; //
+  monto_documento: number; //
+  monto_documento_dolar?: number;
+  saldo_deudor: number; //
+  saldo_deudor_dolar?: number; //
+  pago: number; //
+  pago_dolar: number; //
+  descuento: number; //
+  descuento_dolar: number; //
+  retencion: number; //
+  retencion_dolar?: number; //
+  tasa: number; //
+  devuelto?: number;
+  contabilizado?: number;
+  revisado?: number;
+};
 type MovBanco = {
-  id?:                        number,
-  adm_banco_id:               number,//
-  adm_tipo_movimiento_id:     number,
-  adm_caja_id?:               number,
-  fecha_at:                  string,
-  adm_tipo_pago_id:           number,
-  referencia:                string,
-  credito?:                   number,
-  credito_dolar?:             number,
-  debito?:                    number,
-  descripcion:               string,
-  beneficiario:              number,
-  adm_entidad_id?:            number,
-  origen?:                     string,
-  documento?:                  number,
-  efectivo?:                  number,
-  cheque_mismo_banco?:        number,
-  cheque_otro_banco?:         number,
-  islr?:                      number,
-  comision?:                  number,
-  fecha_cheque_mismo_banco?:  string,
-  fecha_cheque_otro_banco?:   string,
-  conciliado?:                boolean,
-  fecha_conciliado?:          string,
-  islrnc?:                    number,
-  riva?:                      number,
-  estatus?:                   number,
-  fecha_transaccion?:         string,
-  imagen?:                    string
-}
-
+  id?: number;
+  adm_banco_id: number; //
+  adm_tipo_movimiento_id: number;
+  adm_caja_id?: number;
+  fecha_at: string;
+  adm_tipo_pago_id: number;
+  referencia: string;
+  credito?: number;
+  credito_dolar?: number;
+  debito?: number;
+  descripcion: string;
+  beneficiario: number;
+  adm_entidad_id?: number;
+  origen?: string;
+  documento?: number;
+  efectivo?: number;
+  cheque_mismo_banco?: number;
+  cheque_otro_banco?: number;
+  islr?: number;
+  comision?: number;
+  fecha_cheque_mismo_banco?: string;
+  fecha_cheque_otro_banco?: string;
+  conciliado?: boolean;
+  fecha_conciliado?: string;
+  islrnc?: number;
+  riva?: number;
+  estatus?: number;
+  fecha_transaccion?: string;
+  imagen?: string;
+};
 
 type MovCaja = {
-  id?:number,
-    adm_caja_id: number,
-    fecha_at:string,
-    fecha_in?:string,
-    hora_in?:string,
-    adm_tipo_pago_id: number,
-    adm_tipo_movimiento_id: number,
-    adm_banco_id?: number,
-    referencia:string,
-    debito:number,
-    credito:number,
-    credito_dolar:number,
-    descripcion:string,
-    origen?:string,
-    numero_origen:string,
-    adm_entidad_id?: number,
-    islrnc?:number,
-    riva?:number,
-    fecha_transaccion?:string,
-    imagen?:string
-}
+  id?: number;
+  adm_caja_id: number;
+  fecha_at: string;
+  fecha_in?: string;
+  hora_in?: string;
+  adm_tipo_pago_id: number;
+  adm_tipo_movimiento_id: number;
+  adm_banco_id?: number;
+  referencia: string;
+  debito: number;
+  credito: number;
+  credito_dolar: number;
+  descripcion: string;
+  origen?: string;
+  numero_origen: string;
+  adm_entidad_id?: number;
+  islrnc?: number;
+  riva?: number;
+  fecha_transaccion?: string;
+  imagen?: string;
+};
 type enviarInpustValues = {
-  monto:string,
-  referencia:string,
-  adm_tipo_pago_id:string,
-  bancoDestino:string,
-  banco_id:string,
-  moneda:"Bs" | "USD"
-}
-type enviarKeys = "referencia" |"adm_tipo_pago_id" | "banco_id"| "monto" | "moneda" | "bancoDestino"
+  monto: string;
+  referencia: string;
+  adm_tipo_pago_id: string;
+  bancoDestino: string;
+  banco_id: string;
+  moneda: 'Bs' | 'USD';
+};
+type enviarKeys =
+  | 'referencia'
+  | 'adm_tipo_pago_id'
+  | 'banco_id'
+  | 'monto'
+  | 'moneda'
+  | 'bancoDestino';
 
+ interface IAbono {
+  id: number;
+  tercero: number;
+  fecha_at: string;
+  monto: number;
+  monto_dolar: number;
+  descripcion: string;
+  tipo: string;
+  monto_Restante: number;
+  monto_Restante_dolar: number;
+  detalles?: IDetAbono[];
+}
+
+ interface IDetAbono {
+  id: number;
+  adm_abonos_id: number;
+  fecha_at: string;
+  documento: number;
+  tipo: string;
+  monto_utilizado: number;
+  monto_utilizado_dolar: number;
+  tasa: number;
+}

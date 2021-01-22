@@ -38,8 +38,8 @@ const Pedidos = ({navigation, ...props}: any) => {
   const hideDialog = () => setVisible(false);
 
   const readPedidos = (realm: any) => {
-    const req :DB.DBmodels = "realizados";
-    const req2 :DB.DBmodels = "statusPedido";
+    const req :DB.models = "realizados";
+    const req2 :DB.models = "statusPedido";
     const dbPedidos = realm.objects(req);
     const status = realm.objects(req2);
     const espera = dbPedidos.filtered("rest_estatus_id = 3");

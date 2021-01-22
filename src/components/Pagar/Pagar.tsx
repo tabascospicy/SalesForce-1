@@ -233,6 +233,7 @@ const Pagar: React.FC<PagarProps> = ({navigation, route}) => {
         <Info>Lista de Pagos</Info>
         <Checkbox.Item
         label={"Es abono"}
+        disabled={total.current !== 0}
       status={isAbono ? 'checked' : 'unchecked'}
       color={colors?.ButtonStrong}
       onPress={() => {

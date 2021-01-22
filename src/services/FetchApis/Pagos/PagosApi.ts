@@ -78,7 +78,7 @@ const makeAbono = (factura: Factura, cliente: Cliente, { monto, monto_dolar, mon
     tercero: cliente.id,
     fecha_at: new Date().toISOString().substr(0, 10),
     monto,
-    tipo: "FACTURA",
+    tipo: "FAC",
     monto_dolar,
     descripcion: "abono desde fuerza de ventas",
     monto_restante,
@@ -122,11 +122,13 @@ const createAndSendAbono = async (factura: Factura, cliente: Cliente, total: num
     if (parseInt(factura.subtotal_dolar) === total) {
       const finalResponse = await Factura.UpdateFactura(factura.id, Tenant);
       return
-    } else if (parseInt(factura.subtotal_dolar) < total) {
-      const newAbono = { data: makeAbono(factura, cliente, montos) };
+    }if (parseFloat(factura.subtotal_dolar) > total) {
+      const newAbono = { data: makeAbono(factura, cliente, montos),data1:[] };
+      console.log("menor",parseFloat(factura.subtotal_dolar),total,parseFloat(factura.subtotal_dolar) < total)
       const responseAbono = await enviar(Tenant, newAbono, "abono");
-    } else if (parseInt(factura.subtotal_dolar) > total) {
-      const newAbono = { data: makeAbono(factura, cliente, montos) };
+    }if (parseFloat(factura.subtotal_dolar) < total) {
+      const newAbono = { data: makeAbono(factura, cliente, montos) , data1:[] };
+      console.log("mayor",parseFloat(factura.subtotal_dolar),total)
       const responseAbono = await enviar(Tenant, newAbono, "abono");
       const finalResponse = await Factura.UpdateFactura(factura.id, Tenant);
     }

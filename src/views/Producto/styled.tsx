@@ -3,7 +3,7 @@ import styled from "styled-components/native";
 import {StyleSheet} from "react-native";
 import { Font } from "styles";
 
-export const {height} = Dimensions.get('window');
+export const {height,width} = Dimensions.get('window');
 export const Container = styled.View`
   flex-grow: 1;
   position: relative;
@@ -51,6 +51,7 @@ export const Bold = styled(Tag)`
 export const Card = styled.View`
   padding: 20px;
   margin:10px;
+  min-width:${width -50}px;
   border-radius: 17px;
   align-self: center;
   align-items: flex-start;

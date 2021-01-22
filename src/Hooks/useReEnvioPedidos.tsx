@@ -31,7 +31,7 @@ const useReEnvioPedidos = () => {
   const deleteFromDB = async (id: number) => {
     const searchAndDelete = async (realm: Realm) => {
       try {
-        const model: DB.DBmodels = 'realizados';
+        const model: DB.models = 'realizados';
         const pedido = realm.objects(model).filtered(`id = ${id}`);
         realm.delete(pedido);
       } catch (e) {}

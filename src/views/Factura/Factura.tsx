@@ -35,7 +35,7 @@ const Factura = ({navigation, ...props}: PropsClienteScreen) => {
     try {
       realm.write(async () => {
         setProductos([]);
-        const nombres = [];
+        const nombres:string[] = [];
         selectedFactura &&
           selectedFactura.detalles.forEach(async (element) => {
             let productDb = realm
@@ -43,7 +43,6 @@ const Factura = ({navigation, ...props}: PropsClienteScreen) => {
               .filtered(`id = ${element.adm_conceptos_id}`);
             nombres.push(productDb[0].nombre);
           });
-        console.log(nombres);
         setProductos(nombres);
       });
     } catch (e) {

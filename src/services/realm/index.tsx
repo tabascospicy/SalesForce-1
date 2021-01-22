@@ -17,7 +17,7 @@ const DataBase = () => {
       return 'error';
     }
   };
-  const SaveElements = async (elements: any, name:DB.DBmodels) => {
+  const SaveElements = async (elements: any, name:DB.models) => {
     try {
       var result = true;
       realm.write(() => {
@@ -164,7 +164,7 @@ const DataBase = () => {
       console.log(e);
     }
   };
-  const readAll = async (model:DB.DBmodels,query:string="") =>{
+  const readAll = async (model:DB.models,query:string="") =>{
     try {
       var data:any = [];
       realm.write(()=>{

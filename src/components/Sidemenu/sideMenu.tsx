@@ -103,10 +103,6 @@ const SideMenu = (props:any) => {
           <Icon name="people" size={30} color="white" />
           <OptionText>Lista de Clientes</OptionText>
         </Option>
-        <Option isSelected={"Empresa" === selectedView ? false :  true} onPress={()=>navigate("Empresa")}>
-          <Icon name="newspaper" size={30} color="white" />
-          <OptionText>Productos</OptionText>
-        </Option>
         <Option isSelected={"Pedidos" === selectedView ? false :  true} onPress={()=>navigate("Pedidos")}>
           <Icon name="paper-plane" size={30} color="white" />
           <OptionText>Pedidos</OptionText>
