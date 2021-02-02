@@ -37,7 +37,7 @@ const useSendImage = () => {
         formdata,
         true,
       );
-      reactotron.log && reactotron.log(enviada);
+     
       setCalling(false);
     } catch (e) {
       setCalling(false);

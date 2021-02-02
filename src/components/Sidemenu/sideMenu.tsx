@@ -117,4 +117,4 @@ const SideMenu = (props:any) => {
   );
 };
 
-export default SideMenu;
+export default React.memo(SideMenu);

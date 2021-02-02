@@ -91,7 +91,7 @@ const UpdateFactura = async (id:number,Tenant:string)=>{
     const update = JSON.stringify({data:{estatus_pago:2}});
     const response = await Fetch(`factura/${id}`,{method:"POST",tenant:Tenant},update);
     const data = await JSON.parse(response.data);
-    reactotron.log(data,response);
+  
     console.log("updated");
     const utildata = typeof(data) === "undefined" ? [defaultValue] : data;
     return utildata;

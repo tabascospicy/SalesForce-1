@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, Profiler} from 'react';
 import SideMenu from 'components/Sidemenu';
 import {StyleSheet, Pressable, Dimensions} from 'react-native';
 import Clientes from './Home';
@@ -6,16 +6,16 @@ import useGrowAnimation from 'Hooks/useGrowAnimation';
 import Animated from 'react-native-reanimated';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import Mensaje from "components/Modal/Mensaje";;
+import Mensaje from 'components/Modal/Mensaje';
 import Producto from './Producto';
 import Empresa from './Empresa';
 import Context from 'services/context';
-import EnviarPago from "./EnviarPago"
+import EnviarPago from './EnviarPago';
 import {navigationRef} from 'components/RootNavigationRef/RootNavigationRef';
 import Checkout from './Checkout';
 import Cliente from './Cliente';
 import Pedidos from './Pedidos';
-import Factura from "./Factura"
+import Factura from './Factura';
 import ProductList from './ProductList';
 import Login from './Login/Login';
 import Reload from './ReloadData';
@@ -23,6 +23,7 @@ import styled from 'styled-components/native';
 import MinifiedList from './MinifiedList';
 import Sesion from './Sesion';
 import Cart from 'components/Cart/Cart';
+import reactotron from 'reactotron-react-native';
 const Styles = StyleSheet.create({
   viewsContainer: {
     flex: 1,
@@ -48,9 +49,9 @@ const Regresar = styled.View`
   width: 35%;
   position: absolute;
   right: 0px;
-  top: ${height / 4 +20}px;
-  background-color:white;
-  opacity:0.1;
+  top: ${height / 4 + 20}px;
+  background-color: white;
+  opacity: 0.1;
 `;
 export const cart = StyleSheet.create({
   cart: {
@@ -60,57 +61,95 @@ export const cart = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     zIndex: 4,
-    elevation:2
+    elevation: 2,
   },
 });
 
 const Stack = createStackNavigator<RouteParamsList>();
 const index = ({productos, clientes, startAll}: any) => {
-  const routeNameRef = React.useRef("");
-  const previousRouteName = React.useRef("");
+  const routeNameRef = React.useRef('');
+  const previousRouteName = React.useRef('');
   const {pressed, transform, isOpen} = useGrowAnimation();
-  const {handleSelectedView, SesionState,VerificarStorage,empresa,showQr,transformCarrito,toggleCarrito} = useContext(Context);
+  const {
+    handleSelectedView,
+    SesionState,
+    VerificarStorage,
+    empresa,
+    showQr,
+    transformCarrito,
+    toggleCarrito,
+  } = useContext(Context);
+  const log = (
+    id,
+    phase,
+    actualDuration,
+    baseDuration,
+    startTime,
+    commitTime,
+    interactions,
+  ) => {
+  /*  reactotron.log({
+      id,
+      phase,
+      actualDuration,
+      baseDuration,
+      startTime,
+      commitTime,
+      interactions,
+    });*/
+  };
   return (
-    < >
+    <>
       <SideMenu pressed={pressed} />
       <Regresar isOpen={isOpen}>
         <Pressable
           style={{flex: 1}}
           onPress={() => pressed('menu')}></Pressable>
       </Regresar>
-      <Animated.View style={{...Styles.viewsContainer, transform,}}>
-      <Animated.View style={{...cart.cart, transform:transformCarrito}}>
-        <Toggle onPress={toggleCarrito} />
-        <Cart pressed={toggleCarrito} navigation={ navigationRef.current} showQr={showQr} />
-      </Animated.View>
-      <Mensaje />
+      <Animated.View style={{...Styles.viewsContainer, transform}}>
+        <Animated.View style={{...cart.cart, transform: transformCarrito}}>
+          <Toggle onPress={toggleCarrito} />
+          <Cart
+            pressed={toggleCarrito}
+            navigation={navigationRef.current}
+            showQr={showQr}
+          />
+        </Animated.View>
+        <Mensaje />
         <NavigationContainer
           onReady={() => {
-             (routeNameRef.current = navigationRef.current.getCurrentRoute().name);
-            if(SesionState===2 && VerificarStorage && VerificarStorage()
-            ){
-              navigationRef.current.navigate("Load")
+            routeNameRef.current = navigationRef.current.getCurrentRoute().name;
+            if (SesionState === 2 && VerificarStorage && VerificarStorage()) {
+              navigationRef.current.navigate('Load');
             }
           }}
           ref={navigationRef}
           onStateChange={() => {
-             previousRouteName.current = routeNameRef.current;
+            previousRouteName.current = routeNameRef.current;
             const currentRouteName = navigationRef.current.getCurrentRoute()
               .name;
-             handleSelectedView &&  handleSelectedView(currentRouteName);
+            handleSelectedView && handleSelectedView(currentRouteName);
             // Save the current route name for later comparision
-            if(SesionState === 2 && (previousRouteName.current === "Sesion" ||previousRouteName.current ==="Login") && VerificarStorage() ){
-              previousRouteName.current = "Clientes"
-              navigationRef.current.navigate("Load")
+            if (
+              SesionState === 2 &&
+              (previousRouteName.current === 'Sesion' ||
+                previousRouteName.current === 'Login') &&
+              VerificarStorage &&
+              VerificarStorage()
+            ) {
+              previousRouteName.current = 'Clientes';
+              navigationRef.current.navigate('Load');
             }
             routeNameRef.current = currentRouteName;
           }}>
-          <Stack.Navigator screenOptions={{headerShown: false}}> 
+          <Stack.Navigator screenOptions={{headerShown: false}}>
             {SesionState === 0 && (
               <Stack.Screen name="Sesion">
-               
-                {(props: any) => <Login {...props} pressed={pressed}></Login>}
-                
+                {(props: any) => (
+                  <Profiler id="sesion" onRender={log}>
+                    <Login {...props} pressed={pressed}></Login>
+                  </Profiler>
+                )}
               </Stack.Screen>
             )}
             {SesionState === 1 && (
@@ -122,12 +161,15 @@ const index = ({productos, clientes, startAll}: any) => {
               <>
                 <Stack.Screen name="Clientes">
                   {(props: any) => (
-                    <Clientes
-                      clientes={clientes}
-                      {...props}
-                      pressed={pressed}></Clientes>
+                    <Profiler id="clientes" onRender={log}>
+                      <Clientes
+                        clientes={clientes}
+                        {...props}
+                        pressed={pressed}></Clientes>
+                    </Profiler>
                   )}
                 </Stack.Screen>
+
                 <Stack.Screen name="Load">
                   {(props: any) => (
                     <Reload
@@ -136,11 +178,15 @@ const index = ({productos, clientes, startAll}: any) => {
                       pressed={pressed}></Reload>
                   )}
                 </Stack.Screen>
+
                 <Stack.Screen name="Factura">
                   {(props) => (
-                    <Factura {...props} ></Factura>
+                    <Profiler id="sesion" onRender={log}>
+                      <Factura {...props}></Factura>
+                    </Profiler>
                   )}
                 </Stack.Screen>
+
                 <Stack.Screen name="Pedidos">
                   {(props: any) => (
                     <Pedidos
@@ -165,9 +211,7 @@ const index = ({productos, clientes, startAll}: any) => {
                   )}
                 </Stack.Screen>
                 <Stack.Screen name="Pagar">
-                  {(props: any) => (
-                    <EnviarPago {...props} ></EnviarPago>
-                  )}
+                  {(props: any) => <EnviarPago {...props}></EnviarPago>}
                 </Stack.Screen>
                 <Stack.Screen name="Checkout">
                   {(props: any) => <Checkout pressed={pressed} {...props} />}
@@ -175,7 +219,7 @@ const index = ({productos, clientes, startAll}: any) => {
                 <Stack.Screen name="Agregar">
                   {(props: any) => <ProductList pressed={pressed} {...props} />}
                 </Stack.Screen>
-                <Stack.Screen name="Producto"  >
+                <Stack.Screen name="Producto">
                   {(props: any) => <Producto pressed={pressed} {...props} />}
                 </Stack.Screen>
                 <Stack.Screen name="MinifiedList">
@@ -185,7 +229,6 @@ const index = ({productos, clientes, startAll}: any) => {
             )}
           </Stack.Navigator>
         </NavigationContainer>
-        
       </Animated.View>
     </>
   );

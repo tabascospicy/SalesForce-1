@@ -9,10 +9,11 @@ type FunctionsParameters = {
   onInit?: voidTemplate;
   callback?: voidTemplate;
   navigation?:ProfileScreenNavigationProp;
+  onEnter?:()=>void;
 };
 
 const useOnview = (
-  {onInit = null, callback = null,navigation}: FunctionsParameters,
+  {onInit = null, callback = null,navigation,}: FunctionsParameters,
 ) => {
   const [isOnView, setIsOnView] = useState(false);
   const {name} = useRoute();

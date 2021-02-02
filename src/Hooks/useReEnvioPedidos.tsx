@@ -6,19 +6,27 @@ import Context from 'services/context';
 import Pedido from 'services/FetchApis/Pedidos';
 import reactotron from 'reactotron-react-native';
 import tenant from 'services/realm/schema/TenantSchema';
-const {customRequest, readAll} = Database();
+import Loading from "components/Animate/Loading";
+const {customRequest} = Database();
 type call = {
   success: boolean | null;
   process: 0 | 1 | 2;
 };
-const useReEnvioPedidos = () => {
-  const {isNetworkAvailable,getTenant} = useContext(Context);
+type Props = {
+  navigation:any
+}
+const useReEnvioPedidos = ({navigation}:any) => {
+  const {isNetworkAvailable,getTenant,showMensaje} = useContext(Context);
   const [success, setSuccess] = useState(false);
   const [calling, setCalling] = useState<call>({success: null, process: 0});
+  const [mensaje, setMensaje] = useState("cargando...");
   const [offline,setOffline] = useState(false);
+  const [onProcess,setOnProcess] = useState(false);
+  const IsLoading = () => <Loading message={mensaje} calling={calling} />
   const DetelePendiente = (data: PedidoPendiente, model: string) => {
     const process = (realm: any) => {
       try {
+       
         const result = realm.objects('pendiente');
         const pedido = result.filtered(`id = ${data.id}`);
         realm.delete(pedido);
@@ -33,8 +41,11 @@ const useReEnvioPedidos = () => {
       try {
         const model: DB.models = 'realizados';
         const pedido = realm.objects(model).filtered(`id = ${id}`);
+     
         realm.delete(pedido);
-      } catch (e) {}
+      } catch (e) {
+        console.log(e);
+      }
     };
     customRequest(searchAndDelete);
   };
@@ -43,17 +54,24 @@ const useReEnvioPedidos = () => {
 
       const state = isNetworkAvailable ? isNetworkAvailable() : false;
       if(state){
+          showMensaje({title:"Enviando Solicitud",body:"",render:IsLoading,visible:true})
           setCalling({success: null, process: 1});
           const T = getTenant ? getTenant() :"";
           const response = await Pedido.DeletePedido(id, T);
-          deleteFromDB(id);
+          console.log(id)
+          navigation.navigate("Pedidos");
+          setOnProcess(true);
           setCalling({success: true, process: 2});
-          reactotron?.log && reactotron.log(response, 'borrado we');
+          setMensaje("su solocitud ha sido procesada exitosamente");
+          await deleteFromDB(id);
+          setOnProcess(false);
+         
       }else{
         setOffline(true);
       }
     
     } catch (error) {
+      setMensaje("hubo un error");
       setCalling({success: false, process: 2});
       console.log(error);
       return 'error';
@@ -74,7 +92,9 @@ const useReEnvioPedidos = () => {
     try {
       const state = isNetworkAvailable ? isNetworkAvailable() : false;
       if (state) {
+        setMensaje("cargando");
         setCalling({success: null, process: 1});
+        showMensaje({title:"Enviando Solicitud",body:"",render:IsLoading,visible:true});
         const dataToLocalDb: IPedidosConDetalles = {
           usuario_id: data.data.usuario_id,
           adm_clientes_id: data.data.adm_clientes_id,
@@ -111,15 +131,20 @@ const useReEnvioPedidos = () => {
           },
           'realizados',
         );
-        DetelePendiente(data, '');
-        setSuccess(true);
+        navigation.navigate("Pedidos");
+        setOnProcess(true);
+        setMensaje("su solocitud ha sido procesada exitosamente");
         setCalling({success: true, process: 2});
+         await DetelePendiente(data, '');
+        setOnProcess(false);
       } else {
         setOffline(true);
+        
         setCalling({success: false, process: 2});
         setSuccess(false);
       }
     } catch (e) {
+      setMensaje("hubo un error");
       console.log(e);
     }
   };
@@ -131,6 +156,7 @@ const useReEnvioPedidos = () => {
     setCalling,
     offline,
     cancelar,
+    onProcess
   };
 };
 export default useReEnvioPedidos;

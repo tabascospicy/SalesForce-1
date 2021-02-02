@@ -1,6 +1,6 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {Caption, Title, Text, Button} from 'react-native-paper';
-import {FacturaContainer, Row} from './styles';
+import {FacturaContainer, Row} from './style';
 import {Transition, Transitioning} from 'react-native-reanimated';
 import reactotron from 'reactotron-react-native';
 import {style} from "styles/container";

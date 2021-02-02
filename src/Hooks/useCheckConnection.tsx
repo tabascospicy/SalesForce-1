@@ -38,7 +38,6 @@ const useCheckConnection = (showMensaje:(mensaje:MensajeContent)=>void) => {
   const isNetworkAvailable = async (check=true) => {
     try {
       const response = await NetInfo.fetch();
-      console.log(response.isConnected);
       setOnline(response.isConnected);
       handleOnline(response.isConnected);
       if(!response.isConnected && check){

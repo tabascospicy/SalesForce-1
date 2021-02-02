@@ -90,9 +90,7 @@ const Producto = ({
   const show = () => {
     sheetRef.current.snapTo(550);
   };
-  useEffect(() => {
-    console.log(detalles);
-  }, []);
+  
   const Data = () => {
     return (
       <Card2 style={{padding: 10, marginTop: 20, elevation: 13}}>
@@ -119,7 +117,7 @@ const Producto = ({
         <Separator />
         <Line>
           <LineTitle>Marca:</LineTitle>
-          {console.log(detalles)}
+       
           <LineText>{marca || 'por asignar'}</LineText>
         </Line>
         <Separator />

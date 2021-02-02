@@ -18,7 +18,6 @@ const useTasa = ({isNetworkAvailable}: TasaProp) => {
         const tasas = await Pagos.FechtTasa(getTenant() || '');
         const ban = await Pagos.FechtBancos(getTenant() || '');
         setEmpBancos(ban);
-        console.log(tasas[0].tasa);
         setTasa(tasas[0].tasa);
       }
     } catch (e) {

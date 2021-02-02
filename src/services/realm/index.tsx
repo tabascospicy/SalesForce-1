@@ -26,7 +26,7 @@ const DataBase = () => {
           const creados = elements.map((el: any, index: number) => {
             realm.create(name, el);
           });
-          reactotron.log(creados);
+          
           console.log("Creado",creados,name);
           result = true
         } else {
@@ -192,7 +192,7 @@ const DataBase = () => {
 
         const detallesConNombre: DetalleConNombre[] = detalles.map(
           (element: DetallesToServer, key) => {
-            const p = productos.filtered(`id = ${element.adm_conceptos_id}`) as Product;
+            const p = productos.filtered(`id = ${element.adm_conceptos_id}`) as unknown as Product;
 
             const resultado: DetalleConNombre = {
               ...element,

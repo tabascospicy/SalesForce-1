@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Button, Dialog, Portal, DataTable} from 'react-native-paper';
 import realm from 'services/realm/schema';
 import Database from 'services/realm';
+import reactotron from 'reactotron-react-native';
 
 type DetalleFProps = {
   visible: boolean;
@@ -25,13 +26,20 @@ const DetalleFactura = ({
     try {
     
       realm.write(() => { 
-         let producto: any = [];
+        try{
+           let producto: any = [];
         detalles.forEach((element) => {
           let productDb = realm
             .objects('producto')
             .filtered(`id = ${element.adm_conceptos_id}`);
+            reactotron.log(productDb[0],"producto factura");
          producto.push(productDb[0].nombre.split(" ")[4]);
         });
+        }catch(e){
+          reactotron.log(e);
+          console.log(e);
+        }
+        
      
           setProductos(producto);
       });    

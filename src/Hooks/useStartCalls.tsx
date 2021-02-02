@@ -18,6 +18,7 @@ import Facturas from 'services/FetchApis/Factura';
 import TFactura from 'services/FetchApis/TiposFactura';
 import Ofertas from 'services/FetchApis/Ofertas';
 import Pagos from 'services/FetchApis/Pagos';
+import reactotron from 'reactotron-react-native';
 const {
   Write,
   WriteCliente,
@@ -197,7 +198,7 @@ const useStartCalls = (): DbContext => {
       setPercent((prev) => prev + 10);
       setMensaje('cargando Imagenes por favor espere');
       setUsuario({nombre: '', login: ''});
-     
+      
       const result = await Empresa.FetchAllImagesProductos(
         results[3].flat(),
         setPercent,
@@ -207,7 +208,6 @@ const useStartCalls = (): DbContext => {
       if (result === null) setCalling({success: false, loading: false});
 
       await SaveInDB(results, writeFecha);
-
       setMensaje('datos actualizados satisfactoriamente');
       setCalling({success: true, loading: false});
       startAll(true);
@@ -266,7 +266,6 @@ const useStartCalls = (): DbContext => {
   async function SaveInDB(results: any[], writeFecha: () => Promise<void>) {
     try {
       await WriteCliente(results[1]);
-
       await Write(results[3], results[2]);
       await WriteUsuarios(results[0]);
       await SaveElements(results[4], 'grupo');
@@ -290,7 +289,8 @@ const useStartCalls = (): DbContext => {
   const AskPedidos = async (id: number) => {
     try {
       const Data = await Pedidos.FetchPedidosUsuario(id, Tenant.current);
-      addNombresToDetalles(Data.detalles, (detallesConNombre) => {
+      console.log(Data,"aqui ta")
+     Data?.detalles && addNombresToDetalles(Data.detalles, (detallesConNombre) => {
         const ToSave = {
           ...Data,
           detalles: detallesConNombre,

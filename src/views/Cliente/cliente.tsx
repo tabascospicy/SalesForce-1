@@ -5,12 +5,12 @@ import Context from 'services/context';
 import {Button, Paragraph, Dialog, Portal} from 'react-native-paper';
 import DataBase from 'services/realm';
 import {BlueBackground, Content, GlobalContainer} from './styles';
-import Facturas from 'components/Cliente/Facturas';
+import Facturas from './Facturas';
 const {customRequest} = DataBase();
 import useOnView from 'Hooks/onView';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 const Tab = createMaterialTopTabNavigator();
-import ClientDescription from 'components/Cliente/Data';
+import ClientDescription from 'views/Cliente/Data';
 import {StackNavigationProp} from '@react-navigation/stack';
 
 type ProfileScreenNavigationProp = StackNavigationProp<{}>;
@@ -148,4 +148,4 @@ const Cliente = ({navigation, route, ...props}: PropsClienteScreen) => {
     </GlobalContainer>
   );
 };
-export default Cliente;
+export default React.memo(Cliente);

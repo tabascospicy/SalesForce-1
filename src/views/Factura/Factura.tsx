@@ -17,15 +17,18 @@ import {
   Subtitle,
 } from './styles';
 import Icon from 'react-native-vector-icons/Ionicons';
+import reactotron from 'reactotron-react-native';
 type ProfileScreenNavigationProp = StackNavigationProp<{}>;
 interface PropsClienteScreen {
   navigation: ProfileScreenNavigationProp;
   route: any;
 }
 
-const Factura = ({navigation, ...props}: PropsClienteScreen) => {
-  const {isOnView} = useOnview({});
+const Factura = ({navigation, route, ...props}: PropsClienteScreen) => {
+  const {isOnView,} = useOnview({});
   const {selectedFactura, colors, ButtonActionFactura} = useContext(Context);
+  const {name, detalle, total} = route.params;
+
   const [productos, setProductos] = useState<string[]>([]);
   const {action} = ButtonActionFactura;
   useEffect(() => {
@@ -35,15 +38,21 @@ const Factura = ({navigation, ...props}: PropsClienteScreen) => {
     try {
       realm.write(async () => {
         setProductos([]);
-        const nombres:string[] = [];
-        selectedFactura &&
-          selectedFactura.detalles.forEach(async (element) => {
-            let productDb = realm
-              .objects('producto')
-              .filtered(`id = ${element.adm_conceptos_id}`);
-            nombres.push(productDb[0].nombre);
-          });
-        setProductos(nombres);
+        reactotron.log("detalle factura",selectedFactura);
+        const nombres: string[] = [];
+          selectedFactura &&
+            selectedFactura?.detalles?.forEach(
+              async (element: DetalleConNombre | DetalleFactura) => {
+                let productDb = (realm
+                  .objects('producto')
+                  .filtered(
+                    `id = ${element.adm_conceptos_id}`,
+                  ) as unknown) as Product[];
+                  
+                nombres.push(productDb[0]?.nombre ? productDb[0]?.nombre : "Nombre no disponible en aplicacon" );
+              },
+            );
+          setProductos(nombres);
       });
     } catch (e) {
       console.log(e);
@@ -59,11 +68,13 @@ const Factura = ({navigation, ...props}: PropsClienteScreen) => {
           <Icon name="cart" size={30} color={colors['primary-font']} />
         </IconContainer>
         <Column>
-          <Title style={{color: colors['primary-font']}}>Factura</Title>
-          <Subtitle>Nro {selectedFactura?.numero_factura}</Subtitle>
+          <Title style={{color: colors['primary-font']}}>
+            {name || 'Factura'}
+          </Title>
+          <Subtitle>{detalle}</Subtitle>
           <Subtitle>
             subTotal:
-            {accounting.formatMoney(selectedFactura?.subtotal_dolar, {
+            {accounting.formatMoney(total, {
               symbol: '',
               thousand: '.',
               decimal: ',',
@@ -76,19 +87,20 @@ const Factura = ({navigation, ...props}: PropsClienteScreen) => {
       {isOnView && (
         <Container>
           <List contentContainerStyle={{zIndex: 9}}>
-            {selectedFactura?.detalles.map(
-              (element: DetalleFactura, i: number) => {
-                return (
-                  <Producto
-                    colors={colors}
-                    {...props}
-                    key={i}
-                    producto={element}
-                    nombre={productos[i]}
-                  />
-                );
-              },
-            )}
+            {selectedFactura.detalles &&
+              selectedFactura?.detalles?.map(
+                (element: DetalleConNombre | DetalleFactura, i: number) => {
+                  return (
+                    <Producto
+                      colors={colors}
+                      {...props}
+                      key={i}
+                      producto={element}
+                      nombre={productos[i]}
+                    />
+                  );
+                },
+              )}
           </List>
         </Container>
       )}
@@ -99,4 +111,4 @@ const Factura = ({navigation, ...props}: PropsClienteScreen) => {
   );
 };
 
-export default Factura;
+export default React.memo(Factura);

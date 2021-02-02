@@ -141,7 +141,7 @@ const usePagos = () => {
         cliente,
         tasa,
       );
-      reactotron.log && reactotron?.log(response);
+      
       requestAnimationFrame(() => {
         showMensaje({
           visible: true,

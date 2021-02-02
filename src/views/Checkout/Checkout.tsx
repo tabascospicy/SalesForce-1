@@ -1,7 +1,7 @@
 import React from "react"
 import styled from "styled-components/native";
 import ActionButtons from 'components/NavActionButtons';
-import Stepper from "components/stepper"
+import Stepper from "./stepper"
 const Container = styled.View`
   flex-grow:1;
   flex-direction:column;

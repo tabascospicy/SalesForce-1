@@ -32,7 +32,7 @@ const pendientes:React.FC<Props> = ({pendientes,select,status}) => {
             <Pressable
               key={key}
               android_ripple={{color: '#908e8e45'}}
-              onPress={() => select(element.show,element)}>
+              onPress={() => select(element)}>
               <DataTable.Row key={key}>
                 <DataTable.Cell>{element.fecha}</DataTable.Cell>
                 <DataTable.Cell>{element.total}</DataTable.Cell>

@@ -164,6 +164,7 @@ type Product = {
 };
 type MensajeContent = {
   title: string;
+  lock?:boolean;
   body: string;
   visible: boolean;
   render: React.FC | null;
@@ -343,7 +344,7 @@ type Transform = {
 type UiContext = {
   cliente?: Cliente;
   total?: number;
-  selectedFactura?: Factura;
+  selectedFactura: Factura | IPedidosConDetalles;
   transformCarrito: unknown;
   productosQr?: unknown;
   filter?: Filtro;
@@ -356,7 +357,7 @@ type UiContext = {
   ofertas: number[];
   lista?: Array<Product>;
   qr: boolean;
-  ButtonActionFactura?: {action: React.FC<{}> | null};
+  ButtonActionFactura: {action: React.FC<{}>};
   handleSelectedFactura?: (x: Factura) => void;
   handleFilter?: (x: Filtro) => void;
   handleButtonActionFactura?: (x: any) => void;
@@ -468,7 +469,7 @@ type RouteParamsList = {
   Pedidos: any;
   Empresa: any;
   Cliente: any;
-  Factura: any;
+  Factura: {name:string,detalle:string,total:string};
   Checkout: any;
   Agregar: any;
   Producto: any;

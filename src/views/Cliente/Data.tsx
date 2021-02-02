@@ -4,7 +4,7 @@ import { Button, Caption } from "react-native-paper";
 import Icon from "react-native-vector-icons/Ionicons";
 import reactotron from "reactotron-react-native";
 import Context from "services/context"
-import {Card,Data,styles,DataSection,DataTitle,Bold,PickerContainer,shadow} from "./styles";
+import {Card,Data,styles,DataSection,DataTitle,Bold,PickerContainer,shadow} from "./style";
 import {BoxShadow} from 'react-native-shadow';
 import { Dimensions } from "react-native";
 export const {height,width} = Dimensions.get('window');

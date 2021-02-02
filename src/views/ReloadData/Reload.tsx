@@ -96,7 +96,7 @@ const Reload = ({navigation}: any) => {
               title={
                 calling.success != null && calling.success === true
                   ? 'Ir a Inicio'
-                  : 'Re intentar'
+                  : 'Reintentar'
               }
               onPress={Load}></Button>
           )}

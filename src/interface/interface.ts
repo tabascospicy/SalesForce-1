@@ -1,5 +1,5 @@
 interface IPedidosConDetalles extends PedidosToServer  {
-  detalles?: DetalleConNombre[];
+  detalles: DetalleConNombre[];
   fecha:string,
   total:number,
   rest_estatus_id?:number,
@@ -17,7 +17,7 @@ interface PedidoPendiente  {
   adm_clientes_id?:number,
   adm_empresa_id?:number,
   show:IPedidosConDetalles,
-  id?:number
+  id:number
 }
 
 

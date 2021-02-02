@@ -53,7 +53,7 @@ const useSesion = (navigation: any) => {
        saludo.current = client;
       const src = await FechImagenes.FechtLogo('logo.jpg', client);
       if (SesionState === 1) {
-        console.log(src, 'src');
+       
         setImagen(`file://` + src);
       }
     } catch (error) {

@@ -27,7 +27,8 @@ const Pedido = ({
   visible,
   pending = false,
   view,
-  LoadPedidos
+  LoadPedidos,
+  
 }: PedidoDescripcionProps) => {
   const [carritoPage, setCarritoPage] = useState<number>(0);
   const [productoNombre,setProductoNombre] = useState("");

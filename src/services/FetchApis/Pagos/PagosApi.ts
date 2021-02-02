@@ -81,8 +81,10 @@ const makeAbono = (factura: Factura, cliente: Cliente, { monto, monto_dolar, mon
     tipo: "FAC",
     monto_dolar,
     descripcion: "abono desde fuerza de ventas",
-    monto_restante,
-    monto_restante_dolar
+    monto_restante:"0",
+    monto_restante_dolar:"0",
+    pendiente:monto_restante,
+    pendiente_dolar:monto_restante_dolar,
   }
 }
 const FechtTipoPago = async (Tenant: string) => {
@@ -124,11 +126,9 @@ const createAndSendAbono = async (factura: Factura, cliente: Cliente, total: num
       return
     }if (parseFloat(factura.subtotal_dolar) > total) {
       const newAbono = { data: makeAbono(factura, cliente, montos),data1:[] };
-      console.log("menor",parseFloat(factura.subtotal_dolar),total,parseFloat(factura.subtotal_dolar) < total)
       const responseAbono = await enviar(Tenant, newAbono, "abono");
     }if (parseFloat(factura.subtotal_dolar) < total) {
       const newAbono = { data: makeAbono(factura, cliente, montos) , data1:[] };
-      console.log("mayor",parseFloat(factura.subtotal_dolar),total)
       const responseAbono = await enviar(Tenant, newAbono, "abono");
       const finalResponse = await Factura.UpdateFactura(factura.id, Tenant);
     }
@@ -157,13 +157,13 @@ const Pagar = async (Tenant: string, data: Array<enviarInpustValues>, factura: F
 
     const cobranza = { data: makeCobranza(factura, cliente, tasa) };
     const result = await enviar(Tenant, cobranza, 'cobranza');
-    if (Abono.isAbono) {
+   /* if (Abono.isAbono) {
       createAndSendAbono(factura, cliente, Abono.total, Tenant,tasa)
-    }
-    else {
+    }*/
+   // else {
       const finalResponse = await Factura.UpdateFactura(factura.id, Tenant);
-    };
-
+   // };
+    console.log(finalResponse);
   } catch (error) {
     console.log(error);
     return null;
@@ -175,7 +175,7 @@ const enviar = async (Tenant: string, data: unknown, model: string) => {
   try {
     const toString = JSON.stringify(data);
     const response = await Fetch(`${model}`, { method: "POST", tenant: Tenant }, toString);
-    reactotron.log(data, model, response, JSON.parse(response.data))
+
     return await JSON.parse(response.data).data
   } catch (e) {
     return 'hubo un error';

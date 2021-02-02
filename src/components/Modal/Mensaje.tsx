@@ -5,10 +5,10 @@ import Context from 'services/context';
 
 const Mensaje = () => {
   const {seeMessage, hideMensaje} = useContext(Context);
-  const {visible, title, body, render,actions} = seeMessage as MensajeContent;
+  const {visible, title, body, render,actions,lock} = seeMessage as MensajeContent;
   return (
     <Portal>
-      <Dialog visible={visible} onDismiss={hideMensaje}>
+      <Dialog dismissable={lock} visible={visible} onDismiss={hideMensaje}>
         <Dialog.Title>{title}</Dialog.Title>
         <Dialog.Content>
           <Paragraph>

@@ -64,8 +64,6 @@ export const useLogin = (navigation: any) => {
   };
   // cambiar directamente a la vista de ingresar codigo
   const enterCodigo = (SilRef:any) => {
-    
-    console.log(SilRef.current.animateNextTransition);
     SilRef.current.animateNextTransition();
     setView((prev) => (prev === 1 ? 2 : 1));
     buttonText.current = view === 2 ? 'Ya tienes Codigo?' : 'Volver';
@@ -104,7 +102,7 @@ export const useLogin = (navigation: any) => {
     console.log(state,"verificar")
     if (result && state) {
       const error = await Store(result.Tenant);
-      reactotron.log(error,"resultado",result.Tenant.tenant);
+  
       if(error){
         handleTenant &&  handleTenant(result.Tenant.tenant);
         handleSesionState && handleSesionState(1)

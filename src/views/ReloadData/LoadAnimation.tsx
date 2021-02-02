@@ -31,7 +31,7 @@ const LoadAnimation = ({calling}:LoadAnimationProps) => {
       value.setValue(calling.success === false ? 0.6 : 0);
       stop.current = true;
       Animated.timing(value, {
-        toValue: calling.success === false ? 0.95 : 0.45,
+        toValue: calling.success === false ? 1 : 0.45,
         easing: Easing.linear,
         duration: 2000,
         useNativeDriver: true,

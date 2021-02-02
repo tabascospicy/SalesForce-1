@@ -1,6 +1,6 @@
 import React, { useContext, useMemo, useRef, useState} from 'react';
 
-import {List, ListContainer} from './styles';
+import {List, ListContainer} from './style';
 import DetallesFactura from "components/Modal/DetalleFactura";
 import FacturaCard from './Factura';
 
@@ -41,9 +41,8 @@ const Facturas = ({tipos,facturas,navigation,isOnView}:FacturasProps) => {
   const hideDialog = () => {setVisible(false)} 
 
   const marcarFacturado = () =>{
-      console.log(idRef.current,"current factura")
       InteractionManager.runAfterInteractions(()=>{
-        idRef.current && navigation.navigate("Pagar",{factura:idRef.current});
+        idRef.current && navigation.navigate("Pagar",{factura:idRef.current,name:"Factura"});
       })
   }
   const Boton =()=> <Button onPress={marcarFacturado}>Pagar</Button>
@@ -52,7 +51,7 @@ const Facturas = ({tipos,facturas,navigation,isOnView}:FacturasProps) => {
     handleSelectedFactura && handleSelectedFactura(id);
     handleButtonActionFactura && handleButtonActionFactura({action:Boton});
     InteractionManager.runAfterInteractions(()=>{
-      idRef.current && navigation.navigate("Factura");
+      idRef.current && navigation.navigate("Factura",{name:"Factura",detalle:`Nro ${id.numero_factura}`,total:id.subtotal_dolar});
     })
   }
     return (

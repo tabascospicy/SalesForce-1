@@ -91,8 +91,8 @@ const Checkout = (props: any) => {
   } = useContext(Context);
   const [tasa,loadingTasa] = useTasa({isNetworkAvailable})
   const mensaje = useMemo(()=>parseInt(descuento?.descuento || "0") === 0 ? "" :`descuento de ${descuento?.descuento}% aplicable hasta el dia ${descuento?.dia_final || 0} despues de ordenado`,[descuento]);
-  const from: number = carritoPage * 6;
-  const to: number = (carritoPage + 1) * 6;
+  const from: number = carritoPage *3;
+  const to: number = (carritoPage + 1) * 3;
   const showDialog = () => setPendiente(true);
 
   const hideDialog = () => setPendiente(false);
@@ -122,7 +122,7 @@ const Checkout = (props: any) => {
       const state: boolean = isNetworkAvailable ? await isNetworkAvailable() : false;
      try {
       if (state) { 
-        console.log("online",state,"\n",JSON.stringify({data, data1:setDetallesServer(carrito)}))
+        
         
         const enviar = JSON.stringify({data, data1:setDetallesServer(carrito)});
         const response = await Fetch(`pedidos`, {method:"POST",tenant:getTenant ? getTenant() : "" }, enviar);  
@@ -233,7 +233,6 @@ const Checkout = (props: any) => {
   const setDetallesServer = useCallback(
     (productos: Array<Product>, des = false) => {
       const deta: Array<DetallesToServer | DetalleConNombre> = productos.map((element) => {
-        console.log(element.precio_a,parseFloat(element.precio_a),"precio")
         return des
           ? {
               adm_conceptos_id: element.id,
@@ -341,7 +340,7 @@ const Checkout = (props: any) => {
             })}
             <DataTable.Pagination
               page={carritoPage}
-              numberOfPages={Math.floor(carrito.length / 6) + 1}
+              numberOfPages={Math.floor(carrito.length / 3) + 1}
               onPageChange={(page) => {
                 setCarritoPage(page);
               }}

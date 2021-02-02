@@ -49,10 +49,7 @@ const CustomImage = ({
 }: imageProps) => {
 const {image} = producto ? useLoadImage(producto) : {image:""};
   const ref = useRef();
-  useEffect(()=>{
-    console.log(image,ref.current && ref.current.getSize && ref.current.getSize())
-  },[])
-  console.log(image,"image",ref.current && ref.current.getSize && ref.current.getSize())
+ 
   return (
     <AvatarContainer height={height} width={width}>
       {image ? <Avatar ref={ref} defaultImage={{uri:"assets/image/picture.png",width:20,height:20}} resizeMode="contain" rounded={rounded} height={H} width={W} source={{uri:'file://' + image}} /> :  <ActivityIndicator animating={true} color={Colors.red800} />  }

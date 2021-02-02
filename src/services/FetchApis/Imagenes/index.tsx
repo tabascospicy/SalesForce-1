@@ -6,7 +6,6 @@ const date = new Date();
 const FetchImagen = async (url: string, ImageSrc: string) => {
   try {
     const ext = url.split('.')[1];
-    console.log(url.split('.')[1], ext, 'a ver', url);
     return RNFechtBlob.config({
       // add this option that makes response data to be stored as a file,
       // this is much more performant.

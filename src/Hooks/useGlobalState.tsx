@@ -22,18 +22,21 @@ const useGlobalState = (): UiContext => {
   const [selectedView, setSelectedView] = useState('Empresa');
   const [selectedFactura, setSelectedFactura] = useState<Factura>();
   const [ButtonActionFactura, setButtonActionFactura] = useState({action:null});
+  const [precios,setPrecios] = useState<number[]>([]);
   const showMensaje = ({
     visible,
     title,
     body,
     render = null,
     actions = null,
+    lock = false,
   }: MensajeContent) => {
     setMensaje({
       title,
       body,
       render,
       visible,
+      lock,
       actions,
     });
   };
@@ -113,7 +116,6 @@ const useGlobalState = (): UiContext => {
     );
     if (!Ofertas[0]) return 0;
     const oferta = Ofertas[0] as Oferta;
-    console.log(oferta.min === cantidad || oferta.max === cantidad);
     return (oferta.min < cantidad && cantidad < oferta.max) ||
       oferta.min === cantidad ||
       oferta.max === cantidad
@@ -132,6 +134,8 @@ const useGlobalState = (): UiContext => {
         return element.id !== producto.id;
       });
       setCarrito((prev) => filtered);
+      let template = [...precios];
+      setPrecios(template.pop());
     },
     [carrito],
   );
@@ -155,7 +159,10 @@ const useGlobalState = (): UiContext => {
           ...carrito,
           Object.assign(producto, {cantidad, impuesto}),
         ]);
+        reactotron.log(producto,oferta);
+        setPrecios([...precios,producto.precio_dolar + producto.precio_dolar * oferta]);
       } else {
+
         setCarrito(
           carrito.map((element, i) => {
             if (element.id === producto.id) ofertas.current[i] = oferta;
@@ -214,6 +221,7 @@ const useGlobalState = (): UiContext => {
     transformCarrito: transform,
     productosQr,
     toggleCarrito: pressed,
+    precios,
     ofertas: ofertas.current,
   };
 };

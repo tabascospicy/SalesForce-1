@@ -4,7 +4,7 @@ import {BoxShadow} from 'react-native-shadow';
 import {shadowSetting} from 'theme';
 type DetalleFacturaProps = {
   colors:Theme,
-  producto:DetalleFactura,
+  producto:DetalleFactura | DetalleConNombre,
   nombre:string
 }
 

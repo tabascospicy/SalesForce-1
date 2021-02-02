@@ -190,7 +190,7 @@ const Pagar: React.FC<PagarProps> = ({navigation, route}) => {
         tasa,
         {isAbono,total:total.current}
       );
-      reactotron.log && reactotron?.log(response);
+     
       requestAnimationFrame(() => {
         showMensaje({
           visible: true,
@@ -204,7 +204,7 @@ const Pagar: React.FC<PagarProps> = ({navigation, route}) => {
       });
     } catch (error) {
       console.log(error);
-      reactotron.log && reactotron?.log(error);
+    
       showMensaje({
         visible: true,
         title: 'Disculpe!',

@@ -8,9 +8,13 @@ type Props = {
   pedidos:IPedidosConDetalles[],
   select:any,
   status:StatusPedido[],
-  view:number
+  view:number,
+  showMensaje:(m:MensajeContent)=>void,
 }
-const Realizados :React.FC<Props> = ({pedidos,select,view,status}) => {
+
+
+
+const Realizados :React.FC<Props> = ({pedidos,select,status}) => {
   const [pedidosPage, setPedidosPage] = useState<number>(0);
   const fromR: number = pedidosPage * 6;
   const toR: number = (pedidosPage + 1) * 6;
@@ -30,7 +34,7 @@ const Realizados :React.FC<Props> = ({pedidos,select,view,status}) => {
             <Pressable
               key={key}
               android_ripple={{color: '#908e8e45'}}
-              onPress={() => select(element,null)}>
+              onPress={() => select(element)}>
               <DataTable.Row>
                 <DataTable.Cell>{element.fecha}</DataTable.Cell>
                 <DataTable.Cell numeric>{element.total.toFixed(2)}</DataTable.Cell>

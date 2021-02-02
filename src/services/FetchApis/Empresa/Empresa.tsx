@@ -12,24 +12,14 @@ const FetchEmpresaById = async (id: number,Tenant:string) => {
     return 'hubo un error';
   }
 };
-const ConceptosEmpresa = async (index: number,Tenant:string) => {
-  try {
-    const response = await Fetch(
-      `empresa/1/conceptos/?offset=${index}&limit=100&visible_fuerza_venta=1`,
-      {method:"GET",tenant:Tenant},
-    );
-    return await JSON.parse(response.data).data;
-  } catch (e) {
-    console.log(e, 'ha ocurrido un error \n \n \n');
-    return 'hubo un error';
-  }
-};
+
 
 const FetchCantidadConceptos = async (id: number,Tenant:string) => {
   try {
     const response = await Fetch(`empresa/${id}/conceptos/?visible_fuerza_venta=1`, {method:"GET",tenant:Tenant});
-    const total = JSON.parse(response.data).data;
     
+    const total = JSON.parse(response.data).data;
+    reactotron.log(total,response,"empresa api")
     return total;
   } catch (e) {
     console.log(e, 'ha ocurrido un error \n \n \n');
@@ -54,7 +44,6 @@ const FetchAllImagesProductos = async (productos: Product[],setPercent:any,Tenan
       rutes.map((rute, r) => {
        if(r + index < productos.length) productos[r + index].imagen = rute;
       });
-      reactotron.log(i,rutes);
       index += 80;
     }
     return productos;
@@ -65,6 +54,7 @@ const FetchAllImagesProductos = async (productos: Product[],setPercent:any,Tenan
 };
 
 const FetchConceptosEmpresa = async (id: number,Tenant:string) => {
+
   return FetchCantidadConceptos(id,Tenant);
 };
 const FetchAllAboutOne = Promise.all([FetchEmpresaById, FetchConceptosEmpresa]);

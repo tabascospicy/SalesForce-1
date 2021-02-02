@@ -2,7 +2,6 @@ import React, {useContext, useEffect, useRef, useState} from 'react';
 import ActionButtons from 'components/NavActionButtons';
 import Database from 'services/realm';
 import {pedidoDetalles} from 'services/defaultData';
-import PedidoDescripcion from 'components/Description/Pedido';
 import {Button, Portal} from 'react-native-paper';
 import Realizados from 'components/CheckPedidos/Realizados';
 import Pendientes from 'components/CheckPedidos/Pendientes';
@@ -18,13 +17,24 @@ import {
   Title,
 } from './styled';
 import reactotron from 'reactotron-react-native';
+import useReEnvioPedidos from 'Hooks/useReEnvioPedidos';
+import {InteractionManager} from 'react-native';
 const {customRequest} = Database();
 const Pedidos = ({navigation, ...props}: any) => {
   const [pedidos, setPedidos] = useState<IPedidosConDetalles[]>([]);
   const [pendientes, setPendientes] = useState<PedidoPendiente[]>([]);
-  const [enEspera,setEnEspera] = useState<IPedidosConDetalles[]>([]);
+  const [enEspera, setEnEspera] = useState<IPedidosConDetalles[]>([]);
   const [view, setView] = useState(0);
-  const {AskPedidos, isNetworkAvailable, usuarioLog} = useContext(Context);
+  const {SendPedidoPendiente, cancelar,onProcess} = useReEnvioPedidos({navigation});
+  const {
+    AskPedidos,
+    isNetworkAvailable,
+    usuarioLog,
+    showMensaje,
+    handleSelectedFactura,
+    handleButtonActionFactura,
+
+  } = useContext(Context);
   const [selectedP, setSelectedP] = useState<IPedidosConDetalles>(
     pedidoDetalles,
   );
@@ -32,19 +42,18 @@ const Pedidos = ({navigation, ...props}: any) => {
   const enter = useRef(false);
   const pend = useRef(false);
   const [visible, setVisible] = useState(false);
-  const StatusPedidos = useRef<StatusPedido[]>([{nombre:"",id:0}]);
+  const StatusPedidos = useRef<StatusPedido[]>([{nombre: '', id: 0}]);
   const showDialog = () => setVisible(true);
 
   const hideDialog = () => setVisible(false);
 
   const readPedidos = (realm: any) => {
-    const req :DB.models = "realizados";
-    const req2 :DB.models = "statusPedido";
+    const req: DB.models = 'realizados';
+    const req2: DB.models = 'statusPedido';
     const dbPedidos = realm.objects(req);
     const status = realm.objects(req2);
-    const espera = dbPedidos.filtered("rest_estatus_id = 3");
-    const facturados = dbPedidos.filtered("rest_estatus_id = 2");
-    console.log([...dbPedidos], 'Realizas');
+    const espera = dbPedidos.filtered('rest_estatus_id = 3');
+    const facturados = dbPedidos;
     const readPendientes = realm.objects('pendiente');
     StatusPedidos.current = status;
     setPedidos(facturados);
@@ -55,11 +64,10 @@ const Pedidos = ({navigation, ...props}: any) => {
   const LoadPedidos = async () => {
     const connected = isNetworkAvailable ? await isNetworkAvailable() : false;
     if (connected) {
-      reactotron.log("apunto de llamar")
+      reactotron.log('apunto de llamar');
       AskPedidos &&
         AskPedidos(usuarioLog.id).then(() => {
           customRequest(readPedidos);
-          
         });
     } else {
       customRequest(readPedidos);
@@ -77,7 +85,7 @@ const Pedidos = ({navigation, ...props}: any) => {
       customRequest(readPedidos);
       enter.current = true;
       if (isNetworkAvailable && isNetworkAvailable()) {
-        reactotron.log(usuarioLog, 'usuario');
+      
         AskPedidos &&
           AskPedidos(usuarioLog?.id || 0).then(() => {
             customRequest(readPedidos);
@@ -85,11 +93,31 @@ const Pedidos = ({navigation, ...props}: any) => {
       }
     }
   }, [pedidos]);
-
-  const select = (element: IPedidosConDetalles, ped = null) => {
-    setSelectedP(element);
-    pend.current = ped;
-    showDialog();
+  const selectEnviado = (element: IPedidosConDetalles) => {
+    const Cancelar = () => (
+      <Button onPress={() => cancelar(element.id as number)}>Cancelar</Button>
+    );
+    configureDataAndJump(element, Cancelar);
+  };
+  const configureDataAndJump = (
+    element: IPedidosConDetalles,
+    boton: React.FC,
+  ) => {
+    handleSelectedFactura && handleSelectedFactura(element);
+    handleButtonActionFactura && handleButtonActionFactura({action: boton});
+    InteractionManager.runAfterInteractions(() => {
+      navigation.navigate('Factura', {
+        name: 'Pedidos',
+        detalle: `Realizado el ${element.fecha_at}`,
+        total: element.total,
+      });
+    });
+  };
+  const selectPendiente = (element: PedidoPendiente) => {
+    const Enviar = () => (
+      <Button onPress={() => SendPedidoPendiente(element)}>Enviar</Button>
+    );
+    configureDataAndJump(element.show, Enviar);
   };
 
   const toggP = () => {
@@ -98,9 +126,7 @@ const Pedidos = ({navigation, ...props}: any) => {
   const toggR = () => {
     setView(0);
   };
-  const toggE = () => {
-    setView(2);
-  };
+
   return (
     <GlobalContainer>
       <BlueBackground
@@ -133,47 +159,28 @@ const Pedidos = ({navigation, ...props}: any) => {
             onPress={toggP}>
             Sin Enviar
           </Button>
-          <Button
-            contentStyle={{
-              opacity: view === 2 ? 1 : 0.5,
-              borderBottomColor: 'white',
-              borderBottomWidth: view === 2 ? 3 : 0,
-            }}
-            color={'white'}
-            onPress={toggE}>
-            En Espera
-          </Button>
         </NavButtons>
       </BlueBackground>
-      <Portal>
-        <PedidoDescripcion
-          LoadPedidos={LoadPedidos }
-          pending={pend}
-          visible={visible}
-          hideDialog={hideDialog}
-          pedido={selectedP}
-          view={view}
-          status={StatusPedidos.current}
-        />
-      </Portal>
       <Content>
         {view === 0 && (
           <Card style={Style.shadow}>
-            <Title>Pedidos Facturados</Title>
-            <Realizados pedidos={pedidos} select={select} status={StatusPedidos.current} />
-            
+            <Title>Enviados</Title>
+            {!onProcess && <Realizados
+              {...{showMensaje, select: selectEnviado}}
+              pedidos={pedidos}
+              status={StatusPedidos.current}
+            />}
           </Card>
         )}
         {view === 1 && (
           <Card style={Style.shadow}>
-            <Title>Pedidos Sin enviar</Title>
-            <Pendientes pendientes={pendientes} status={StatusPedidos.current} select={select} />
-          </Card>
-        )}
-        {view === 2 && (
-          <Card style={Style.shadow}>
-            <Title>Pedidos En Espera</Title>
-            <Realizados view={view} pedidos={enEspera}  status={StatusPedidos.current} select={select}  />
+            <Title>Sin enviar</Title>
+            {!onProcess && <Pendientes
+              pendientes={pendientes}
+              status={StatusPedidos.current}
+              select={selectPendiente}
+            /> }
+          
           </Card>
         )}
       </Content>
@@ -181,4 +188,4 @@ const Pedidos = ({navigation, ...props}: any) => {
   );
 };
 
-export default Pedidos;
+export default React.memo(Pedidos);

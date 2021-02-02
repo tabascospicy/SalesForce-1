@@ -161,4 +161,4 @@ const Home = ({pressed, visual, navigation, ...props}: props) => {
   );
 };
 
-export default Home;
+export default React.memo(Home);

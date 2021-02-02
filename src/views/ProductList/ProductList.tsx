@@ -115,4 +115,4 @@ const ProductList = (props: productList) => {
     </GlobalContainer>
   );
 };
-export default ProductList;
+export default React.memo(ProductList);

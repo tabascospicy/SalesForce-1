@@ -12,7 +12,6 @@ const FecthPlanes = async (setPercent:any,Tenant:string) => {
     const response = await Fetch(`planes_pago`,{method:"GET",tenant:Tenant});
     const data = await JSON.parse(response.data);
     setPercent((prev:number)=>prev+5);
-    
     const utilData = typeof(data) === "string" ? [planDefecto] : data.data;
    return utilData;
   } catch (e) {

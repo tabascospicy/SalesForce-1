@@ -3,17 +3,26 @@ import { useEffect } from "react";
 import LottieView from 'lottie-react-native';
 import {Animated, Easing,View,Text} from 'react-native';
 import {useRef} from 'react';
-const Loading = ({calling}:any) => {
+import { Caption } from "react-native-paper";
+type LoadingProps = {
+  calling:{
+    success:boolean | null;
+    process:0|1|2;
+  }
+  message?:string
+}
+const Loading:React.FC<LoadingProps>= ({calling,message=""}) => {
   const stop = useRef(false);
   const value = useRef(new Animated.Value(0)).current;
   const anim = () => {
     value.setValue(0);
     Animated.timing(value, {
-      toValue: 0.3,
+      toValue: 0.47,
       easing: Easing.linear,
       duration: 5000,
       useNativeDriver: true,
     }).start(() => {
+      console.log(stop.current)
       if (!stop.current) {
         anim();
       }
@@ -31,8 +40,8 @@ const Loading = ({calling}:any) => {
       }).start();
     }
   }, [calling]);
-  useEffect(() => {
-    if (calling.process) {
+  useEffect(() => { 
+    if (calling.process != 0) {
       anim();
     }
   }, []);
@@ -42,10 +51,9 @@ const Loading = ({calling}:any) => {
     <LottieView
     source={require('assets/lottie/loading.json')}
     progress={value}
-    style={{height:100}}
-    resizeMode={"cover"}
+    style={{height:50}}
   />
-  <Text>Enviando...</Text>
+  <Caption> {message ? message : "Enviando..."}</Caption>
   </View>
   )
 }
