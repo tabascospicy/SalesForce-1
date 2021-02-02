@@ -3,8 +3,8 @@ import ActionButtons from 'components/NavActionButtons';
 import Database from 'services/realm';
 import {pedidoDetalles} from 'services/defaultData';
 import {Button, Portal} from 'react-native-paper';
-import Realizados from 'components/CheckPedidos/Realizados';
-import Pendientes from 'components/CheckPedidos/Pendientes';
+import Realizados from './Realizados';
+import Pendientes from './Pendientes';
 import Context from 'services/context';
 import {
   Content,

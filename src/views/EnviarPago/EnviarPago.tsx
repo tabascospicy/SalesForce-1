@@ -1,7 +1,7 @@
 import React from "react"
 import styled from "styled-components/native";
 import ActionButtons from 'components/NavActionButtons';
-import  Pagar from "components/Pagar/Pagar";
+import Pagar from "./Pagar";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RouteProp } from "@react-navigation/native";
 const Container = styled.View`
