@@ -1,3 +1,6 @@
+
+
+
 namespace DB {
   export type models =
     | 'usuario'
@@ -346,8 +349,10 @@ type UiContext = {
   total?: number;
   selectedFactura: Factura | IPedidosConDetalles;
   transformCarrito: unknown;
+  isCartOpen?:boolean;
   productosQr?: unknown;
   filter?: Filtro;
+
   selectedView?: string;
   selectedProduct?: UiProduct;
   isOnline: boolean;
@@ -471,9 +476,9 @@ type RouteParamsList = {
   Cliente: any;
   Factura: {name:string,detalle:string,total:string};
   Checkout: any;
-  Agregar: any;
+  Agregar: {disabled:boolean};
   Producto: any;
-  MinifiedList: any;
+  MinifiedList: {disabled:boolean};
 };
 type GenericType = {
   id: number;

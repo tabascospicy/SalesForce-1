@@ -7,41 +7,40 @@ import {List} from 'react-native-paper';
 import * as RootNavigation from 'components/RootNavigationRef/RootNavigationRef';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {ScrollView} from 'react-native-gesture-handler';
-import { StackNavigationProp } from '@react-navigation/stack';
+import {StackNavigationProp} from '@react-navigation/stack';
 const {customRequest} = DataBase();
 
 type ProfileScreenNavigationProp = StackNavigationProp<{}>;
 
 interface Buscar {
   name: string;
-  navigation:ProfileScreenNavigationProp,
+  navigation: ProfileScreenNavigationProp;
   display: string;
+  disabled: boolean;
 }
-const Busqueda = ({name, display,navigation}: Buscar) => {
-  const {handleFilter,ExtraFunction} = useContext(Context);
+const Busqueda = ({name, display, navigation, disabled = false}: Buscar) => {
+  const {handleFilter, ExtraFunction} = useContext(Context);
   const [busqueda, setBusqueda] = useState([]);
 
   const readData = (realm: Realm) => {
     const opciones = realm.objects(name);
     setBusqueda(opciones);
   };
-  const BuscarFiltro = (nombre:string) =>{
-
-    const Filtrados =
-      busqueda.filter((element, index) => {
-        return element.nombre.toLowerCase().includes(nombre.toLowerCase());
-      });
-      setBusqueda(Filtrados);
-  }
-  useEffect(()=>{
+  const BuscarFiltro = (nombre: string) => {
+    const Filtrados = busqueda.filter((element, index) => {
+      return element.nombre.toLowerCase().includes(nombre.toLowerCase());
+    });
+    setBusqueda(Filtrados);
+  };
+  useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       ExtraFunction.current = BuscarFiltro;
     });
     return unsubscribe;
-  },[navigation]);
+  }, [navigation]);
   const handleSelect = (id: number, nombre: string) => {
-  handleFilter &&  handleFilter({nombre, id, display,db:name});
-    RootNavigation.navigate('MinifiedList');
+    handleFilter && handleFilter({nombre, id, display, db: name});
+    RootNavigation.navigate('MinifiedList', {disabled});
   };
   useEffect(() => {
     customRequest(readData);

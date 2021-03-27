@@ -40,9 +40,7 @@ export const useLogin = (navigation: any) => {
   const LogOnline = async () => {
     try {
       const L: LoginData = {
-        usuario: '',
         correo: correo,
-        password: '',
       };
       const state = isNetworkAvailable && isNetworkAvailable();
       if(state){

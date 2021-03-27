@@ -50,7 +50,7 @@
     costo_adicional2: 'string?',
     cant_ensamblado: 'string?',
     licor:  'int?',
-    porcentaje: 'int?',
+    porcentaje: 'string?',
     visible_pv:  'int?',
     visible_web:  'int?',
     rest_areas_id: 'int?',

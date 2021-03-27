@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from "react"
 import { View } from "react-native";
 import Producto from "components/Producto";
 import Context from "services/context"
-const todos = ({navigation,...props}:any) => {
+const todos = ({navigation,disabled = false,...props}:any) => {
   const {lista,ExtraFunction} = useContext(Context);
   useEffect(()=>{
     const unsubscribe = navigation.addListener('focus', () => {
@@ -12,7 +12,7 @@ const todos = ({navigation,...props}:any) => {
   },[navigation]);
   return (
     <View style={{flex:1}}>
-        <Producto.List  navigation={navigation} {...props}  list={lista} title={'Productos'} />
+        <Producto.List  disabled={disabled} navigation={navigation} {...props}  list={lista} title={'Productos'} />
     </View>
   );
 }

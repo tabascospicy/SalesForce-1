@@ -1,18 +1,18 @@
 import React, {useContext, useEffect, useState} from 'react';
 import styled from 'styled-components/native';
-import {Dimensions, Pressable, StyleSheet} from 'react-native';
+import { Pressable, StyleSheet} from 'react-native';
 import ActionButtons from 'components/NavActionButtons';
 import Modal from 'components/Animate/modal';
-import Animated from 'react-native-reanimated';
+
 import SearchInput from 'components/Inputs/SearchInput';
 import Context from 'services/context';
-import useCartAnimation from 'Hooks/useCartAnimation';
-import Cart from 'components/Cart';
+
 import QRCode from 'react-native-qrcode-generator';
 import {useRef} from 'react';
 import SnackBar from 'components/Animate/SnackBar';
 import ProductNavigator from 'components/ProductSection';
-import useOnview from 'Hooks/onView';
+import { StackNavigationProp } from '@react-navigation/stack';
+
 
 const GlobalContainer = styled.View`
   flex-grow: 1;
@@ -53,9 +53,12 @@ const CancelTxt = styled.Text`
 interface productList {
   empresa: Empresa;
   dispatch: any;
+  navigation:StackNavigationProp<RouteParamsList,"Agregar">;
+  route:any;
 }
 
-const ProductList = (props: productList) => {
+const ProductList:React.FC<productList> = (props) => {
+  const {disabled} = props.route.params;
   const {productos, carrito, handleLista,ExtraFunction,pressed,showQr,productosQr,qr} = useContext(Context);
   const [snack, showSnack] = useState(false);
   const templateBusqueda = useRef("");
@@ -108,10 +111,10 @@ const ProductList = (props: productList) => {
       />
       <BlueBackground
         style={{borderBottomEndRadius: 20, borderBottomStartRadius: 20}}>
-        <ActionButtons toggle={pressed} list menu={false} back {...props} />
+        <ActionButtons disabled={disabled} toggle={pressed} list menu={false} back {...props} />
         <SearchInput {...{remenber,value:templateBusqueda.current}} buscar={Buscar} />
       </BlueBackground>
-      <ProductNavigator {...props} />
+      <ProductNavigator disabled={disabled} {...props} />
     </GlobalContainer>
   );
 };

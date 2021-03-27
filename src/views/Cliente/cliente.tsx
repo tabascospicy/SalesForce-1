@@ -13,7 +13,7 @@ const Tab = createMaterialTopTabNavigator();
 import ClientDescription from 'views/Cliente/Data';
 import {StackNavigationProp} from '@react-navigation/stack';
 
-type ProfileScreenNavigationProp = StackNavigationProp<{}>;
+type ProfileScreenNavigationProp = StackNavigationProp<RouteParamsList,"Cliente">;
 interface PropsClienteScreen {
   navigation: ProfileScreenNavigationProp;
   route: any;
@@ -75,7 +75,7 @@ const Cliente = ({navigation, route, ...props}: PropsClienteScreen) => {
     if (payments.method === '') {
       setVisible(true);
     } else {
-      navigation.navigate('Agregar');
+      navigation.navigate('Agregar',{disabled:false});
     }
   };
 

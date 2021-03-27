@@ -4,7 +4,10 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import Todos from './todos';
 import Busqueda from "./Busqueda";
 const Tab = createMaterialTopTabNavigator();
-const ProductNavigator = () => {
+type ProductNavigatorPros = {
+  disabled:boolean
+}
+const ProductNavigator:React.FC<ProductNavigatorPros> = ({disabled = false}) => {
   
   return (
       <Tab.Navigator
@@ -19,16 +22,16 @@ const ProductNavigator = () => {
           },
         }}>
         <Tab.Screen name="Productos">
-          {(props: any) => <Todos {...props} />}
+          {(props: any) => <Todos disabled={disabled} {...props} />}
         </Tab.Screen>
         <Tab.Screen name="Categorias">
-          {(props: any) => <Busqueda name={"grupo"} display="Categorias"  {...props}/>}
+          {(props: any) => <Busqueda disabled={disabled} name={"grupo"} display="Categorias"  {...props}/>}
         </Tab.Screen>
         <Tab.Screen name="SubCatego-rias" >
-          {(props: any) => <Busqueda name={"subgrupo"} display="SubCategorias"  {...props} />}
+          {(props: any) => <Busqueda disabled={disabled} name={"subgrupo"} display="SubCategorias"  {...props} />}
         </Tab.Screen>
         <Tab.Screen name="Marcas" >
-          {(props: any) => <Busqueda name={"marcas"}  display="Marcas" {...props} />}
+          {(props: any) => <Busqueda disabled={disabled} name={"marcas"}  display="Marcas" {...props} />}
         </Tab.Screen>
       </Tab.Navigator>
   );

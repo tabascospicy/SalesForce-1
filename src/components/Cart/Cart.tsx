@@ -85,6 +85,7 @@ const Cart = ({navigation, showQr, ...props}:CartProps) => {
       navigation.navigate('Checkout');
     })
   };
+  reactotron.log(props.isOpen,"menu");
   const {carrito,colors} = useContext(Context);
   return (
     <CartContainer>
@@ -95,7 +96,7 @@ const Cart = ({navigation, showQr, ...props}:CartProps) => {
         </IconContainer>
         <Title style={{color:colors["primary-font"]}} >Carrito</Title>
       </TitleContainer>
-      <List  />
+      <List {...{isOpen:false}}  />
       <BottomLabel>
         <QrButton onPress={showQr} android_ripple={{color: 'pink', radius: 20}}>
           <Icon size={20} name="qr-code-outline"></Icon>

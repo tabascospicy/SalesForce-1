@@ -12,7 +12,10 @@ import IvaScheme from "./Iva";
 import FacturaSchema from "./FacturasSchema";
 import Ofertas from "./OfertasSchema";
 import BancoScheme from "./BancoSchema";
-import Pagos from "./Pagos"
+import Pagos from "./Pagos";
+const user = {
+  
+}
 export default new Realm({
   schema: [
     BancoScheme.Banco,
@@ -43,5 +46,5 @@ export default new Realm({
     TagsSchemas.SubGrupo,
     userSchema,
   ],
-  schemaVersion: 8,
+  schemaVersion: 9,
 });

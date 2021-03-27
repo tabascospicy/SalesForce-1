@@ -1,18 +1,10 @@
 import styled from 'styled-components/native';
-import {Image,Text} from "react-native"
-import React, {useEffect, useRef} from 'react';
+import React, { useRef} from 'react';
 import useLoadImage from "Hooks/useLoadImages";
 import { ActivityIndicator, Colors } from 'react-native-paper';
+import reactotron from 'reactotron-react-native';
 
-const Background = styled.View`
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  background: white;
-  opacity: 0.7;
-  border-radius: ${(props: imageProps) => (props.rounded ? 50 : 5)}px;
-  z-index: 1;
-`;
+
 const Avatar = styled.Image`
   height: ${(props: imageProps) => props.height};
   width: ${(props: imageProps) => props.width};
@@ -47,6 +39,7 @@ const CustomImage = ({
   H ='50px',
   W = '90px'
 }: imageProps) => {
+  
 const {image} = producto ? useLoadImage(producto) : {image:""};
   const ref = useRef();
  

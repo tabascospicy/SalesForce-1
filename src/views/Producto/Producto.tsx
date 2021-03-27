@@ -31,6 +31,10 @@ import ModalQr from 'components/Modal/producto/ModalQr';
 import {StackNavigationProp} from '@react-navigation/stack';
 import BottomSheet from 'reanimated-bottom-sheet';
 import Icon3 from 'react-native-vector-icons/Ionicons';
+import reactotron from 'reactotron-react-native';
+import useOnview from 'Hooks/onView';
+import accounting from "accounting";
+
 type ProfileScreenNavigationProp = StackNavigationProp<{}>;
 
 const style = StyleSheet.create({
@@ -55,8 +59,10 @@ const Producto = ({
   disabled,
   dispatch,
   navigation,
+  route,
   ...props
 }: ProductoProps) => {
+  const {id,imagen,nombre,precioProductoDolar} = route.params;
   const {
     add,
     showQr,
@@ -85,12 +91,13 @@ const Producto = ({
     niveles,
     showDescuentos,
     descuentoUi,
-  } = useProductoView({navigation, disabled, dispatch, ...props});
+  } = useProductoView({navigation, disabled, dispatch,precioProductoDolar, ...props});
+  
+  const {isOnView} = useOnview({navigation});
   const sheetRef = React.useRef(null);
   const show = () => {
     sheetRef.current.snapTo(550);
   };
-  
   const Data = () => {
     return (
       <Card2 style={{padding: 10, marginTop: 20, elevation: 13}}>
@@ -117,7 +124,7 @@ const Producto = ({
         <Separator />
         <Line>
           <LineTitle>Marca:</LineTitle>
-       
+
           <LineText>{marca || 'por asignar'}</LineText>
         </Line>
         <Separator />
@@ -135,6 +142,7 @@ const Producto = ({
         <Separator />
         <Line>
           <LineTitle>Empaque:</LineTitle>
+
           <LineText>
             {selectedProduct.producto?.empaque || 'por asignar'}
           </LineText>
@@ -158,23 +166,28 @@ const Producto = ({
   };
   return (
     <Container>
-      <ModalDescuentos {...{descuentosVisible, hideDescuentos, niveles}} />
-      <ModalAgregar
-        descuentoUi={descuentoUi.current}
-        precio={precio.current}
-        monto={monto.current}
-        {...{
-          selectedProduct,
-          detalles,
-          cantidad,
-          visible,
-          hideDialog,
-          handleChange,
-          add,
-        }}
-      />
-      <ModalImagen {...{hideImage, selectedProduct, Image}} />
-      <ModalQr productosQr={productosQr.current} {...{qr, showQr}} />
+      {isOnView && (
+        <>
+          <ModalDescuentos {...{descuentosVisible, hideDescuentos, niveles}} />
+          <ModalAgregar
+            descuentoUi={descuentoUi.current}
+            precio={precio.current}
+            monto={monto.current}
+            {...{
+              selectedProduct,
+              detalles,
+              cantidad,
+              visible,
+              hideDialog,
+              handleChange,
+              add,
+            }}
+          />
+          <ModalImagen {...{hideImage, selectedProduct, Image}} />
+          <ModalQr productosQr={productosQr.current} {...{qr, showQr}} />
+        </>
+      )}
+
       <BlueBackground />
       <ActionButtons
         toggle={toggleCarrito}
@@ -186,27 +199,37 @@ const Producto = ({
 
       <TopElements>
         <Pressable onPress={showImage}>
-          <PImage H={'90px'} producto={selectedProduct.producto} />
+          <PImage H={'90px'} producto={{id,imagen}} />
         </Pressable>
       </TopElements>
       <Card style={style.shadow}>
-        <Tag><Bold>Nombre:</Bold>{selectedProduct.producto.nombre}</Tag>
-          <Tag style={{marginBottom: 4}}>
-            <Bold>:</Bold>{selectedProduct.producto.codigo}
-          </Tag>
-
-          <Tag>
-            <Bold>Referencia :</Bold> {selectedProduct.producto.referencia || 'sin asignar'}
-          </Tag>
         <Tag>
-          <Bold>Precio:{"  "}</Bold>
+          <Bold>Nombre:</Bold>
+          {nombre}
+        </Tag>
+        <Tag style={{marginBottom: 4}}>
+          <Bold>:</Bold>
+          {selectedProduct.producto.codigo}
+        </Tag>
+
+        <Tag>
+          <Bold>Referencia :</Bold>{' '}
+          {selectedProduct.producto.referencia || 'sin asignar'}
+        </Tag>
+        <Tag>
+          <Bold>Precio:{'  '}</Bold>
           <Icon2
             style={{marginRight: 5}}
             name="dollar"
             size={12}
             color="#002E2C"
           />
-          {precio.current.toFixed(3)}
+          {accounting.formatMoney(precio.current, {
+                          symbol: '',
+                          thousand: '.',
+                          decimal: ',',
+                          precision: 2,
+                        })}
         </Tag>
         <Button
           labelStyle={{color: 'white'}}
@@ -219,17 +242,24 @@ const Producto = ({
         <Button
           style={{marginTop: 'auto', alignSelf: 'center'}}
           onPress={show}
-          color={colors["primary-font"]}
-          icon={() => <Icon3 size={50} color={colors["primary-font"]} name={'chevron-up-sharp'}></Icon3>}>
-         Mas Detalles {''}
+          color={colors['primary-font']}
+          icon={() => (
+            <Icon3
+              size={50}
+              color={colors['primary-font']}
+              name={'chevron-up-sharp'}></Icon3>
+          )}>
+          Mas Detalles {''}
         </Button>
       </Card>
-      <BottomSheet
-        ref={sheetRef}
-        snapPoints={[0, 550]}
-        borderRadius={10}
-        renderContent={Data}
-      />
+      {isOnView && (
+        <BottomSheet
+          ref={sheetRef}
+          snapPoints={[0, 550]}
+          borderRadius={10}
+          renderContent={Data}
+        />
+      )}
     </Container>
   );
 };

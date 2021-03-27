@@ -4,7 +4,8 @@ import {Dimensions} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Context from 'services/context';
 import {useContext} from 'react';
-import {Font} from "styles"
+import {Font} from 'styles';
+import {Button} from 'react-native-paper';
 const Container = styled.View`
   flex-direction: column;
   z-index: 8;
@@ -22,6 +23,7 @@ const Actions = styled.View`
 const IconButton = styled(Icon.Button)`
   background-color: ${(props) => (props.outlined ? 'white' : '#484aa3')};
 `;
+
 const Fecha = styled(Font)`
   color: white;
   font-size: 10px;
@@ -38,6 +40,7 @@ const NavActionButtons = ({
   back = false,
   outlined = false,
   relo,
+  disabled = false,
   ...props
 }: any) => {
   const {fecha} = useContext(Context);
@@ -69,14 +72,13 @@ const NavActionButtons = ({
           />
         )}
         <Fecha>{fecha} </Fecha>
-        {list && (
-          <IconButton
-            outlined={outlined}
-            onPress={toggle}
-            name="cart"
-            size={30}
-            color={outlined ? '#484aa3' : 'white'}
-          />
+        {(list && !disabled) && (
+          <Button
+          onPress={toggle}
+            icon={() => <Icon size={30} color={"white"} name="cart" />}
+            color={outlined ? '#484aa3' : 'white'}>
+            {' '}
+          </Button>
         )}
         {relo && (
           <IconButton

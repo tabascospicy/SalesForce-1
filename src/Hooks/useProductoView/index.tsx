@@ -6,9 +6,15 @@ import {Alert} from 'react-native';
 import reactotron from 'reactotron-react-native';
 import {StackScreenProps} from '@react-navigation/stack';
 const {customRequest, readAll} = DataBase();
-type ProductoViewProps = StackScreenProps<{}>;
+type ProductoViewProps = {
+  navigation: StackScreenProps<{}>;
+  precioProductoDolar: string;
+};
 
-const useProductoView = ({navigation}: ProductoViewProps) => {
+const useProductoView = ({
+  navigation,
+  precioProductoDolar,
+}: ProductoViewProps) => {
   const {
     selectedProduct,
     addProduct,
@@ -27,11 +33,11 @@ const useProductoView = ({navigation}: ProductoViewProps) => {
     marca: '',
     iva: 0,
   });
-  const [marca,setMarca] = useState("");
-  const [categoria,setCategoria] = useState("");
-  const [subcategoria,setSubcategoria]= useState("")
+  const [marca, setMarca] = useState('');
+  const [categoria, setCategoria] = useState('');
+  const [subcategoria, setSubcategoria] = useState('');
   const descuentoUi = useRef(0);
-  const precio_dolar = parseFloat(selectedProduct.producto.precio_dolar);
+  const precio_dolar = parseFloat(precioProductoDolar);
   const precio = useRef(
     precio_dolar - (descuento?.descuento / 100) * precio_dolar,
   );
@@ -52,13 +58,13 @@ const useProductoView = ({navigation}: ProductoViewProps) => {
         element.max === cant,
     );
     descuentoUi.current = oferta ? parseInt(oferta?.descuento as string) : 0;
-    const product = selectedProduct?.producto as Product;
+   // const product = selectedProduct?.producto as Product;
     const montoDescuento =
-      (descuentoUi.current / 100) * parseFloat(product.precio_dolar);
+      (descuentoUi.current / 100) * parseFloat(precioProductoDolar);
     monto.current =
-      parseFloat(product.precio_dolar) * parseInt(e === '' ? '0' : e) +
+      parseFloat(precioProductoDolar) * parseInt(e === '' ? '0' : e) +
       (detalles.iva / 100) *
-        parseFloat(product.precio_dolar) *
+        parseFloat(precioProductoDolar) *
         (e === '' ? '0' : e) -
       montoDescuento;
     setCantidad(e);
@@ -90,21 +96,21 @@ const useProductoView = ({navigation}: ProductoViewProps) => {
     const IvaDB = realm.objects('iva');
     const dBmarca = marcasDB.filtered(
       `id = ${selectedProduct.producto.adm_marcas_id}`,
-      );
-      const iv =
+    );
+    const iv =
       selectedProduct.producto.iva === 0
-      ? [0]
-      : IvaDB.filtered(`id = ${selectedProduct.producto.iva}`);
-      const dBsubcategoria = subcategoriasDB.filtered(
-        `id = ${selectedProduct.producto.adm_subgrupos_id}`,
-        );
-        const dBcategoria = categoriasDB.filtered(
-          `id = ${selectedProduct.producto.adm_grupos_id}`,
-          );
-          const parsed = Object.assign({},marca[0])
-         
+        ? [0]
+        : IvaDB.filtered(`id = ${selectedProduct.producto.iva}`);
+    const dBsubcategoria = subcategoriasDB.filtered(
+      `id = ${selectedProduct.producto.adm_subgrupos_id}`,
+    );
+    const dBcategoria = categoriasDB.filtered(
+      `id = ${selectedProduct.producto.adm_grupos_id}`,
+    );
+    const parsed = Object.assign({}, marca[0]);
+
     setMarca(dBmarca[0].nombre);
-    setCategoria(dBcategoria[0].nombre)
+    setCategoria(dBcategoria[0].nombre);
     setSubcategoria(dBsubcategoria[0].nombre);
     setDetalles({
       marca: marca[0].nombre,
@@ -158,8 +164,8 @@ const useProductoView = ({navigation}: ProductoViewProps) => {
     showDescuentos,
     descuentoUi,
     marca,
-categoria,
-subcategoria,
+    categoria,
+    subcategoria,
   };
 };
 

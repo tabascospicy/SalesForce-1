@@ -15,14 +15,14 @@ type ModalAgregarProps = {
   add:()=>void;
 }
 const ModalAgregar:FC<ModalAgregarProps> = ({visible,hideDialog,selectedProduct,precio,detalles,descuentoUi,monto,cantidad,handleChange,add}) => {
-  const {colors} = useContext(Context);
+  const {colors,descuento} = useContext(Context);
   return (
     <Portal>
     <Dialog visible={visible} onDismiss={hideDialog}>
       <Dialog.Title style={{color:colors["primary-font"]}}>{ selectedProduct && selectedProduct.producto.nombre}</Dialog.Title>
       <Dialog.Content>
         <Description  style={{color:colors["primary-font"]}}>
-          Precio : {precio.toFixed(3)}${'\n'}
+          Precio : {(precio).toFixed(3)}${'\n'}
         </Description>
         <Description style={{color:colors["primary-font"]}}>
          

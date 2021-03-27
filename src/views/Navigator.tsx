@@ -1,12 +1,8 @@
 import React, {useContext} from 'react';
-import SideMenu from 'components/Sidemenu';
 import {StyleSheet, Pressable, Dimensions} from 'react-native';
 import Clientes from './Home';
-import useGrowAnimation from 'Hooks/useGrowAnimation';
-import Animated from 'react-native-reanimated';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import Mensaje from 'components/Modal/Mensaje';
 import Producto from './Producto';
 import Empresa from './Empresa';
 import Context from 'services/context';
@@ -22,21 +18,7 @@ import Reload from './ReloadData';
 import styled from 'styled-components/native';
 import MinifiedList from './MinifiedList';
 import Sesion from './Sesion';
-import Cart from 'components/Cart/Cart';
-import reactotron from 'reactotron-react-native';
-import {TapGestureHandler} from 'react-native-gesture-handler';
-const Styles = StyleSheet.create({
-  viewsContainer: {
-    flex: 1,
-    position: 'absolute',
-    zIndex: 2,
-    backgroundColor: 'white',
-    top: 0,
-    height: '100%',
-    width: '100%',
-    //  alignItems:"center",
-  },
-});
+
 export const Toggle = styled(Pressable)`
   height: 100%;
   background-color: black;
@@ -44,16 +26,7 @@ export const Toggle = styled(Pressable)`
   width: 20%;
 `;
 const {height} = Dimensions.get('window');
-const Regresar = styled.View`
-  z-index: ${(props) => (props.isOpen ? 8 : 1)};
-  height: 47%;
-  width: 35%;
-  position: absolute;
-  right: 0px;
-  top: ${height / 4 + 20}px;
-  background-color: white;
-  opacity: 0.1;
-`;
+
 export const cart = StyleSheet.create({
   cart: {
     position: 'absolute',
@@ -65,31 +38,23 @@ export const cart = StyleSheet.create({
     elevation: 2,
   },
 });
-
+interface NavigatorProps {
+  productos:Product[],
+  clientes:Cliente[],
+  pressed:()=>void,
+  isOpen:boolean,
+  startAll:()=>void
+}
 const Stack = createStackNavigator<RouteParamsList>();
-const index = ({productos, clientes, startAll}: any) => {
+const Navigator:React.FC<NavigatorProps> = ({productos, clientes, startAll,pressed,isOpen}) => {
   const routeNameRef = React.useRef('');
   const previousRouteName = React.useRef('');
-  const MenuTapRef = React.useRef(null);
-  const {pressed, transform, isOpen} = useGrowAnimation();
   const {
     handleSelectedView,
     SesionState,
     VerificarStorage,
     empresa,
-    showQr,
-    transformCarrito,
-    toggleCarrito,
   } = useContext(Context);
-  const CloseMenu = () => {
-    return (
-      <Regresar isOpen={isOpen}>
-        <Pressable
-          style={{flex: 1}}
-          onPress={() => pressed('menu')}></Pressable>
-      </Regresar>
-    );
-  };
   const NavigationStateHandler = () =>{
     previousRouteName.current = routeNameRef.current;
     const currentRouteName = navigationRef.current.getCurrentRoute()
@@ -116,19 +81,6 @@ const index = ({productos, clientes, startAll}: any) => {
   }
   
   return (
-    <>
-      <SideMenu pressed={pressed} />
-      <CloseMenu />
-      <Animated.View style={{...Styles.viewsContainer, transform}}>
-        <Animated.View style={{...cart.cart, transform: transformCarrito}}>
-          <Toggle onPress={toggleCarrito} />
-          <Cart
-            pressed={toggleCarrito}
-            navigation={navigationRef.current}
-            showQr={showQr}
-          />
-        </Animated.View>
-        <Mensaje />
         <NavigationContainer
           onReady={CheckStorageAtInit}
           ref={navigationRef}
@@ -198,9 +150,7 @@ const index = ({productos, clientes, startAll}: any) => {
             )}
           </Stack.Navigator>
         </NavigationContainer>
-      </Animated.View>
-    </>
   );
 };
 
-export default index;
+export default Navigator;

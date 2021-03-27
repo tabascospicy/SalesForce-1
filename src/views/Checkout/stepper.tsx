@@ -7,6 +7,7 @@ import Fetch from 'services/fecth';
 import Database from 'services/realm';
 import moment from 'moment';
 import {Caption, DataTable} from 'react-native-paper';
+import accounting from "accounting";
 import { Paragraph, Dialog, Portal} from 'react-native-paper';
 import reactotron from 'reactotron-react-native';
 import useTasa from 'Hooks/Tasa/useTasa';
@@ -320,7 +321,7 @@ const Checkout = (props: any) => {
           <DataTable>
             <DataTable.Header>
               <DataTable.Title style={{color:colors["primary-font"]}} >Nombre</DataTable.Title>
-              <DataTable.Title style={{color:colors["primary-font"]}} numeric>Precio</DataTable.Title>
+              <DataTable.Title style={{color:colors["primary-font"]}} numeric>Precio $/Cantidad</DataTable.Title>
               <DataTable.Title style={{color:colors["primary-font"]}} numeric>Descuento</DataTable.Title>
             </DataTable.Header>
             {carrito && carrito.map((element:Product, key: number) => {
@@ -329,7 +330,12 @@ const Checkout = (props: any) => {
                   <DataTable.Row key={key}>
                     <DataTable.Cell style={{color:colors["primary-font"]}}>{element.nombre}</DataTable.Cell>
                     <DataTable.Cell style={{color:colors["primary-font"]}} numeric>
-                      {element.precio_dolar} x {element.cantidad}
+                      {accounting.formatMoney(element.precio_dolar , {
+                          symbol: '',
+                          thousand: '.',
+                          decimal: ',',
+                          precision: 2,
+                        })} x {element.cantidad}
                     </DataTable.Cell>
                     <DataTable.Cell style={{color:colors["primary-font"]}} numeric>
                       {element.oferta}%

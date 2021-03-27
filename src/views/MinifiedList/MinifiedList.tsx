@@ -11,6 +11,8 @@ import useCartAnimation from 'Hooks/useCartAnimation';
 import Cart from 'components/Cart';
 import QRCode from 'react-native-qrcode-generator';
 import {Paragraph} from 'react-native-paper';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/native';
 
 const GlobalContainer = styled.View`
   flex-grow: 1;
@@ -63,14 +65,16 @@ const CancelTxt = styled.Text`
 interface productList {
   empresa: Empresa;
   dispatch: any;
-  onPress: (location?: string) => void;
+  navigation:StackNavigationProp<RouteParamsList,"MinifiedList">;
+  route:RouteProp<RouteParamsList,"MinifiedList">;
 }
 const opciones: FilterOptions = {
   grupo: 'adm_grupos_id',
   subgrupo: 'adm_subgrupos_id',
   marcas: 'adm_marcas_id',
 };
-const MinifiedList = (props: any) => {
+const MinifiedList:React.FC<productList> = (props) => {
+  const {disabled} = props.route.params;
   const {productos, filter,qr,productosQr,showQr,pressed} = useContext(Context);
   const [minified, setMinified] = useState<Product[]>([]);
   const productsCopy = useRef(productos);
@@ -109,14 +113,14 @@ const MinifiedList = (props: any) => {
       </Modal>
       <BlueBackground
         style={{borderBottomEndRadius: 20, borderBottomStartRadius: 20}}>
-        <ActionButtons toggle={pressed} list menu={false} back {...props} />
+        <ActionButtons disabled={disabled} toggle={pressed} list menu={false} back {...props} />
         <Productos>
           {filter.display}:{filter.nombre}
         </Productos>
         <SearchInput buscar={Buscar} />
       </BlueBackground>
       {minified.length != 0 ? (
-        <Producto.List {...props} list={minified} title={'Productos'} />
+        <Producto.List disabled={disabled} {...props} list={minified} title={'Productos'} />
       ) : (
         <Paragraph>No hay Productos en Esta seleccion</Paragraph>
       )}

@@ -18,7 +18,7 @@ const useGlobalState = (): UiContext => {
     nombre: '',
   });
   const ExtraFunction = useRef<VoidFunction>(() => {});
-  const {pressed, transform} = useCartAnimation();
+  const {pressed, transform,isCartOpen} = useCartAnimation();
   const [selectedView, setSelectedView] = useState('Empresa');
   const [selectedFactura, setSelectedFactura] = useState<Factura>();
   const [ButtonActionFactura, setButtonActionFactura] = useState({action:null});
@@ -98,9 +98,12 @@ const useGlobalState = (): UiContext => {
   };
   const total = useMemo(() => {
     let total = carrito.reduce((acum: number, current: Product) => {
+     const precio = parseFloat(current.precio_dolar);
+     const descuento = current.oferta;
       return (acum +=
-        parseFloat(current.precio_dolar) * (current.cantidad || 0));
+        (precio - precio * descuento/100) * (current.cantidad || 0));
     }, 0);
+
     return descuento
       ? (total = total - (parseInt(descuento.descuento) / 100) * total)
       : 0;
@@ -115,12 +118,16 @@ const useGlobalState = (): UiContext => {
       `adm_conceptos_id = ${producto.id}`,
     );
     if (!Ofertas[0]) return 0;
-    const oferta = Ofertas[0] as Oferta;
-    return (oferta.min < cantidad && cantidad < oferta.max) ||
-      oferta.min === cantidad ||
-      oferta.max === cantidad
-      ? parseInt(oferta.descuento)
+    const oferta = Ofertas as Oferta[];
+    
+      const Concuerda = oferta.reduce((prev,element,i)=>{
+      return prev = (element.min < cantidad && cantidad < element.max) ||
+      element.min === cantidad ||
+      element.max === cantidad
+      ? parseInt(element.descuento)
       : 0;
+    },0);
+    return Concuerda
   };
 
   const resetCarrito = () => {
@@ -160,7 +167,6 @@ const useGlobalState = (): UiContext => {
           Object.assign(producto, {cantidad, impuesto}),
         ]);
         reactotron.log(producto,oferta);
-        setPrecios([...precios,producto.precio_dolar + producto.precio_dolar * oferta]);
       } else {
 
         setCarrito(
@@ -219,6 +225,7 @@ const useGlobalState = (): UiContext => {
     pressed,
     handleFilter,
     transformCarrito: transform,
+    isCartOpen,
     productosQr,
     toggleCarrito: pressed,
     precios,

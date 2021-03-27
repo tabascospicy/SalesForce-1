@@ -1,12 +1,14 @@
 import React, {useContext, useEffect, useMemo, useRef, useState} from 'react';
 import styled from 'styled-components/native';
-import {Pressable, StyleSheet,Dimensions} from 'react-native';
+import {Pressable, StyleSheet,Dimensions, InteractionManager} from 'react-native';
 import Context from 'services/context';
 import Image from './img';
 import * as RootNavigation from 'components/RootNavigationRef/RootNavigationRef';
 import { StackNavigationProp } from '@react-navigation/stack';
 import {Font,} from "styles";
 import { shadowSetting } from 'theme';
+import accounting from "accounting";
+import reactotron from 'reactotron-react-native';
 type ProfileScreenNavigationProp = StackNavigationProp<{}>;
 
 const Product = styled(Pressable)`
@@ -106,13 +108,11 @@ const ProductoCard = ({
   precio.current = precio_Dolar  - (PercentageDescuento * precio_Dolar );
 
   const nav = () => {
-    if (!disabled) {
-      handleSelectedProduct && handleSelectedProduct({producto: producto.item, shouldAdd: true});
-      RootNavigation.navigate('Producto');
-    } else {
-      handleSelectedProduct && handleSelectedProduct({producto: producto.item, shouldAdd: false});
-      RootNavigation.navigate('Producto');
-    }
+      RootNavigation.navigate('Producto',{id:producto.item.id,imagen:producto.item.imagen,nombre:producto.item.nombre,precioProductoDolar:producto.item.precio_dolar});
+      reactotron.log(producto.item,"producto");
+      InteractionManager.runAfterInteractions(()=>{
+       handleSelectedProduct && handleSelectedProduct({producto: producto.item, shouldAdd:!disabled ? true :false}); 
+      });
   };
 
   useEffect(() => {
@@ -143,16 +143,19 @@ const ProductoCard = ({
         <Des>{det.marca}</Des>
         <Des>{det.categoria}</Des>
       </Description>
-      {disabled ? (
-        <></>
-      ) : (
+      
         <Position>
-          <Price>{precio.current.toFixed(2)}$</Price>
+          <Price>{accounting.formatMoney(precio.current.toFixed(2), {
+                          symbol: '',
+                          thousand: '.',
+                          decimal: ',',
+                          precision: 2,
+                        })}$</Price>
           <Plus >
             <PlusIcon style={{backgroundColor:colors.secondary}}>+</PlusIcon>
           </Plus>
         </Position>
-      )}
+    
     </Product>
   );
 };

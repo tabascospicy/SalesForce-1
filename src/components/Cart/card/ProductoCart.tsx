@@ -1,4 +1,4 @@
-import React, {useContext, useRef, useState} from 'react';
+import React, {useContext, useRef, useState,useMemo} from 'react';
 import {Button, Caption} from 'react-native-paper';
 import Context from 'services/context';
 import {useCallback} from 'react';
@@ -27,7 +27,10 @@ interface ProductoPros {
 const ProductoCard = ({disabled = false, producto, id = 0}: ProductoPros) => {
   const [text, setText] = useState(`${producto.cantidad}`);
   const input = useRef();
-  const {EditCantidad, deleteProduct, colors, ofertas} = useContext(Context);
+  const {EditCantidad, deleteProduct, colors, descuento} = useContext(Context);
+  const PercentageDescuento = useMemo(()=>parseInt(descuento?.descuento || "0")/100,[]);
+  const precio_dolar = useMemo(()=>parseFloat(producto.precio_dolar),[])
+  const precio = useMemo(()=>(  precio_dolar - (precio_dolar * (producto.oferta/100))   - (PercentageDescuento * precio_dolar)  ),[]);
   let timer = useRef<any>();
   const del = useCallback(() => {
     deleteProduct && deleteProduct(producto);
@@ -63,7 +66,7 @@ const ProductoCard = ({disabled = false, producto, id = 0}: ProductoPros) => {
       <Image W="40px" H={'60px'} producto={producto} />
       <DescriptionContent style={{flex: 1}}>
         <Description style={{color:colors["primary-font"]}} >{producto.nombre}</Description>
-        <Description style={{color:colors["primary-font"]}} >Precio:{producto.precio_dolar}</Description>
+        <Description style={{color:colors["primary-font"]}} >Precio:{precio.toFixed(2)}</Description>
         {producto.oferta ? <Caption>-{producto.oferta}%</Caption> : <></>}
         <Button
           mode="contained"

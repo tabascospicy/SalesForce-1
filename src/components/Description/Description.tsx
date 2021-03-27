@@ -1,7 +1,6 @@
 import React from 'react';
-import Icon from 'react-native-vector-icons/Ionicons';
 import CustomImage from 'components/Image';
-import {Container,Direction,Name,Portada,shadow} from './style';
+import {Container,Name,Portada,shadow} from './style';
 
 interface DescriptionProps {
   cliente : Cliente | Empresa

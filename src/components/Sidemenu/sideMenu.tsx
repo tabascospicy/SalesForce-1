@@ -82,7 +82,7 @@ const Position = styled(Font)`
 const SideMenu = (props:any) => {
   const {usuarioLog,selectedView,cerrarSesion} = useContext(Context);
   const navigate =  (direction : string) =>{
-    RootNavigation.navigate(direction,{});
+    RootNavigation.navigate(direction,{disabled:true});
     props.pressed();
   }
   const handleCerrarSesion = () =>{
@@ -106,6 +106,10 @@ const SideMenu = (props:any) => {
         <Option isSelected={"Pedidos" === selectedView ? false :  true} onPress={()=>navigate("Pedidos")}>
           <Icon name="paper-plane" size={30} color="white" />
           <OptionText>Pedidos</OptionText>
+        </Option>
+        <Option isSelected={"Agregar" === selectedView ? false :  true} onPress={()=>navigate("Agregar")}>
+          <Icon name="newspaper" size={30} color="white" />
+          <OptionText>Productos</OptionText>
         </Option>
       </OptionsView>
       <AccountSettings>

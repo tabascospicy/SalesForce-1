@@ -4,7 +4,7 @@ import {Dimensions} from 'react-native';
 
 
 const useGrowAnimation = () => {
-  const [Open] = useState(new Value(0));
+  const Open = useRef(new Value(0)).current;
   const phase = useRef(false);
   const [isOpen, setOpen] = useState(false);
   const startAnimation = () => {
