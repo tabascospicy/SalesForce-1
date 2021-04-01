@@ -57,7 +57,7 @@ const ClientData:React.FC<Props> = ({handleDescuento,setPayments,payments,client
     <Button labelStyle={{color:"white"}}  disabled={isCreditNotAvaible || (cliente?.limite_credito===null)} onPress={nav} mode={'contained'} color={colors.terceary}>
       Generar Pedido
     </Button>
-   {isCreditNotAvaible && <Caption>Este Usuario no posee credito disponible</Caption>} 
+   {(isCreditNotAvaible || (cliente?.limite_credito===null)) && <Caption>Este Usuario no posee credito disponible</Caption>} 
   </Card>
   </BoxShadow>
   );

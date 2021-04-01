@@ -100,13 +100,16 @@ const Checkout = (props: any) => {
   const crearPago = async () => {
     
     const detalles = setDetalles(carrito || []);
+    const fecha = moment().subtract(10, 'days').calendar();
+    const hora = moment().format("HH:MM:SS");
+    const now = [fecha,hora].join(" ");
     const data: PedidosToServer = {
       usuario_id: usuarioLog?.id || 0,
       adm_clientes_id: cliente?.id || 0,
       adm_empresa_id: 1,
       imagen: '',
-      fecha_at: new Date().toISOString().substr(0, 10),
-      fecha_in: new Date().toISOString().substr(0, 10),
+      fecha_at: now,
+      fecha_in: ""
     };
     const dataToLocalDb: IPedidosConDetalles = {
       usuario_id: usuarioLog?.id as number,
@@ -115,10 +118,10 @@ const Checkout = (props: any) => {
       rest_estatus_id:3,
       imagen: '',
       detalles: setDetalles(carrito, true),
-      fecha: moment(new Date()).format('dddd, MMMM Do, h:mm:ss a'),
+      fecha: now,
       total: total as number,
-      fecha_at: new Date().toISOString().substr(0, 10),
-      fecha_in: new Date().toISOString().substr(0, 10),
+      fecha_at: now,
+      fecha_in: now,
     };
       const state: boolean = isNetworkAvailable ? await isNetworkAvailable() : false;
      try {
@@ -137,7 +140,7 @@ const Checkout = (props: any) => {
           },
           'realizados',
         );
-        setMessage('Su pedido ha sido realizado existosamente sera redirigido en breve');
+        setMessage('Su pedido ha sido realizado exitosamente sera redirigido en breve');
         setTimeout(() => {
           regresar();
         }, 5000);
@@ -147,7 +150,7 @@ const Checkout = (props: any) => {
           data1: JSON.stringify(detalles),
           total: total || 0,
           show: dataToLocalDb,
-          fecha: moment(new Date()).format('dddd, MMMM Do, h:mm:ss a'),
+          fecha: now,
         };
         savePendiente(PendienteToDb);
         setPendiente(true);
@@ -159,7 +162,7 @@ const Checkout = (props: any) => {
           data1: JSON.stringify(detalles),
           total: total || 0,
           show: dataToLocalDb,
-          fecha: moment(new Date()).format('dddd, MMMM Do, h:mm:ss a'),
+          fecha: now,
       };
       savePendiente(PendienteToDb);
       setPendiente(true);
