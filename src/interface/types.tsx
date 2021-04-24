@@ -39,6 +39,7 @@ type Oferta = {
   adm_conceptos_id: number;
   status: number;
 };
+type PropertieDescription = {nombre:string}
 type Factura = {
   id: number;
   numero_factura: string;

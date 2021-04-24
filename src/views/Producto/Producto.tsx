@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {StyleSheet, Pressable} from 'react-native';
 import ActionButtons from 'components/NavActionButtons';
 import useProductoView from 'Hooks/useProductoView';
@@ -10,16 +10,12 @@ import {
   Card,
   Container,
   BlueBackground,
-  Description,
   Line,
   LineText,
   LineTitle,
-  Price,
   Separator,
   Tag,
-  Tags,
   Title,
-  TopContent,
   TopElements,
   Card2,
   Bold,
@@ -33,9 +29,10 @@ import BottomSheet from 'reanimated-bottom-sheet';
 import Icon3 from 'react-native-vector-icons/Ionicons';
 import reactotron from 'reactotron-react-native';
 import useOnview from 'Hooks/onView';
+//@ts-ignore
 import accounting from "accounting";
 
-type ProfileScreenNavigationProp = StackNavigationProp<{}>;
+type ProfileScreenNavigationProp = StackNavigationProp<RouteParamsList,"Producto">;
 
 const style = StyleSheet.create({
   shadow: {
@@ -91,7 +88,7 @@ const Producto = ({
     niveles,
     showDescuentos,
     descuentoUi,
-  } = useProductoView({navigation, disabled, dispatch,precioProductoDolar, ...props});
+  } = useProductoView({navigation, precioProductoDolar, ...props});
   
   const {isOnView} = useOnview({navigation});
   const sheetRef = React.useRef(null);

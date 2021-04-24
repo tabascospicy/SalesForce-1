@@ -23,8 +23,7 @@ import styled from 'styled-components/native';
 import MinifiedList from './MinifiedList';
 import Sesion from './Sesion';
 import Cart from 'components/Cart/Cart';
-import reactotron from 'reactotron-react-native';
-import {TapGestureHandler} from 'react-native-gesture-handler';
+
 const Styles = StyleSheet.create({
   viewsContainer: {
     flex: 1,

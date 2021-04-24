@@ -53,17 +53,17 @@ const Home = ({pressed, visual, navigation, ...props}: props) => {
   const [list, setClientes] = useState(clientes);
   const [ubicaciones, setUbicaciones] = useState<DropDownItem[]>([def]);
   const [filterZona, setFilterZona] = useState(0);
-  const timer = useRef(null);
+  const timer = useRef(0);
   const {isOnView} = useOnView({navigation});
   const {ScrollEvent} = useScrollAnimation();
   useEffect(() => {
     readUbicaciones();
     return () => {
-      timer.current && clearTimeout(timer.current);
+      timer?.current && clearTimeout(timer.current || 0);
     };
   }, []);
   useEffect(() => {
-    if (!calling.loading) {
+    if (!calling?.loading) {
       clientes && setClientes([...clientes]);
     }
   }, [clientes]);
@@ -82,7 +82,7 @@ const Home = ({pressed, visual, navigation, ...props}: props) => {
             : filterZona === element.adm_zonas_id
           : filterZona === 0;
       });
-    setClientes((prev) => [...Filtrados] || [def]);
+    setClientes((prev) => [...(Filtrados || [])] || [def]);
   };
   const readUbicaciones = async () => {
     try {
@@ -117,27 +117,10 @@ const Home = ({pressed, visual, navigation, ...props}: props) => {
   const onScroll = ScrollEvent;
   return (
     <View style={{position: 'relative'}}>
-      <BlueBackground color={colors?.primary} />
+      <BlueBackground color={colors?.primary || ""} />
       <Navbar navigation={navigation} name="Home" pressed={pressed}></Navbar>
       <Animated.View style={{flexDirection: 'row'}}>
-        <SearchInput width={'50%'} buscar={Buscar} />
-        <AnimatedDropwDown
-          defaultValue={filterZona}
-          activeLabelStyle={{
-            color: colors['terceary-font'],
-          }}
-          selectedLabelStyle={{
-            color: "black",
-            opacity:0.2
-          }}
-          arrowColor={colors["terceary-font"]}
-          containerStyle={{height: 40, width: '40%', alignSelf: 'center'}}
-          onChangeItem={handleUbicacionSelect}
-          items={ubicaciones}
-          itemStyle={{
-            justifyContent: 'flex-start',
-          }}
-        />
+        <SearchInput  buscar={Buscar} />
       </Animated.View>
       {isOnView && (
         <AnimatedList

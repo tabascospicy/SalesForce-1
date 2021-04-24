@@ -1,13 +1,11 @@
-import React, {useContext, useEffect, useRef, useState} from 'react';
+import React, {useContext, useEffect, useMemo, useRef, useState} from 'react';
 import Context from 'services/context';
 import DataBase from 'services/realm';
-import useCartAnimation from 'Hooks/useCartAnimation';
 import {Alert} from 'react-native';
-import reactotron from 'reactotron-react-native';
-import {StackScreenProps} from '@react-navigation/stack';
+import {StackNavigationProp} from '@react-navigation/stack';
 const {customRequest, readAll} = DataBase();
 type ProductoViewProps = {
-  navigation: StackScreenProps<{}>;
+  navigation: StackNavigationProp<RouteParamsList>;
   precioProductoDolar: string;
 };
 
@@ -22,7 +20,6 @@ const useProductoView = ({
     descuento,
     qr,
     showQr,
-    transform,
     toggleCarrito,
   } = useContext(Context);
   const [Image, setImage] = useState<boolean>(false);
@@ -38,34 +35,45 @@ const useProductoView = ({
   const [subcategoria, setSubcategoria] = useState('');
   const descuentoUi = useRef(0);
   const precio_dolar = parseFloat(precioProductoDolar);
-  const precio = useRef(
-    precio_dolar - (descuento?.descuento / 100) * precio_dolar,
-  );
+  const descuentoValue = descuento ? parseInt(descuento?.descuento) : 100;
+  const productoCantidad = selectedProduct
+    ? selectedProduct.producto.cantidad
+    : 0;
+  const precio = useRef(precio_dolar - (descuentoValue / 100) * precio_dolar);
 
-  const [cantidad, setCantidad] = useState<string>(
-    `${selectedProduct.producto.cantidad || ''}`,
-  );
+  const [cantidad, setCantidad] = useState<string>(`${productoCantidad || ''}`);
   const [visible, setVisible] = useState(false);
   const [niveles, setNiveles] = useState<Oferta[]>([]);
   const productosQr = useRef([]);
   const monto = useRef(0);
   const handleChange = (e: string) => {
     const cant = parseInt(e);
-    const oferta = niveles.find(
+    /*const oferta = niveles.find(
       (element) =>
         (element.min < cant && cant < element.max) ||
         element.min === cant ||
         element.max === cant,
-    );
-    descuentoUi.current = oferta ? parseInt(oferta?.descuento as string) : 0;
-   // const product = selectedProduct?.producto as Product;
+    );*/
+    const init:Oferta = { id: 0,
+      min: 0,
+      max: 0,
+      descuento: "",
+      adm_conceptos_id: 0,
+      status: 0}
+
+    const oferta = niveles.reduce((acum,current)=>{
+      return current.min <= cant && acum.min < current.min ? current :acum;
+    },init)
+    
+
+    descuentoUi.current = oferta.min !=init.min ? parseInt(oferta?.descuento as string) : 0;
     const montoDescuento =
       (descuentoUi.current / 100) * parseFloat(precioProductoDolar);
     monto.current =
       parseFloat(precioProductoDolar) * parseInt(e === '' ? '0' : e) +
       (detalles.iva / 100) *
         parseFloat(precioProductoDolar) *
-        (e === '' ? '0' : e) -
+        (e === '' ? 0 : cant) -
       montoDescuento;
     setCantidad(e);
   };
@@ -75,7 +83,7 @@ const useProductoView = ({
       navigation.goBack();
       requestAnimationFrame(() => {
         const cant = parseInt(cantidad);
-        addProduct && addProduct(selectedProduct.producto, cant, detalles.iva);
+        addProduct && addProduct(selectedProduct?.producto as Product, cant,);
       });
     } else {
       Alert.alert('cantidad invalida');
@@ -89,32 +97,41 @@ const useProductoView = ({
   const showImage = () => setImage(true);
   const showDescuentos = () => setDescuentosVisible(true);
   const hideImage = () => setImage(false);
+
   const AskDetalles = (realm: Realm) => {
-    const marcasDB = realm.objects('marcas');
-    const subcategoriasDB = realm.objects('subgrupo');
-    const categoriasDB = realm.objects('grupo');
-    const IvaDB = realm.objects('iva');
+    const marcasDB = realm.objects('marcas') as unknown as PropertieDescription[];
+    const subcategoriasDB = realm.objects('subgrupo') as unknown as PropertieDescription[];
+    const categoriasDB = realm.objects('grupo') as unknown as PropertieDescription[];
+    const IvaDB = realm.objects('iva') as unknown as PropertieDescription[];
+    //@ts-ignore
     const dBmarca = marcasDB.filtered(
-      `id = ${selectedProduct.producto.adm_marcas_id}`,
-    );
+      `id = ${selectedProduct?.producto.adm_marcas_id || 0 }`,
+    ) as unknown as PropertieDescription[];
     const iv =
-      selectedProduct.producto.iva === 0
+      selectedProduct?.producto.iva === 0
         ? [0]
-        : IvaDB.filtered(`id = ${selectedProduct.producto.iva}`);
+        //@ts-ignore
+        : IvaDB.filtered(`id = ${selectedProduct?.producto.iva}`);
+        //@ts-ignore
     const dBsubcategoria = subcategoriasDB.filtered(
-      `id = ${selectedProduct.producto.adm_subgrupos_id}`,
+      `id = ${selectedProduct?.producto.adm_subgrupos_id}`,
     );
+    //@ts-ignore
     const dBcategoria = categoriasDB.filtered(
-      `id = ${selectedProduct.producto.adm_grupos_id}`,
+      `id = ${selectedProduct?.producto.adm_grupos_id}`,
     );
     const parsed = Object.assign({}, marca[0]);
 
     setMarca(dBmarca[0].nombre);
     setCategoria(dBcategoria[0].nombre);
     setSubcategoria(dBsubcategoria[0].nombre);
+    //@ts-ignore CTL Check this later 
     setDetalles({
+      //@ts-ignore
       marca: marca[0].nombre,
+      //@ts-ignore
       subcategoria: subcategoria[0].nombre,
+      //@ts-ignore
       categoria: categoria[0].nombre,
       iva: parseInt(iv[0].porcentaje),
     });
@@ -133,7 +150,7 @@ const useProductoView = ({
     readOfertas();
   }, []);
   useEffect(() => {
-    precio.current = precio_dolar - (descuento?.descuento / 100) * precio_dolar;
+    precio.current = precio_dolar - (descuentoValue / 100) * precio_dolar;
   }, [descuento]);
 
   return {
@@ -148,7 +165,6 @@ const useProductoView = ({
     addProduct,
     colors,
     toggleCarrito,
-    transform,
     descuento,
     detalles,
     qr,
