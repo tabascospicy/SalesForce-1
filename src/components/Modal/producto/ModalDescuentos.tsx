@@ -8,9 +8,10 @@ type ModalDescuentosProps = {
   hideDescuentos:()=>void,
   niveles:Oferta[]
 }
-const Empty = () =>{
-  return
-}
+
+
+
+
 const ModalDescuentos = ({descuentosVisible,hideDescuentos,niveles}:ModalDescuentosProps) => {
   return (
     <Portal>
@@ -20,14 +21,12 @@ const ModalDescuentos = ({descuentosVisible,hideDescuentos,niveles}:ModalDescuen
       <DataTable>
         <DataTable.Header>
           <DataTable.Title >minimo</DataTable.Title>
-          <DataTable.Title >maximo</DataTable.Title>
           <DataTable.Title numeric>Descuento</DataTable.Title>
         </DataTable.Header>
         {niveles ? niveles.map((element,i)=>{
           return (
             <DataTable.Row key={i}>
                 <DataTable.Cell >{element.min}</DataTable.Cell>
-                <DataTable.Cell >{element.max}</DataTable.Cell>
                 <DataTable.Cell numeric>{element.descuento}%</DataTable.Cell>
             </DataTable.Row>)
         }) : <Text>no hay descuentos para este producto</Text>}

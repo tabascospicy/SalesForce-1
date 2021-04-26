@@ -31,6 +31,7 @@ import reactotron from 'reactotron-react-native';
 import useOnview from 'Hooks/onView';
 //@ts-ignore
 import accounting from "accounting";
+import { RouteProp } from '@react-navigation/native';
 
 type ProfileScreenNavigationProp = StackNavigationProp<RouteParamsList,"Producto">;
 
@@ -50,6 +51,7 @@ interface ProductoProps {
   disabled: boolean;
   dispatch: any;
   navigation: ProfileScreenNavigationProp;
+  route:RouteProp<RouteParamsList,"Producto">
 }
 
 const Producto = ({
@@ -59,7 +61,7 @@ const Producto = ({
   route,
   ...props
 }: ProductoProps) => {
-  const {id,imagen,nombre,precioProductoDolar} = route.params;
+  const {id,imagen,nombre,precioProductoDolar} = route.params as any;
   const {
     add,
     showQr,
@@ -76,9 +78,9 @@ const Producto = ({
     precio,
     monto,
     showImage,
-    isOpen,
     hideImage,
     Image,
+    onInit,
     cantidad,
     descuentosVisible,
     marca,
@@ -90,10 +92,11 @@ const Producto = ({
     descuentoUi,
   } = useProductoView({navigation, precioProductoDolar, ...props});
   
-  const {isOnView} = useOnview({navigation});
-  const sheetRef = React.useRef(null);
+  const {isOnView} = useOnview({navigation,onInit});
+  const sheetRef = React.useRef();
   const show = () => {
-    sheetRef.current.snapTo(550);
+    //@ts-ignore
+    sheetRef.current?.snapTo(550);
   };
   const Data = () => {
     return (
@@ -105,7 +108,7 @@ const Producto = ({
         <Line>
           <LineTitle>Descripcion:</LineTitle>
           <LineText>
-            {selectedProduct.producto?.descripcion || 'por asignar'}
+            {selectedProduct?.producto?.descripcion || 'por asignar'}
           </LineText>
         </Line>
         <Separator />
@@ -127,13 +130,13 @@ const Producto = ({
         <Separator />
         <Line>
           <LineTitle>Uso:</LineTitle>
-          <LineText>{selectedProduct.producto?.uso || 'por asignar'}</LineText>
+          <LineText>{selectedProduct?.producto?.uso || 'por asignar'}</LineText>
         </Line>
         <Separator />
         <Line>
           <LineTitle>Presentacion:</LineTitle>
           <LineText>
-            {selectedProduct.producto?.presentacion || 'por asignar'}
+            {selectedProduct?.producto?.presentacion || 'por asignar'}
           </LineText>
         </Line>
         <Separator />
@@ -141,10 +144,10 @@ const Producto = ({
           <LineTitle>Empaque:</LineTitle>
 
           <LineText>
-            {selectedProduct.producto?.empaque || 'por asignar'}
+            {selectedProduct?.producto?.empaque || 'por asignar'}
           </LineText>
         </Line>
-        {!isOpen && selectedProduct.shouldAdd && (
+        { selectedProduct?.shouldAdd && (
           <Button
             onPress={showDialog}
             mode={'contained'}
@@ -154,7 +157,7 @@ const Producto = ({
               width: '100%',
             }}
             contentStyle={{zIndex: 3}}
-            color={colors.ButtonStrong}>
+            color={colors?.ButtonStrong}>
             Agregar
           </Button>
         )}
@@ -165,6 +168,7 @@ const Producto = ({
     <Container>
       {isOnView && (
         <>
+        {console.log("a ver")}
           <ModalDescuentos {...{descuentosVisible, hideDescuentos, niveles}} />
           <ModalAgregar
             descuentoUi={descuentoUi.current}
@@ -181,14 +185,14 @@ const Producto = ({
             }}
           />
           <ModalImagen {...{hideImage, selectedProduct, Image}} />
-          <ModalQr productosQr={productosQr.current} {...{qr, showQr}} />
+          <ModalQr productosQr={productosQr.current as unknown as string} {...{qr, showQr}} />
         </>
       )}
 
       <BlueBackground />
       <ActionButtons
         toggle={toggleCarrito}
-        list={selectedProduct.shouldAdd}
+        list={selectedProduct?.shouldAdd}
         navigation={navigation}
         menu={false}
         back
@@ -205,13 +209,13 @@ const Producto = ({
           {nombre}
         </Tag>
         <Tag style={{marginBottom: 4}}>
-          <Bold>:</Bold>
-          {selectedProduct.producto.codigo}
+          <Bold>Codigo:</Bold>
+          {selectedProduct?.producto.codigo}
         </Tag>
 
         <Tag>
           <Bold>Referencia :</Bold>{' '}
-          {selectedProduct.producto.referencia || 'sin asignar'}
+          {selectedProduct?.producto.referencia || 'sin asignar'}
         </Tag>
         <Tag>
           <Bold>Precio:{'  '}</Bold>

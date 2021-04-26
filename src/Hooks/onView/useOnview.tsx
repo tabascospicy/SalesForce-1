@@ -4,7 +4,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 
 type voidTemplate = VoidFunction | null;
 
-type ProfileScreenNavigationProp = StackNavigationProp<{}>;
+type ProfileScreenNavigationProp = StackNavigationProp<RouteParamsList>;
 type FunctionsParameters = {
   onInit?: voidTemplate;
   callback?: voidTemplate;

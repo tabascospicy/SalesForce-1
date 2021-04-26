@@ -102,14 +102,17 @@ const Checkout = (props: any) => {
     const detalles = setDetalles(carrito || []);
     const fecha = moment().subtract(10, 'days').calendar();
     const hora = moment().format("HH:MM:SS");
-    const now = [fecha,hora].join(" ");
+    const hr = hora.split(":");
+     hr[2]="00";
+     const fch = fecha.split("/")
+    const now = [[fch[2],fch[0],fch[1]].join("-"),hr.join(":")].join(" ");
     const data: PedidosToServer = {
       usuario_id: usuarioLog?.id || 0,
       adm_clientes_id: cliente?.id || 0,
       adm_empresa_id: 1,
       imagen: '',
       fecha_at: now,
-      fecha_in: ""
+      fecha_in: now
     };
     const dataToLocalDb: IPedidosConDetalles = {
       usuario_id: usuarioLog?.id as number,
@@ -131,6 +134,7 @@ const Checkout = (props: any) => {
         const enviar = JSON.stringify({data, data1:setDetallesServer(carrito)});
         const response = await Fetch(`pedidos`, {method:"POST",tenant:getTenant ? getTenant() : "" }, enviar);  
         const utilData = JSON.parse(response.data).data;
+        console.log(response);
         saveRealizado(
           {
             ...dataToLocalDb,

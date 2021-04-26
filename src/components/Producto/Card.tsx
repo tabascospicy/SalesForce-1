@@ -108,10 +108,9 @@ const ProductoCard = ({
   precio.current = precio_Dolar  - (PercentageDescuento * precio_Dolar );
 
   const nav = () => {
-      RootNavigation.navigate('Producto',{id:producto.item.id,imagen:producto.item.imagen,nombre:producto.item.nombre,precioProductoDolar:producto.item.precio_dolar});
-      reactotron.log(producto.item,"producto");
+    handleSelectedProduct && handleSelectedProduct({producto: producto.item, shouldAdd:!disabled ? true :false});
       InteractionManager.runAfterInteractions(()=>{
-       handleSelectedProduct && handleSelectedProduct({producto: producto.item, shouldAdd:!disabled ? true :false}); 
+        RootNavigation.navigate('Producto',{id:producto.item.id,imagen:producto.item.imagen,nombre:producto.item.nombre,precioProductoDolar:producto.item.precio_dolar});
       });
   };
 

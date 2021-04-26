@@ -57,12 +57,12 @@ const Factura = ({item,tipo="",ShowDetalles,showPagar,id}: facturaProps) => {
       transition={transition}>
       <Row>
         <View>
-          <Title>{item.numero_factura}</Title>
-          <Caption> SubTotal : {item.subtotal_dolar}</Caption>
+          <Title>Nro :{item.numero_factura}</Title>
+          <Caption>SubTotal : {item.subtotal_dolar}</Caption>
           <Text>Monto : {monto.toFixed(2)}</Text>
           <Caption>{moment(item.fecha_at).format("LLL")}</Caption>
         </View>
-        <Button icon={'details'} onPress={handlePress}>
+        <Button icon={'dots-vertical'} onPress={handlePress}>
           Detalles
         </Button>
       </Row>
@@ -80,7 +80,7 @@ const Factura = ({item,tipo="",ShowDetalles,showPagar,id}: facturaProps) => {
             <Caption> Serial Impresora</Caption>
             <Text>{item.serial_impresora}</Text>
           </Row>
-          <Button onPress={Action}>Mas</Button>
+          <Button onPress={Action}>Ir a Pagar</Button>
         </>
       )}
     </FacturaContainer>

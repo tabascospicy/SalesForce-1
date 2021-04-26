@@ -19,7 +19,6 @@ const FetchCantidadConceptos = async (id: number,Tenant:string) => {
     const response = await Fetch(`empresa/${id}/conceptos/?visible_fuerza_venta=1`, {method:"GET",tenant:Tenant});
     
     const total = JSON.parse(response.data).data;
-    reactotron.log(total,response,"empresa api")
     return total;
   } catch (e) {
     console.log(e, 'ha ocurrido un error \n \n \n');

@@ -33,7 +33,6 @@ const Pedidos = ({navigation, ...props}: any) => {
     showMensaje,
     handleSelectedFactura,
     handleButtonActionFactura,
-
   } = useContext(Context);
   const [selectedP, setSelectedP] = useState<IPedidosConDetalles>(
     pedidoDetalles,

@@ -138,22 +138,25 @@ const useProductoView = ({
   };
   const readOfertas = async () => {
     const product = selectedProduct?.producto as Product;
+    console.log(product.id)
     const Ofertas = (await readAll(
       'ofertas',
       `adm_conceptos_id = ${product.id}`,
     )) as Oferta[];
-
     setNiveles(Ofertas);
   };
-  useEffect(() => {
+  const onInit = ()=>{
     customRequest(AskDetalles);
+   
     readOfertas();
-  }, []);
+  }
+ 
   useEffect(() => {
     precio.current = precio_dolar - (descuentoValue / 100) * precio_dolar;
   }, [descuento]);
 
   return {
+    onInit,
     add,
     showQr,
     handleChange,
