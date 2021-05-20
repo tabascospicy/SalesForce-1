@@ -56,6 +56,12 @@ const FetchConceptosEmpresa = async (id: number,Tenant:string) => {
 
   return FetchCantidadConceptos(id,Tenant);
 };
+const FetchDepositosEmpresa = (Tenant:string)=> {
+  return Fetch(`depositos/`, {method:"GET",tenant:Tenant});
+}
+const FetchConcepto = (id:number,Tenant:string)=> {
+  return Fetch(`conceptos/${id}`, {method:"GET",tenant:Tenant});
+}
 const FetchAllAboutOne = Promise.all([FetchEmpresaById, FetchConceptosEmpresa]);
 
 export default {
@@ -63,4 +69,6 @@ export default {
   FetchEmpresaById,
   FetchConceptosEmpresa,
   FetchAllAboutOne,
+  FetchDepositosEmpresa,
+  FetchConcepto
 };

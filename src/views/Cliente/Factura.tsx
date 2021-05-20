@@ -1,11 +1,13 @@
-import React, {useEffect, useMemo, useRef, useState} from 'react';
+import React, {useContext, useMemo, useRef, useState} from 'react';
 import {Caption, Title, Text, Button} from 'react-native-paper';
-import {FacturaContainer, Row} from './style';
+import {FacturaContainer, Row,shadowSet} from './style';
 import {Transition, Transitioning} from 'react-native-reanimated';
-import reactotron from 'reactotron-react-native';
+import Context from "services/context"
 import {style} from "styles/container";
 import {View} from 'react-native';
-import moment from "moment"
+import { Badge } from 'react-native-paper';
+import moment from "moment";
+import {BoxShadow} from 'react-native-shadow';
 type facturaProps = {
   item: Factura;
   tipo:string;
@@ -17,6 +19,7 @@ type facturaProps = {
 const Factura = ({item,tipo="",ShowDetalles,showPagar,id}: facturaProps) => {
   const [pressed, setPressed] = useState(false);
   const transitionRef = useRef();
+  const {colors} = useContext(Context);
   const handle = ()=>{
     showPagar(item.id);
   }
@@ -57,19 +60,22 @@ const Factura = ({item,tipo="",ShowDetalles,showPagar,id}: facturaProps) => {
       transition={transition}>
       <Row>
         <View>
-          <Title>Nro :{item.numero_factura}</Title>
+          <View style={{flexDirection:"row"}}>
+            <Badge style={{marginBottom:"auto",marginTop:"auto",backgroundColor:colors?.buttonsLight2}} visible={true} size={10}></Badge>
+             <Title> Nro {item.numero_factura}</Title>
+          </View>
           <Caption>SubTotal : {item.subtotal_dolar}</Caption>
           <Text>Monto : {monto.toFixed(2)}</Text>
           <Caption>{moment(item.fecha_at).format("LLL")}</Caption>
         </View>
-        <Button icon={'dots-vertical'} onPress={handlePress}>
+        <Button color={colors?.buttonsLight2} icon={'dots-vertical'} onPress={handlePress}>
           Detalles
         </Button>
       </Row>
       {pressed && (
         <>
           <Row>
-            <Caption>Nro Fiscal : </Caption>
+            <Caption>Nro Fiscal </Caption>
             <Text>{item.numero_fiscal}</Text>
           </Row>
           <Row>
@@ -80,7 +86,7 @@ const Factura = ({item,tipo="",ShowDetalles,showPagar,id}: facturaProps) => {
             <Caption> Serial Impresora</Caption>
             <Text>{item.serial_impresora}</Text>
           </Row>
-          <Button onPress={Action}>Ir a Pagar</Button>
+          <Button color={colors?.ButtonStrong} onPress={Action}>Ir a Pagar</Button>
         </>
       )}
     </FacturaContainer>

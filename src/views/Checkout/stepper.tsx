@@ -70,7 +70,7 @@ const Total = styled.Text`
   padding: 10px;
   color: white;
   border-radius: 13px;
-  align-self: flex-start;
+  align-self: flex-end;
   background-color: #43aa8b;
   margin-top: 10px;
 `;
@@ -95,7 +95,6 @@ const Checkout = (props: any) => {
   const from: number = carritoPage *3;
   const to: number = (carritoPage + 1) * 3;
   const showDialog = () => setPendiente(true);
-
   const hideDialog = () => setPendiente(false);
   const crearPago = async () => {
     
@@ -337,7 +336,7 @@ const Checkout = (props: any) => {
                   <DataTable.Row key={key}>
                     <DataTable.Cell style={{color:colors["primary-font"]}}>{element.nombre}</DataTable.Cell>
                     <DataTable.Cell style={{color:colors["primary-font"]}} numeric>
-                      {accounting.formatMoney(element.precio_dolar , {
+                      {accounting.formatMoney(element.precio_dolar - element.precio_dolar * descuento?.descuento/100 , {
                           symbol: '',
                           thousand: '.',
                           decimal: ',',

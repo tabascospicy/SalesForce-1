@@ -9,7 +9,7 @@ const Description = ({cliente}: DescriptionProps) => {
 
   return (
     <Container>
-      <Name font={"Nunito-italic"}>{ cliente?.nombre_comercial || cliente.nombre}</Name>
+      <Name>{ cliente?.nombre_comercial || cliente.nombre}</Name>
       <Portada style={shadow.shadow}>
         <CustomImage />
       </Portada>

@@ -27,7 +27,7 @@ import ModalQr from 'components/Modal/producto/ModalQr';
 import {StackNavigationProp} from '@react-navigation/stack';
 import BottomSheet from 'reanimated-bottom-sheet';
 import Icon3 from 'react-native-vector-icons/Ionicons';
-import reactotron from 'reactotron-react-native';
+import Inventario from "./Inventario";
 import useOnview from 'Hooks/onView';
 //@ts-ignore
 import accounting from "accounting";
@@ -200,7 +200,8 @@ const Producto = ({
 
       <TopElements>
         <Pressable onPress={showImage}>
-          <PImage H={'90px'} producto={{id,imagen}} />
+          
+          <PImage  H={'90px'} producto={{id,imagen}} />
         </Pressable>
       </TopElements>
       <Card style={style.shadow}>
@@ -243,11 +244,11 @@ const Producto = ({
         <Button
           style={{marginTop: 'auto', alignSelf: 'center'}}
           onPress={show}
-          color={colors['primary-font']}
+          color={colors && colors['primary-font'] || ""}
           icon={() => (
             <Icon3
               size={50}
-              color={colors['primary-font']}
+              color={colors && colors['primary-font'] ||""}
               name={'chevron-up-sharp'}></Icon3>
           )}>
           Mas Detalles {''}
@@ -261,6 +262,7 @@ const Producto = ({
           renderContent={Data}
         />
       )}
+      <Inventario concepto={selectedProduct?.producto?.id} />
     </Container>
   );
 };

@@ -67,14 +67,10 @@ const useProductoView = ({
     
 
     descuentoUi.current = oferta.min !=init.min ? parseInt(oferta?.descuento as string) : 0;
-    const montoDescuento =
-      (descuentoUi.current / 100) * parseFloat(precioProductoDolar);
-    monto.current =
-      parseFloat(precioProductoDolar) * parseInt(e === '' ? '0' : e) +
-      (detalles.iva / 100) *
-        parseFloat(precioProductoDolar) *
-        (e === '' ? 0 : cant) -
-      montoDescuento;
+    const subTotal = precio.current * parseInt(e === '' ? '0' : e);
+    const montoDescuento = (descuentoUi.current / 100) * subTotal;
+    console.log({montoDescuento,descuento:descuentoUi.current ,precioProductoDolar:precio.current,iva:(detalles.iva / 100) * subTotal,precio:precio.current * parseInt(e === '' ? '0' : e) })
+    monto.current = subTotal  + (detalles.iva / 100) * subTotal - montoDescuento;
     setCantidad(e);
   };
   const add = () => {
@@ -83,7 +79,7 @@ const useProductoView = ({
       navigation.goBack();
       requestAnimationFrame(() => {
         const cant = parseInt(cantidad);
-        addProduct && addProduct(selectedProduct?.producto as Product, cant,);
+        addProduct && addProduct(selectedProduct?.producto as Product, cant);
       });
     } else {
       Alert.alert('cantidad invalida');

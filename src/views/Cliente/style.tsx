@@ -77,7 +77,7 @@ export const Row = styled.View`
 export const FacturaContainer = styled(Transitioning.View)`
   width: 95%;
   align-self: center;
-  background-color: white;
+  background-color: #ffffff;
   padding: 10px;
   margin-bottom:20px;
   border-radius: 20px;
@@ -91,7 +91,18 @@ export const PickerContainer = styled.View`
   margin-top: 20px;
   margin-bottom: 20px;
 `
-
+export const shadowSet = {
+  ...shadowSetting,
+  width: 95,
+  height: height / 3,
+  style: {
+    marginHorizontal:"auto",
+     marginVertical:10,
+     alignItems:"center",
+     alignSelf:"center",
+    justifyContent:"center"
+    }
+};
 export const styles = StyleSheet.create({
   picker: {
     height:"100%",

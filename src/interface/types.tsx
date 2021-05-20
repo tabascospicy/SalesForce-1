@@ -376,10 +376,10 @@ type UiContext = {
   resetCarrito?: () => void;
   showQr: () => void;
   pressed: () => void;
-  hideMensaje: () => void;
+  hideMensaddProductaje: () => void;
   showMensaje: (mensaje: MensajeContent) => void;
   isNetworkAvailable?: (check?: boolean) => Promise<boolean>;
-  addProduct?: (x: Product, cantidad: number) => void;
+  ?: (x: Product, cantidad: number) => void;
   deleteProduct?: (x: Product) => void;
   ExtraFunction?: React.RefObject<VoidFunction>;
   EditCantidad?: (cantidad: number, position: number) => void;

@@ -32,7 +32,7 @@ const Pedidos = ({navigation, ...props}: any) => {
     usuarioLog,
     showMensaje,
     handleSelectedFactura,
-    handleButtonActionFactura,
+    handleButtonActionFactura
   } = useContext(Context);
   const [selectedP, setSelectedP] = useState<IPedidosConDetalles>(
     pedidoDetalles,
@@ -93,8 +93,9 @@ const Pedidos = ({navigation, ...props}: any) => {
     }
   }, [pedidos]);
   const selectEnviado = (element: IPedidosConDetalles) => {
+    const confirmModal = ()=> <Button onPress={() => cancelar(element.id as number)}>Confirmar</Button>
     const Cancelar = () => (
-      <Button onPress={() => cancelar(element.id as number)}>Cancelar</Button>
+     <Button onPress={()=>showMensaje({title:"Advertencia!",body:"esta seguro de cancelar su pedido?",render:null,actions:confirmModal,visible:true,lock:true})}>Cancelar Pedido</Button>
     );
     configureDataAndJump(element, Cancelar);
   };

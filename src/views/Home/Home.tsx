@@ -116,7 +116,7 @@ const Home = ({pressed, visual, navigation, ...props}: props) => {
   };
   const onScroll = ScrollEvent;
   return (
-    <View style={{position: 'relative'}}>
+    <View>
       <BlueBackground color={colors?.primary || ""} />
       <Navbar navigation={navigation} name="Home" pressed={pressed}></Navbar>
       <Animated.View style={{flexDirection: 'row'}}>

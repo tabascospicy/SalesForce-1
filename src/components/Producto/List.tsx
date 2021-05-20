@@ -36,8 +36,8 @@ const ProductList = ({ScrollEvent=()=>{},disabled=false,title = '',list = [] ,ca
       <SafeAreaView style={styles.container}>
         <AnimatedFlatList
          scrollEventThrottle={16}
-        renderItem={(item,index)=> <ProductoCard detalles={detalles} disabled={disabled} key={index} producto={item} {...props} />}
-        keyExtractor={(item) => item.id.toString()}
+        renderItem={(item:any,index:number)=> <ProductoCard detalles={detalles} disabled={disabled} key={index} producto={item} {...props} />}
+        keyExtractor={(item:any) => item.id.toString()}
         maxToRenderPerBatch={10}
         data={list}
         />

@@ -58,7 +58,6 @@ export const Card = styled.View`
   background-color: white;
   position: relative;
   z-index:2;
-  flex-wrap: wrap;
 `;
 export const Card2 = styled(Card)`
   width: 100%;
@@ -141,4 +140,7 @@ export const Separator = styled.View`
   opacity:0.2;
   background-color:black;
   align-self:flex-start;
+`
+export const InvTitle = styled(Font)`
+
 `

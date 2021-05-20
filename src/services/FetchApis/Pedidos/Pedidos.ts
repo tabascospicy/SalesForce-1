@@ -13,10 +13,8 @@ const FetchPedidosUsuario = async (id: number,Tenant:string) => {
 
 const DeletePedido = async (id:number,Tenant:string) =>{
   try {
-    reactotron.log(id,Tenant,"borrar");
     const response = await Fetch(`pedidos/${id}`,{method:"DELETE",tenant:Tenant});
-    reactotron.log("borrado",response);
-    return ""
+    return response;
     } catch (e) {
     console.log(e, 'ha ocurrido un error \n \n \n');
     return 'hubo un error';

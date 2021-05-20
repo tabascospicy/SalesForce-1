@@ -33,12 +33,13 @@ const Factura = ({navigation, route, ...props}: PropsClienteScreen) => {
   const {action} = ButtonActionFactura;
   useEffect(() => {
     readProductos();
+    console.log(selectedFactura);
+    
   }, [selectedFactura]);
   const readProductos = async () => {
     try {
       realm.write(async () => {
         setProductos([]);
-        reactotron.log("detalle factura",selectedFactura);
         const nombres: string[] = [];
           selectedFactura &&
             selectedFactura?.detalles?.forEach(

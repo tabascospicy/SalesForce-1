@@ -1,6 +1,7 @@
 import React, { FC , useContext} from 'react';
-import { Button, Dialog, Portal } from 'react-native-paper';
+import { Button, Caption, Dialog, Portal,Divider } from 'react-native-paper';
 import { Description, Introducir } from 'views/Producto/styled';
+import {Font} from "styles"
 import Context from "services/context";
 type ModalAgregarProps = {
   visible:boolean;
@@ -19,25 +20,26 @@ const ModalAgregar:FC<ModalAgregarProps> = ({visible,hideDialog,selectedProduct,
   return (
     <Portal>
     <Dialog visible={visible} onDismiss={hideDialog}>
-      <Dialog.Title style={{color:colors["primary-font"]}}>{ selectedProduct && selectedProduct.producto.nombre}</Dialog.Title>
+      <Dialog.Title style={{color:colors && colors["primary-font"]}}><Font>{ selectedProduct && selectedProduct.producto.nombre}</Font></Dialog.Title>
       <Dialog.Content>
-        <Description  style={{color:colors["primary-font"]}}>
-          Precio : {(precio).toFixed(3)}${'\n'}
+        <Description  style={{color:colors && colors["primary-font"]}}>
+          Precio:<Caption>{(precio).toFixed(2)}$</Caption> 
         </Description>
-        <Description style={{color:colors["primary-font"]}}>
-         
-          Iva : {detalles.iva}%{'\n'}
-
+        
+        <Description style={{color:colors && colors["primary-font"]}}>
+        <Divider />
+        Iva :<Caption> {detalles.iva}%</Caption>
         </Description>
-        <Description style={{color:colors["primary-font"]}}>
-          cantidad : {cantidad}{'\n'}
+        <Description style={{color:colors && colors["primary-font"]}}>
+        cantidad :<Caption> {cantidad}</Caption>
         </Description>
-        <Description style={{color:colors["primary-font"]}}>
-          descuento : {descuentoUi}%{'\n'}
+        <Description style={{color:colors && colors["primary-font"]}}>
+        descuento :<Caption> {descuentoUi}%</Caption>
         </Description>
-        <Description style={{color:colors["primary-font"]}}>
-          Total:{monto.toFixed(2)}$
+        <Description style={{color:colors && colors["primary-font"]}}>
+        Total:<Caption>{monto.toFixed(2)}$</Caption>
         </Description>
+        <Divider />
         <Description style={{marginTop: 30}}>Cantidad</Description>
         <Introducir
           keyboardType="numeric"
@@ -45,6 +47,7 @@ const ModalAgregar:FC<ModalAgregarProps> = ({visible,hideDialog,selectedProduct,
           onChangeText={handleChange}
           value={cantidad}
         />
+      
       </Dialog.Content>
       <Dialog.Actions>
         <Button onPress={add}>Agregar</Button>

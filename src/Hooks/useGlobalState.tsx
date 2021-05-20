@@ -119,15 +119,18 @@ const useGlobalState = (): UiContext => {
     );
     if (!Ofertas[0]) return 0;
     const oferta = Ofertas as Oferta[];
-    
-      const Concuerda = oferta.reduce((prev,element,i)=>{
-      return prev = (element.min < cantidad && cantidad < element.max) ||
-      element.min === cantidad ||
-      element.max === cantidad
-      ? parseInt(element.descuento)
-      : 0;
-    },0);
-    return Concuerda
+    const init:Oferta = { id: 0,
+      min: 0,
+      max: 0,
+      descuento: "",
+      adm_conceptos_id: 0,
+      status: 0
+    }
+
+    const Concuerda = oferta.reduce((acum,current)=>{
+      return current.min <= cantidad && acum.min < current.min ? current :acum;
+    },init)
+    return parseInt(Concuerda.descuento)
   };
 
   const resetCarrito = () => {

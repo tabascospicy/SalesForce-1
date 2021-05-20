@@ -1,5 +1,5 @@
 import React from "react";
-import {Product,Cantidad,DescriptionContent,Description,PlusActions,Price,width,height} from "./styles";
+import {Product,Cantidad,DescriptionContent,Description,PlusActions,Price,width,height,Bold} from "./styles";
 import {BoxShadow} from 'react-native-shadow';
 import {shadowSetting} from 'theme';
 type DetalleFacturaProps = {
@@ -32,12 +32,13 @@ const Producto = ({colors,producto,nombre}:DetalleFacturaProps) => {
     <Product>
     <DescriptionContent style={{flex: 1}}>
       <Description style={{color:colors["primary-font"]}} >{nombre}</Description>
-      <Price style={{color:colors["primary-font"]}} >Precio:{producto.precio_dolar}</Price>
+      <Price style={{color:colors["primary-font"]}} ><Bold>Precio:</Bold>{producto.precio_dolar}</Price>
+      <Price style={{color:colors["primary-font"]}} ><Bold>Cantidad:</Bold>{Math.round(producto.cantidad as number)}</Price>
     </DescriptionContent>
     <PlusActions>
       <Cantidad
       style={{color:colors["primary-font"]}} 
-      >Cantidad : {Math.round(producto.cantidad)}</Cantidad>
+      ><Bold>Total</Bold> : {(Math.round(producto.cantidad as number) * parseFloat(producto.precio_dolar)).toFixed(2)}</Cantidad>
     </PlusActions>
   </Product>
   </BoxShadow>

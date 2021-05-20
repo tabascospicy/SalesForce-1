@@ -28,7 +28,6 @@ const Fecha = styled(Font)`
   color: white;
   font-size: 10px;
   text-align: left;
-  font-weight: bold;
   align-self: center;
   flex-grow: 1;
 `;

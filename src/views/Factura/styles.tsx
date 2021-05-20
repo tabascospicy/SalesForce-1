@@ -37,13 +37,17 @@ export const Description = styled(Font)`
   font-size: 10px;
 `;
 export const Price = styled(Description)`
-  font-size:15px;
+  font-size:13px;
   margin-top:4px;
+  font-weight: normal;
 `
+export const Bold = styled(Price)`
+  font-weight: bold;
+`
+
 export const Cantidad = styled(Caption)`
   flex-wrap: wrap;
   flex-direction: column;
-  font-weight: bold;
   color: black;
   opacity:0.7;
   font-size: 15px;

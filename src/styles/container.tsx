@@ -15,8 +15,8 @@ export const Borders = styled(Container)`
   border-bottom-right-radius:20px;
   `
 export const Font = styled(Text)`
-  font-family:${({font=null}:any)=>font ? font : "Nunito-Regular"};
-  letter-spacing:1px;
+  font-family:${({font=null}:any)=>font ? font : "RobotoCondensed-Regular"};
+  letter-spacing:0.5px;
   color:${theme["primary-font"]};
   
 `

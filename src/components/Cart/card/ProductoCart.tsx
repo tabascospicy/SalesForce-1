@@ -1,4 +1,4 @@
-import React, {useContext, useRef, useState,useMemo} from 'react';
+import React, {useContext, useRef, useState, useMemo} from 'react';
 import {Button, Caption} from 'react-native-paper';
 import Context from 'services/context';
 import {useCallback} from 'react';
@@ -11,26 +11,38 @@ import {
   Product,
   Symbol,
 } from './styles';
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { StackNavigationProp } from '@react-navigation/stack';
-import { navigationRef } from 'components/RootNavigationRef/RootNavigationRef';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {navigationRef} from 'components/RootNavigationRef/RootNavigationRef';
+import styled from 'styled-components/native';
+import { View } from 'react-native';
 
 type ProfileScreenNavigationProp = StackNavigationProp<{}>;
 
 interface ProductoPros {
-  navigation:ProfileScreenNavigationProp,
+  navigation: ProfileScreenNavigationProp;
   producto: Product;
   disabled: boolean;
   dispatch: any;
   id: number;
 }
+const Column = styled(View)`
+  flex-direction:column;
+  align-self:flex-start;
+`
 const ProductoCard = ({disabled = false, producto, id = 0}: ProductoPros) => {
   const [text, setText] = useState(`${producto.cantidad}`);
   const input = useRef();
   const {EditCantidad, deleteProduct, colors, descuento} = useContext(Context);
-  const PercentageDescuento = useMemo(()=>parseInt(descuento?.descuento || "0")/100,[]);
-  const precio_dolar = useMemo(()=>parseFloat(producto.precio_dolar),[])
-  const precio = useMemo(()=>(  precio_dolar - (precio_dolar * (producto.oferta/100))   - (PercentageDescuento * precio_dolar)  ),[]);
+  const PercentageDescuento = useMemo(
+    () => (producto.oferta || 0) / 100,
+    [],
+  );
+  const precio_dolar = useMemo(() => parseFloat(producto.precio_dolar), []);
+  const precio = useMemo(
+    () => precio_dolar - PercentageDescuento * precio_dolar,
+    [],
+  );
   let timer = useRef<any>();
   const del = useCallback(() => {
     deleteProduct && deleteProduct(producto);
@@ -39,19 +51,8 @@ const ProductoCard = ({disabled = false, producto, id = 0}: ProductoPros) => {
   const refresh = useCallback(() => {
     EditCantidad && EditCantidad(text ? parseInt(text) : 0, id);
   }, [text]);
-  const plus = () => {
-    const number = parseInt(text);
-    setText(`${number + 1}`);
-    ///
-    if(timer.current){
-      clearTimeout(timer.current);
-    }    
-    timer.current = setTimeout(() => {
-      EditCantidad && EditCantidad(text ? number + 1 : 0, id);
-    }, 300);
-  };
 
-  const editar = ()=>{
+  const editar = () => {
     input?.current && input?.current.focus();
   };
 
@@ -65,9 +66,10 @@ const ProductoCard = ({disabled = false, producto, id = 0}: ProductoPros) => {
     <Product style={{elevation: 2}} disabled={disabled}>
       <Image W="40px" H={'60px'} producto={producto} />
       <DescriptionContent style={{flex: 1}}>
-        <Description style={{color:colors["primary-font"]}} >{producto.nombre}</Description>
-        <Description style={{color:colors["primary-font"]}} >Precio:{precio.toFixed(2)}</Description>
-        {producto.oferta ? <Caption>-{producto.oferta}%</Caption> : <></>}
+        <Description style={{color: colors['primary-font']}}>
+          {producto.nombre}
+        </Description>
+
         <Button
           mode="contained"
           onPress={del}
@@ -76,9 +78,35 @@ const ProductoCard = ({disabled = false, producto, id = 0}: ProductoPros) => {
           Remover
         </Button>
       </DescriptionContent>
+      <Column>
+        {producto.oferta ? (
+          <>
+            <Description
+              style={{
+                color: colors['primary-font'],fontSize:12,
+              }}>
+              {' '}
+              -{producto.oferta}%
+            </Description>
+            <Description
+              style={{
+                color: colors['primary-font'],fontSize:12,
+                textDecorationLine: 'line-through',
+              }}>
+              {producto.precio_dolar}
+            </Description>
+          </>
+        ) : (
+          <></>
+        )}
+
+        <Description style={{fontSize:12,color: colors['primary-font']}}>
+          {precio.toFixed(2)}
+        </Description>
+</Column>
       <PlusActions>
         <Cantidad
-        style={{color:colors["primary-font"]}} 
+          style={{color: colors['primary-font']}}
           clearTextOnFocus
           onChangeText={add}
           onEndEditing={refresh}
@@ -86,9 +114,9 @@ const ProductoCard = ({disabled = false, producto, id = 0}: ProductoPros) => {
           value={text}
           keyboardType={'numeric'}
         />
-     <Button onPress={editar}>
-       <Icon size={30} color={colors.terceary} name={"tooltip-edit"} />
-     </Button>
+        <Button onPress={editar}>
+          <Icon size={30} color={colors.terceary} name={'tooltip-edit'} />
+        </Button>
       </PlusActions>
     </Product>
   );

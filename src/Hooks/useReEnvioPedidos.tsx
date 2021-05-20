@@ -7,6 +7,7 @@ import Pedido from 'services/FetchApis/Pedidos';
 import reactotron from 'reactotron-react-native';
 import tenant from 'services/realm/schema/TenantSchema';
 import Loading from "components/Animate/Loading";
+import { InteractionManager } from 'react-native';
 const {customRequest} = Database();
 type call = {
   success: boolean | null;
@@ -58,12 +59,13 @@ const useReEnvioPedidos = ({navigation}:any) => {
           setCalling({success: null, process: 1});
           const T = getTenant ? getTenant() :"";
           const response = await Pedido.DeletePedido(id, T);
-          console.log(id)
-          navigation.navigate("Pedidos");
           setOnProcess(true);
           setCalling({success: true, process: 2});
-          setMensaje("su solocitud ha sido procesada exitosamente");
-          await deleteFromDB(id);
+          navigation.navigate("Pedidos");
+          showMensaje({title:"Finalizado!",body:"el pedido ha sido cancelado",render:null,visible:true,  lock:true});
+          InteractionManager.runAfterInteractions(async ()=>{
+             await deleteFromDB(id);
+          });
           setOnProcess(false);
          
       }else{
