@@ -1,6 +1,6 @@
 import React, {useCallback, useContext, useEffect, useMemo, useState} from 'react';
 import styled from 'styled-components/native';
-import { Pressable} from 'react-native';
+import { Pressable, View} from 'react-native';
 import Context from 'services/context';
 import Modal from 'components/Animate/modal';
 import Fetch from 'services/fecth';
@@ -8,7 +8,7 @@ import Database from 'services/realm';
 import moment from 'moment';
 import {Caption, DataTable} from 'react-native-paper';
 import accounting from "accounting";
-import { Paragraph, Dialog, Portal} from 'react-native-paper';
+import { Paragraph, Dialog, Portal,Text} from 'react-native-paper';
 import reactotron from 'reactotron-react-native';
 import useTasa from 'Hooks/Tasa/useTasa';
 const Container = styled.View`
@@ -91,7 +91,7 @@ const Checkout = (props: any) => {
     showMensaje
   } = useContext(Context);
   const [tasa,loadingTasa] = useTasa({isNetworkAvailable})
-  const mensaje = useMemo(()=>parseInt(descuento?.descuento || "0") === 0 ? "" :`descuento de ${descuento?.descuento}% aplicable hasta el dia ${descuento?.dia_final || 0} despues de ordenado`,[descuento]);
+  const mensaje = useMemo(()=>parseInt(descuento?.descuento || "0") === 0 ? "" :`descuento al total de ${descuento?.descuento}% aplicable hasta el dia ${descuento?.dia_final || 0} despues de ordenado`,[descuento]);
   const from: number = carritoPage *3;
   const to: number = (carritoPage + 1) * 3;
   const showDialog = () => setPendiente(true);
@@ -133,7 +133,6 @@ const Checkout = (props: any) => {
         const enviar = JSON.stringify({data, data1:setDetallesServer(carrito)});
         const response = await Fetch(`pedidos`, {method:"POST",tenant:getTenant ? getTenant() : "" }, enviar);  
         const utilData = JSON.parse(response.data).data;
-        console.log(response);
         saveRealizado(
           {
             ...dataToLocalDb,
@@ -324,7 +323,7 @@ const Checkout = (props: any) => {
         <Info style={{color:colors["primary-font"]}}>Lista de Productos</Info>
       
         <Detalles>
-          <DataTable>
+          <DataTable collapsable>
             <DataTable.Header>
               <DataTable.Title style={{color:colors["primary-font"]}} >Nombre</DataTable.Title>
               <DataTable.Title style={{color:colors["primary-font"]}} numeric>Precio $/Cantidad</DataTable.Title>
@@ -334,9 +333,9 @@ const Checkout = (props: any) => {
               if (from <= key && key < to) {
                 return (
                   <DataTable.Row key={key}>
-                    <DataTable.Cell style={{color:colors["primary-font"]}}>{element.nombre}</DataTable.Cell>
+                    <View style={{width:90,flexWrap:"wrap",alignItems:"center",justifyContent:"center"}}><Text style={{fontSize:8}}>{element.nombre}</Text></View>
                     <DataTable.Cell style={{color:colors["primary-font"]}} numeric>
-                      {accounting.formatMoney(element.precio_dolar - element.precio_dolar * descuento?.descuento/100 , {
+                      {accounting.formatMoney(element.precio_dolar - element.precio_dolar * element?.oferta/100 , {
                           symbol: '',
                           thousand: '.',
                           decimal: ',',

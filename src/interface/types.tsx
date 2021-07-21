@@ -444,7 +444,7 @@ type PlanPago = {
   descuento: string;
 };
 
-type Theme = {
+type appTheme = {
   'primary-font': string;
   'terceary-font': string;
   primary: string;

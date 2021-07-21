@@ -65,14 +65,15 @@ const Pagar: React.FC<PagarProps> = ({navigation, route}) => {
   const [tiposDisponibles, setTiposDisponibles] = useState<TipoPago[]>([]);
   const [bancos, setBancos] = useState<Banco[]>([]);
   const [isAbono,setAbono] = useState<boolean>(false);
+
   const send = (x: any) => {
     const convertir =
-      pagoTemplate.current.moneda === 'Bs'
+      pagoTemplate.current.moneda.includes("Bs")
         ? parseFloat(pagoTemplate.current.monto) / parseFloat(tasa)
         : parseFloat(pagoTemplate.current.monto);
-
     const isNotValid = convertir + total.current > objetivoPagar;
-    showMensaje({visible: false, body: '', title: '', render: null});
+   
+    console.log({valid:isNotValid && !isAbono,total:convertir + total.current,bs:pagoTemplate.current.moneda })
     if (isNotValid && !isAbono) {
       InteractionManager.runAfterInteractions(() => {
         showMensaje({
@@ -84,9 +85,11 @@ const Pagar: React.FC<PagarProps> = ({navigation, route}) => {
         });
       });
       return;
+    }else{
+      showMensaje({visible: false, body: '', title: '', render: null});
     }
     total.current += convertir;
-
+//    console.log({total:convertir,pago:pagoTemplate.current})
     setPagos([...pagos, pagoTemplate.current]);
     pagoTemplate.current = {};
   };
@@ -142,6 +145,7 @@ const Pagar: React.FC<PagarProps> = ({navigation, route}) => {
     showMensaje({visible: false, title: 'A', body: '', render: null});
     setPagos(filtrados);
   };
+
   const setBorrarModal = (i: number) => {
     showMensaje({
       visible: true,
@@ -164,6 +168,7 @@ const Pagar: React.FC<PagarProps> = ({navigation, route}) => {
     });
   };
   const guardar = (name: NameParameter, value: string | number) => {
+    console.log({name,value})
     pagoTemplate.current[name] = value;
   };
   const readTipos = async () => {
@@ -217,7 +222,7 @@ const Pagar: React.FC<PagarProps> = ({navigation, route}) => {
     readTipos();
     handleLoadTasa('');
   }, []);
-
+ console.log({ob:objetivoPagar,p:total.current})
   return (
     <Container>
       <Client>
@@ -280,7 +285,7 @@ const Pagar: React.FC<PagarProps> = ({navigation, route}) => {
               onPageChange={(page) => {
                 setPagoPage(page);
               }}
-              label={`  total:${total.current}$`}
+              label={`  total:${total.current.toFixed(2)}$`}
             />
           </DataTable>
           <Caption>
@@ -310,7 +315,7 @@ const Pagar: React.FC<PagarProps> = ({navigation, route}) => {
         <Button
           mode={'contained'}
           labelStyle={{marginTop: 30}}
-          disabled={objetivoPagar > total.current}
+          disabled={objetivoPagar > (Math.ceil(total.current))}
           onPress={EnviarConfirmado}
           style={{height: '100%'}}>
           Enviar

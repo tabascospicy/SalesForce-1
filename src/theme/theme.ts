@@ -1,16 +1,16 @@
-export const theme: Theme = {
-  primary: "#484aa3",
-  "primary-font": "#202046",
-  "terceary-font":"#4FBA9A",
-  secondary: '#DA2F3A',
-  "secondary-light":'#FCEEEF',
-  "secondary-dark":"#34090C",
-  terceary:'#4fba9a',
-  Light: "white",
-  ButtonStrong: "#e05263",
-  buttonLight: "#e05263",
-  buttonsPrimary: "#484aa3",
-  buttonsLight2: "#43aa8b"
+export const theme: appTheme = {
+  primary: "#639CBF",
+  "primary-font": "#0D0D0D",
+  "terceary-font": "#0D0D0D",
+  secondary: '#03588C',
+  "secondary-light": '#FCEEEF',
+  "secondary-dark": "#34090C",
+  terceary: '#639CBF',
+  Light: "#F2F2F2",
+  ButtonStrong: "#03588C",
+  buttonLight: "#03588C",
+  buttonsPrimary: "#0511F2",
+  buttonsLight2: "#0511F2"
 }
 
 export const shadowSetting = {

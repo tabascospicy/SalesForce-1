@@ -40,13 +40,15 @@ const makeMovCaja = (tipoId: string, bancoId: string, Pago: enviarInpustValues, 
   };
 };
 const makeMovBanco = (tipoId: string, bancoId: string, Pago: enviarInpustValues, factura: Factura, cliente: Cliente): MovBanco => {
+  const moneda = Pago.moneda;
+
   return {
     adm_caja_id: 1,
     adm_tipo_movimiento_id: 2,
     adm_tipo_pago_id: parseInt(tipoId || '0'),
-    credito: 0,
     documento: factura.id,
-    credito_dolar: parseFloat(Pago.monto) || 0,
+    credito: moneda === "Bs" ? parseFloat(Pago.monto) : 0,
+    credito_dolar: moneda === "USD" ? parseFloat(Pago.monto) : 0,
     debito: 0,
     descripcion: 'PAGO FACTURA',
     fecha_at: new Date().toISOString().substr(0, 10),
@@ -81,10 +83,10 @@ const makeAbono = (factura: Factura, cliente: Cliente, { monto, monto_dolar, mon
     tipo: "FAC",
     monto_dolar,
     descripcion: "abono desde fuerza de ventas",
-    monto_restante:"0",
-    monto_restante_dolar:"0",
-    pendiente:monto_restante,
-    pendiente_dolar:monto_restante_dolar,
+    monto_restante: "0",
+    monto_restante_dolar: "0",
+    pendiente: monto_restante,
+    pendiente_dolar: monto_restante_dolar,
   }
 }
 const FechtTipoPago = async (Tenant: string) => {
@@ -124,11 +126,11 @@ const createAndSendAbono = async (factura: Factura, cliente: Cliente, total: num
     if (parseInt(factura.subtotal_dolar) === total) {
       const finalResponse = await Factura.UpdateFactura(factura.id, Tenant);
       return
-    }if (parseFloat(factura.subtotal_dolar) > total) {
-      const newAbono = { data: makeAbono(factura, cliente, montos),data1:[] };
+    } if (parseFloat(factura.subtotal_dolar) > total) {
+      const newAbono = { data: makeAbono(factura, cliente, montos), data1: [] };
       const responseAbono = await enviar(Tenant, newAbono, "abono");
-    }if (parseFloat(factura.subtotal_dolar) < total) {
-      const newAbono = { data: makeAbono(factura, cliente, montos) , data1:[] };
+    } if (parseFloat(factura.subtotal_dolar) < total) {
+      const newAbono = { data: makeAbono(factura, cliente, montos), data1: [] };
       const responseAbono = await enviar(Tenant, newAbono, "abono");
       const finalResponse = await Factura.UpdateFactura(factura.id, Tenant);
     }
@@ -157,12 +159,12 @@ const Pagar = async (Tenant: string, data: Array<enviarInpustValues>, factura: F
 
     const cobranza = { data: makeCobranza(factura, cliente, tasa) };
     const result = await enviar(Tenant, cobranza, 'cobranza');
-   /* if (Abono.isAbono) {
-      createAndSendAbono(factura, cliente, Abono.total, Tenant,tasa)
-    }*/
-   // else {
-      const finalResponse = await Factura.UpdateFactura(factura.id, Tenant);
-   // };
+    /* if (Abono.isAbono) {
+       createAndSendAbono(factura, cliente, Abono.total, Tenant,tasa)
+     }*/
+    // else {
+    const finalResponse = await Factura.UpdateFactura(factura.id, Tenant);
+    // };
     console.log(finalResponse);
   } catch (error) {
     console.log(error);

@@ -58,7 +58,7 @@ const Facturas = ({tipos,facturas,navigation,isOnView}:FacturasProps) => {
     <ListContainer>
      {isOnView && <List
         data={facturas}
-        renderItem={(element) => <FacturaCard id={element.item.id} showPagar={showPagar} ShowDetalles={ShowDetalles} tipo={T[element.index].inicial} item={element.item} />}
+        renderItem={(element) => <FacturaCard id={element.item?.id} showPagar={showPagar} ShowDetalles={ShowDetalles} tipo={T[element.index]?.inicial} item={element.item} />}
         keyExtractor={(item: any) => item.id.toString()}
       />}
     </ListContainer>

@@ -1,12 +1,11 @@
 import { Picker } from "@react-native-community/picker";
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useContext} from "react";
 import { Button, Caption } from "react-native-paper";
-import Icon from "react-native-vector-icons/Ionicons";
-import reactotron from "reactotron-react-native";
 import Context from "services/context"
 import {Card,Data,styles,DataSection,DataTitle,Bold,PickerContainer,shadow} from "./style";
 import {BoxShadow} from 'react-native-shadow';
 import { Dimensions } from "react-native";
+import accounting from 'accounting';
 export const {height,width} = Dimensions.get('window');
 type Props = {
   handleDescuento:any,
@@ -28,7 +27,12 @@ const ClientData:React.FC<Props> = ({handleDescuento,setPayments,payments,client
    <DataTitle>Informacion</DataTitle>
     <Data><Bold>Cedula:</Bold>{cliente.cedula}</Data>
     <Data ><Bold>Telefono:</Bold>{cliente.telefono_contacto}</Data>
-    <Data ><Bold>Limite de Credito:</Bold>{cliente.limite_credito || 0} $</Data>
+    <Data ><Bold>Limite de Credito:</Bold>{accounting.formatMoney(cliente.limite_credito || 0 , {
+              symbol: 'Bs',
+              thousand: '.',
+              decimal: ',',
+              precision: 2,
+            })} </Data>
     <Data ><Bold>Direccion:</Bold>{cliente.direccion.toLowerCase()}</Data>
     </DataSection>
     <PickerContainer style={{backgroundColor:colors["secondary-light"]}} >

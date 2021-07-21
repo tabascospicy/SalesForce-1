@@ -71,9 +71,12 @@ const useStartCalls = (): DbContext => {
       startAll();
     }
   }, [reload]);
-  const CheckAndStart = async () => {
+  const CheckAndStart = async (goBack:()=>void) => {
     await checkStoragePermission();
-    CallApi();
+    await CallApi();
+    setTimeout(()=>{
+      goBack();
+    },1500)
   };
   const handleCall = (x: CallStatus) => {
     setCalling(x);

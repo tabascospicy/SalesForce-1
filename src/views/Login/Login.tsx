@@ -1,9 +1,10 @@
 import SlideComponent from 'components/Animate/SlideComponent';
 import {useLogin} from 'Hooks/HooksLogin/useLogin';
 import React from 'react';
-import {Image, View} from 'react-native';
+import {Image, View,Dimensions} from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import {Button, Paragraph, Dialog, Portal, TextInput} from 'react-native-paper';
+const {height} = Dimensions.get("screen");
 import {
   Content,
   Box,
@@ -65,10 +66,11 @@ const Login = ({dispatch, navigation}: any) => {
       </Logo>
       <Box style={style.shadow}>
         <SlideComponent
+          
           render={(ref) => (
             <>
               <Button
-                style={{marginTop: 'auto'}}
+                style={{marginTop:"auto"}}
                 onPress={() => enterCodigo(ref)}>
                 {buttonText.current}
               </Button>
@@ -78,11 +80,12 @@ const Login = ({dispatch, navigation}: any) => {
             return (
               <>
                 {view === 1 && (
-                  <View style={{height: 100, width: 280}}>
+                  <>
                     <TextInput
                       label={'Correo de la Empresa'}
                       mode="outlined"
                       ref={teclado}
+                      color={colors.ButtonStrong}
                       clearTextOnFocus
                       placeholder={'Ingrese Correo'}
                       onChangeText={handleCorreo}
@@ -95,15 +98,16 @@ const Login = ({dispatch, navigation}: any) => {
                       onPress={() => Log(ref)}>
                       Enviar
                     </Button>
-                  </View>
+                  </>
                 )}
                 {view === 2 && (
-                  <View style={{height: 100, width: 280}}>
+                  <>
                     <TextInput
                       label="Codigo de Confirmacion"
                       mode="outlined"
                       ref={teclado}
                       clearTextOnFocus
+                      selectionColor={colors.ButtonStrong}
                       placeholder={'Ingrese Codigo'}
                       onChangeText={handlePassword}
                       value={password}
@@ -112,11 +116,12 @@ const Login = ({dispatch, navigation}: any) => {
                       disabled={password === ''}
                       style={{marginTop: 10}}
                       mode="contained"
+                      
                       color={colors.ButtonStrong}
                       onPress={Verificar}>
                       Ingresar
                     </Button>
-                  </View>
+                  </>
                 )}
               </>
             );

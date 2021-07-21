@@ -7,17 +7,19 @@ import StateProvider from './src/services/context';
 import {useColor} from './src/Hooks/useColorScheme';
 import useGlobalState from './src/Hooks/useGlobalState';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import useCheckConnection from './src/Hooks/useCheckConnection';
-import Reactotron from 'reactotron-react-native';
 import {Container} from './src/styles';
 import {enableScreens} from 'react-native-screens';
 import {Provider as PaperProvider, DefaultTheme} from 'react-native-paper';
-
+import {theme as appTheme} from "./src/theme";
 enableScreens();
 
 const Aplication = Container;
 const theme = {
   ...DefaultTheme,
+  colors:{
+    primary:appTheme.primary,
+    accent:appTheme.secondary,
+  },
   dark: false,
 };
 if (__DEV__) {
@@ -39,7 +41,7 @@ const App = () => {
     <StateProvider.Provider value={AppContext}>
       <PaperProvider theme={theme}>
         <SafeAreaProvider>
-          <StatusBar backgroundColor={'#484AA3'} barStyle="light-content" />
+          <StatusBar backgroundColor={appTheme.primary} barStyle="light-content" />
           <Aplication
             align={'flex-start'}
             justify={'flex-start'}

@@ -4,10 +4,10 @@ import {StyleSheet} from "react-native"
 const {height,width} = Dimensions.get("screen")
 import {Text} from "react-native-paper";
 import { InitFont } from "styles";
-
+import {theme } from "theme";
 export const Content = styled.View`
   flex-grow: 1;
-  background-color: #484aa3;
+  background-color: ${theme.primary} ;
   align-items: center;
   justify-content: flex-end;
   position: relative;

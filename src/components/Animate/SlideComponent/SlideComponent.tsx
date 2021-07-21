@@ -18,7 +18,7 @@ const SlideComponent = ({ref,children,render}:any) => {
 
   return (
     <>
-    <Transitioning.View  ref={transitionRef} transition={transition}>
+    <Transitioning.View style={{width:"100%"}} ref={transitionRef} transition={transition}>
           {children(transitionRef)}
       </Transitioning.View> 
       {render(transitionRef)}

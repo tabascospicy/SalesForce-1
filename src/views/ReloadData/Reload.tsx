@@ -6,11 +6,12 @@ const {height} = Dimensions.get('window');
 import Context from 'services/context';
 import {useRef} from 'react';
 import {Title} from 'react-native-paper';
+import {theme} from "theme"
 import useOnview from 'Hooks/onView';
 import LoadingAnimation from './LoadAnimation';
 const Content = styled.View`
   flex-grow: 1;
-  background-color: #484aa3;
+  background-color:${theme.primary};
   align-items: center;
   justify-content: center;
 `;
@@ -67,17 +68,19 @@ const Reload = ({navigation}: any) => {
   };
   const cleanEvent = () => eventRef.current();
   useOnview({navigation, callback: cleanEvent, onInit});
-
+ const goBack = ()=>{
+  navigation.navigate('Clientes');
+ }
   useEffect(() => {
     handleDescuento && handleDescuento(0);
     if (!calling.loading) {
-      CheckAndStart && CheckAndStart();
+      CheckAndStart && CheckAndStart(goBack);
     }
   }, []);
 
   const Load = async () => {
     if (calling.success === false) {
-      CheckAndStart && CheckAndStart();
+      CheckAndStart && CheckAndStart(goBack);
     } else {
       handleCall && handleCall({success: null, loading: false});
       navigation.navigate('Clientes');
@@ -93,6 +96,7 @@ const Reload = ({navigation}: any) => {
           </Title>
           {!calling.loading && (
             <Button
+              color={theme.secondary}
               title={
                 calling.success != null && calling.success === true
                   ? 'Ir a Inicio'

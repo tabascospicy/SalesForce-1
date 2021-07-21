@@ -5,21 +5,20 @@ const {height,width} = Dimensions.get("screen")
 import {Text} from "react-native-paper";
 import {SafeAreaView} from "react-native-safe-area-context";
 import {InitFont} from "styles";
-
+import {theme } from "theme";
 export const Content = styled(SafeAreaView)`
   flex-grow: 1;
-  background-color: #484aa3;
-  align-items: center;
+  background-color: ${theme.primary} ;
   justify-content: flex-end;
   position: relative;
 `;
 
 export const Box = styled.View`
   background-color: white;
-  width: 100%;
+  flex-grow:1;
   padding:20px;
   position: relative;
-  height: ${height / 3}px;
+  max-height: ${height / 3}px;
   border-top-left-radius:20px;
   border-top-right-radius:20px;
   justify-content: center;

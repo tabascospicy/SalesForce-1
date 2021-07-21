@@ -2,11 +2,15 @@ import {call} from 'react-native-reanimated';
 import reactotron from 'reactotron-react-native';
 import Fetch from 'services/fecth/index';
 import Imagen from '../Imagenes';
-const FetchEmpresaById = async (id: number,Tenant:string) => {
+const FetchEmpresaById = async (id: number,Tenant:string):Promise<Empresa> => {
   try {
     const response = await Fetch(`empresa/${id}`, {method:"GET",tenant:Tenant});
     
-    return await JSON.parse(response.data).data;
+    const empresa = await JSON.parse(response.data).data;
+    return {
+      ...empresa,
+      nota:empresa.nota || ""
+    }
   } catch (e) {
     console.log(e, 'ha ocurrido un error \n \n \n');
     return 'hubo un error';

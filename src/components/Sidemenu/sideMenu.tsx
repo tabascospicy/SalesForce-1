@@ -101,7 +101,7 @@ const SideMenu = (props:any) => {
       <OptionsView>
         <Option  isSelected={"Clientes" === selectedView ? false : true} onPress={()=>navigate("Clientes")}>
           <Icon name="people" size={30} color="white" />
-          <OptionText>Lista de Clientes</OptionText>
+          <OptionText>Clientes</OptionText>
         </Option>
         <Option isSelected={"Pedidos" === selectedView ? false :  true} onPress={()=>navigate("Pedidos")}>
           <Icon name="paper-plane" size={30} color="white" />

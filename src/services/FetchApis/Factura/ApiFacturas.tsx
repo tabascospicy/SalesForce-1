@@ -76,7 +76,7 @@ const defaultValue =
 
 const FetchFacturas = async (setPercent:any,Tenant:string) => {
   try {
-    const response = await Fetch(`factura/?estatus_pago=0`,{method:"GET",tenant:Tenant});
+    const response = await Fetch(`factura/?estatus_pago=0&limit=1000`,{method:"GET",tenant:Tenant});
     const data = await JSON.parse(response.data).data;
     setPercent((prev:number)=>prev+10);
     const utildata = typeof(data) === "undefined" ? [defaultValue] : data;

@@ -1,5 +1,5 @@
 import React, {useContext, useRef, useState, useMemo} from 'react';
-import {Button, Caption} from 'react-native-paper';
+import {Button} from 'react-native-paper';
 import Context from 'services/context';
 import {useCallback} from 'react';
 import Image from 'components/Producto/img';
@@ -13,7 +13,6 @@ import {
 } from './styles';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {StackNavigationProp} from '@react-navigation/stack';
-import {navigationRef} from 'components/RootNavigationRef/RootNavigationRef';
 import styled from 'styled-components/native';
 import { View } from 'react-native';
 
@@ -72,10 +71,11 @@ const ProductoCard = ({disabled = false, producto, id = 0}: ProductoPros) => {
 
         <Button
           mode="contained"
-          onPress={del}
-          style={{width: 110, marginTop: 8}}
-          color={colors && colors.buttonLight}>
-          Remover
+          onPress={editar}
+          style={{width: 110, marginTop: 8,color:"white"}}
+           
+          color={colors && colors.terceary}>
+          editar
         </Button>
       </DescriptionContent>
       <Column>
@@ -114,8 +114,8 @@ const ProductoCard = ({disabled = false, producto, id = 0}: ProductoPros) => {
           value={text}
           keyboardType={'numeric'}
         />
-        <Button onPress={editar}>
-          <Icon size={30} color={colors.terceary} name={'tooltip-edit'} />
+        <Button onPress={del}>
+          <Icon size={30} color={colors && colors.buttonLight} name={'sticker-remove'} />
         </Button>
       </PlusActions>
     </Product>

@@ -1,7 +1,7 @@
 import React, {useState, useRef} from 'react';
 import {Easing, Value, timing} from 'react-native-reanimated';
 import {Dimensions} from 'react-native';
-
+const {height,width} = Dimensions.get('screen');
 
 const useGrowAnimation = () => {
   const Open = useRef(new Value(0)).current;
@@ -24,7 +24,7 @@ const useGrowAnimation = () => {
 
   const translateX = Open.interpolate({
     inputRange: [0, 1],
-    outputRange: [0, 200],
+    outputRange: [0, width/2 +50],
   });
   const scale = Open.interpolate({
     inputRange: [0, 1],
@@ -38,7 +38,7 @@ const useGrowAnimation = () => {
       }),
     },
   ];
-  const transform = [{translateX, scale}];
+  const transform = [{translateX}];
   return {pressed, transform, phase, isOpen, back};
 };
 

@@ -74,6 +74,7 @@ const Sesion = ({dispatch, navigation}: any) => {
                 mode="outlined"
                 ref={teclado}
                 clearTextOnFocus
+                selectionColor={colors.ButtonStrong}
                 placeholder={'Ingrese Nombre'}
                 onChangeText={handleChange}
                 value={nombre}
@@ -83,6 +84,7 @@ const Sesion = ({dispatch, navigation}: any) => {
                 mode="outlined"
                 ref={teclado}
                 clearTextOnFocus
+                selectionColor={colors.ButtonStrong}
                 placeholder={'Ingrese Contrasena'}
                 onChangeText={handlePassword}
                 secureTextEntry={true}
@@ -91,6 +93,7 @@ const Sesion = ({dispatch, navigation}: any) => {
               <Button
                 mode="contained"
                 style={{marginTop: 10}}
+                selectionColor={colors.ButtonStrong}
                 color={colors.ButtonStrong}
                 onPress={Log}>
                 Ingresar

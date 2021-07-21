@@ -47,13 +47,16 @@ const AdjuntarPago: React.FC<AdjuntarPagoProps> = ({
         keyboardType={"numeric"}
         onChangeText={(text)=>handleCambio(setMonto,"monto",text)}
       />
-      <TextInput
+      {
+        isBanco && <TextInput
         label="Referencia"
         value={referencia}
         mode={"outlined"}
         keyboardType={"numeric"}
         onChangeText={(text)=>handleCambio(setReferencia,"referencia",text)}
       />
+      }
+      
     </>
   );
 };

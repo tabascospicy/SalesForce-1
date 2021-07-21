@@ -42,15 +42,14 @@ export const Toggle = styled(Pressable)`
   opacity: 0.3;
   width: 20%;
 `;
-const {height} = Dimensions.get('window');
+const {height,width} = Dimensions.get('screen');
 const Regresar = styled.View`
   z-index: ${(props) => (props.isOpen ? 8 : 1)};
-  height: 47%;
-  width: 35%;
+  height: ${height}px;
+  width: ${width/2  - 50}px;
   position: absolute;
   right: 0px;
-  top: ${height / 4 + 20}px;
-  background-color: white;
+  background-color: black;
   opacity: 0.1;
 `;
 export const cart = StyleSheet.create({

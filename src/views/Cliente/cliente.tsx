@@ -30,7 +30,6 @@ const Cliente = ({navigation, route, ...props}: PropsClienteScreen) => {
     index: 0,
   });
   const [plan, setPlan] = useState<PlanPago[]>([]);
-  const showDialog = () => setVisible(true);
   const [visible, setVisible] = useState(false);
   const hideDialog = () => setVisible(false);
   const readPlanes = (realm: Realm) => {

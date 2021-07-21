@@ -3,7 +3,7 @@ import {enviar} from "./../helper";
 
 const FetchClientes = async (Tenant:string) => {
   try {
-    const response = await Fetch(`clientes`,{method:"GET",tenant:Tenant});
+    const response = await Fetch(`clientes/?limit=1000`,{method:"GET",tenant:Tenant});
    return await JSON.parse(response.data).data
   } catch (e) {
     return 'hubo un error';

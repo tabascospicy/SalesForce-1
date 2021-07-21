@@ -4,35 +4,27 @@ import {Font} from "styles"
 
 export const {height,width} = Dimensions.get('window');
 
-const Button = Animated.createAnimatedComponent(Pressable)
-
-export const Container = styled(Button)`
-  background-color:white;
-  border-radius:10px;
-`;
-
-export const AnimateContent = styled(Animated.View)`
-height: ${height / 10}px;
-margin: 5px;
+export const Container = styled(Pressable)`
 width: ${width-30}px;
 padding:10px;
-
 flex-direction: row;
 align-items: center;
-`
+background-color:white;
+border-radius:10px;
+align-self:center;
+margin-bottom:10px;
+`;
 
 export const Info = styled.View`
-  flex-grow: 1;
   flex-direction: column;
-  padding-left:10px;
+  flex:1;
 `;
 
 export const Name = styled(Font)`
-  font-size: 20px;
+  font-size: 18px;
   opacity: 0.9;
 `;
 export const Direccion = styled(Font)`
-
   opacity: 0.7;
   font-size: 12px;
 `;
