@@ -114,7 +114,7 @@ const SideMenu = (props:any) => {
       </OptionsView>
       <AccountSettings>
           <Button icon={()=> <Icon name="exit" size={30} color="white" />} onPress={handleCerrarSesion} >
-            <SettingText>Cerrar Sesion</SettingText>
+            <SettingText>Cerrar Sesión</SettingText>
           </Button>
       </AccountSettings>
     </Menu>

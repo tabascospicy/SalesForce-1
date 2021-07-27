@@ -1,5 +1,5 @@
 import React, {useContext, useRef, useState, useMemo} from 'react';
-import {Button} from 'react-native-paper';
+import {Button, IconButton} from 'react-native-paper';
 import Context from 'services/context';
 import {useCallback} from 'react';
 import Image from 'components/Producto/img';
@@ -11,7 +11,7 @@ import {
   Product,
   Symbol,
 } from './styles';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icon from 'react-native-vector-icons/Octicons';
 import {StackNavigationProp} from '@react-navigation/stack';
 import styled from 'styled-components/native';
 import { View } from 'react-native';
@@ -42,7 +42,6 @@ const ProductoCard = ({disabled = false, producto, id = 0}: ProductoPros) => {
     () => precio_dolar - PercentageDescuento * precio_dolar,
     [],
   );
-  let timer = useRef<any>();
   const del = useCallback(() => {
     deleteProduct && deleteProduct(producto);
   }, [producto, text]);
@@ -62,49 +61,63 @@ const ProductoCard = ({disabled = false, producto, id = 0}: ProductoPros) => {
     [text],
   );
   return (
-    <Product style={{elevation: 2}} disabled={disabled}>
-      <Image W="40px" H={'60px'} producto={producto} />
+    <Product disabled={disabled}>
+      <Image style={{elevation:3,backgroundColor:"white",maxWidth:90}} W="90px" H={'90px'} producto={producto} />
       <DescriptionContent style={{flex: 1}}>
         <Description style={{color: colors['primary-font']}}>
           {producto.nombre}
         </Description>
-
-        <Button
-          mode="contained"
-          onPress={editar}
-          style={{width: 110, marginTop: 8,color:"white"}}
-           
-          color={colors && colors.terceary}>
-          editar
-        </Button>
-      </DescriptionContent>
-      <Column>
+        <Description style={{color: colors['primary-font'],opacity:0.2}}>
+          CANTIDAD: {producto.cantidad}
+        </Description>
         {producto.oferta ? (
           <>
             <Description
               style={{
-                color: colors['primary-font'],fontSize:12,
+                color: colors['primary-font'],
               }}>
               {' '}
               -{producto.oferta}%
             </Description>
             <Description
               style={{
-                color: colors['primary-font'],fontSize:12,
+                color: colors['primary-font'],
                 textDecorationLine: 'line-through',
+            
               }}>
-              {producto.precio_dolar}
+              ${parseInt(producto.precio_dolar).toFixed(2)}
+            </Description>
+            <Description
+              style={{
+                color: colors['primary-font'],
+            
+              }}>
+              ${ precio.toFixed(2)}
             </Description>
           </>
         ) : (
-          <></>
+          <>
+             <Description
+              style={{
+                color: colors['primary-font'],
+            
+              }}>
+              ${ precio.toFixed(2)}
+            </Description>
+          </>
         )}
-
-        <Description style={{fontSize:12,color: colors['primary-font']}}>
-          {precio.toFixed(2)}
-        </Description>
-</Column>
+      </DescriptionContent>
       <PlusActions>
+      <Button onPress={del} style={{alignSelf:"flex-end"}}>
+          <Icon size={20} color={"gray"} name={'x'} />
+        </Button>
+        <View style={{flexDirection:"row"}}>
+        <IconButton
+          icon="plus"
+          style={{backgroundColor:"#EBF4FF"}}
+          color={"black"}
+          size={25}
+        />
         <Cantidad
           style={{color: colors['primary-font']}}
           clearTextOnFocus
@@ -114,9 +127,14 @@ const ProductoCard = ({disabled = false, producto, id = 0}: ProductoPros) => {
           value={text}
           keyboardType={'numeric'}
         />
-        <Button onPress={del}>
-          <Icon size={30} color={colors && colors.buttonLight} name={'sticker-remove'} />
-        </Button>
+         <IconButton
+          icon="minus"
+          style={{backgroundColor:"#EBF4FF"}}
+          color={"black"}
+          size={25}
+        />
+        </View>
+      
       </PlusActions>
     </Product>
   );

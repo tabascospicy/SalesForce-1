@@ -40,7 +40,6 @@ type DbClients = {
 };
 const useStartCalls = (): DbContext => {
   const [productos, setProductos] = useState<Product[]>([]);
-  const [clientes, setClientes] = useState<Cliente[]>([]);
   const [usuarioLog, setUsuario] = useState<IUsuario | placeholder>({
     nombre: '',
     login: '',
@@ -55,8 +54,10 @@ const useStartCalls = (): DbContext => {
   const [percent, setPercent] = useState(0);
   const [empresa, setEmpresa] = useState<Empresa>({});
   const {checkStoragePermission} = useCheckPermision({});
+  
   const [SesionState, setSesionState] = useState<SesionState>(0);
   const Tenant = useRef('');
+  const clientes = useRef<Cliente[]>([]);
   const ImageSrc = useRef('');
   useEffect(() => {
     if (VerificarTenant()) {
@@ -93,6 +94,12 @@ const useStartCalls = (): DbContext => {
   const getTenant = () => {
     return Tenant.current;
   };
+  const getClientes = ():Cliente[] => {
+    return clientes.current;
+  };
+  const setClientes = (clientesList:Cliente[]) =>{
+    clientes.current = clientesList
+  }
   const handleFecha = (x: string) => {
     setFecha(x);
   };
@@ -312,7 +319,7 @@ const useStartCalls = (): DbContext => {
     handleFecha,
     productos,
     handleUsuario,
-    clientes,
+    clientes:getClientes(),
     CallApi,
     mensaje,
     handleCall,

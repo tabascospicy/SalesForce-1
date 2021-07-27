@@ -379,7 +379,6 @@ type UiContext = {
   hideMensaddProductaje: () => void;
   showMensaje: (mensaje: MensajeContent) => void;
   isNetworkAvailable?: (check?: boolean) => Promise<boolean>;
-  ?: (x: Product, cantidad: number) => void;
   deleteProduct?: (x: Product) => void;
   ExtraFunction?: React.RefObject<VoidFunction>;
   EditCantidad?: (cantidad: number, position: number) => void;
@@ -473,6 +472,7 @@ type RouteParamsList = {
   Clientes: any;
   Load: any;
   Pedidos: any;
+  Cart:any;
   Empresa: any;
   Cliente: any;
   Factura: {name:string,detalle:string,total:string};

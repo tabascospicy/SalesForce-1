@@ -16,48 +16,36 @@ import accounting from 'accounting';
 import reactotron from 'reactotron-react-native';
 
 type ProfileScreenNavigationProp = StackNavigationProp<{}>;
-
+const {width} = Dimensions.get("screen");
 const Product = styled(Pressable)`
-  flex-grow: 1;
   position: relative;
   padding: 10px;
   margin: 5px;
-  min-height: 120px;
+  min-height: 100px;
   max-height: 140px;
   align-items: center;
-  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
   border-radius: 9px;
   background-color: white;
   box-shadow: 20px 50px 5px black;
 `;
 const Description = styled.View`
-  flex-grow: 1;
   flex-direction: column;
+  flex:3;
   padding-right: 20px;
-  flex-wrap: nowrap;
 `;
 const Name = styled(Font)`
-  font-size: 12px;
+  font-size: 18px;
   opacity: 0.8;
 `;
 const Des = styled(Font)`
-  font-size: 9px;
+  font-size: 11px;
   opacity: 0.7;
 `;
-const Plus = styled(Pressable)``;
-const PlusIcon = styled(Font)`
-  padding-top: 3px;
-  padding-bottom: 3px;
-  padding-left: 8px;
-  opacity: 0.7;
-  margin-left: 2px;
-  padding-right: 8px;
-  border-radius: 40px;
-  color: white;
-`;
+
 const Price = styled(Font)`
   font-size: 12px;
-
   align-items: center;
   color: #2c2c63;
   border-radius: 10px;
@@ -82,6 +70,8 @@ const Column = styled.View`
   flex-direction: column;
   align-items: center;
 `;
+const Bold = styled(Des)`
+`;
 const Position = styled.View`
   position: absolute;
   right: 0;
@@ -102,10 +92,12 @@ interface ProductoPros {
   setSnack: any;
   img: any;
   detalles: any;
+  ind:number;
 }
 const ProductoCard = ({
   disabled = false,
   navigation,
+  ind,
   detalles,
   producto,
 }: ProductoPros) => {
@@ -156,14 +148,27 @@ const ProductoCard = ({
       onPress={nav}>
       <Image producto={producto.item} />
       <Description>
-        <Name>{producto.item.nombre}</Name>
-        <Des>{det.marca}</Des>
-        <Des>{det.categoria}</Des>
+        <Name  >{producto.item.nombre === "CHURROS" ? "Prueba de nombre muy largo estilo construhogar para ver que funcione el responsive" : producto.item.nombre }</Name>
+        <Des><Bold style={{fontWeight:"bold"}}>Marca:</Bold>{det.marca}</Des>
+        <Des><Bold style={{fontWeight:"bold"}}>Categoría:</Bold>{det.categoria}</Des>
       </Description>
 
       <Position>
         <Column>
-        <Price>
+        {
+          parseInt(descuento?.descuento) === 0 ? <>
+          <Price>
+            {accounting.formatMoney(precio.current.toFixed(2), {
+              symbol: '',
+              thousand: '.',
+              decimal: ',',
+              precision: 2,
+            })}
+            $
+          </Price>
+          
+          </>:<>
+          <Price>
        - {parseInt(descuento?.descuento)} %
         </Price>
           <Price style={{textDecorationLine:"line-through"}}>
@@ -183,10 +188,11 @@ const ProductoCard = ({
             })}
             $
           </Price>
+          
+          </> 
+        }
+       
         </Column>
-        <Plus>
-          <PlusIcon style={{backgroundColor: colors.secondary}}>+</PlusIcon>
-        </Plus>
       </Position>
     </Product>
   );

@@ -1,8 +1,12 @@
 import React, { FC , useContext} from 'react';
 import { Button, Caption, Dialog, Portal,Divider } from 'react-native-paper';
-import { Description, Introducir } from 'views/Producto/styled';
+import { Introducir } from 'views/Producto/styled';
 import {Font} from "styles"
+import styled from "styled-components";
 import Context from "services/context";
+const Description = styled(Font)`
+
+`
 type ModalAgregarProps = {
   visible:boolean;
   hideDialog:()=>void;
@@ -19,7 +23,7 @@ const ModalAgregar:FC<ModalAgregarProps> = ({visible,hideDialog,selectedProduct,
   const {colors,descuento} = useContext(Context);
   return (
     <Portal>
-    <Dialog visible={visible} onDismiss={hideDialog}>
+    <Dialog style={{elevation:4,backgroundColor:"white"}} visible={visible} onDismiss={hideDialog}>
       <Dialog.Title style={{color:colors && colors["primary-font"]}}><Font>{ selectedProduct && selectedProduct.producto.nombre}</Font></Dialog.Title>
       <Dialog.Content>
         <Description  style={{color:colors && colors["primary-font"]}}>

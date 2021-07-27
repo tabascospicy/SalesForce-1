@@ -12,6 +12,7 @@ import DataBase from 'services/realm';
 import useOnView from 'Hooks/onView';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {theme} from "theme" 
+import { TopContent } from 'views/Producto/styled';
 const {height} = Dimensions.get('screen');
 type ProfileScreenNavigationProp = StackNavigationProp<{}>;
 
@@ -21,23 +22,13 @@ type props = {
   clientes: Array<Cliente>;
   visual: any;
 };
-const BlueBackground = styled(Animated.View)`
-  position: absolute;
-  top: 0;
-  height: ${height}px;
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
-  width: 100%;
-  background-color: ${({color}: any) => color};
+
+const TopBarContent = styled(Animated.View)`
+background-color:${theme.primary};
+margin-bottom:10px;
 `;
-let temp = {
-  item: {
-    nombre: '',
-    direccion: '',
-    id: 1,
-  },
-  id: 1,
-};
+
+
 type DropDownItem = {
   value: number;
   label: string;
@@ -57,18 +48,25 @@ const Home = ({pressed, visual, navigation, ...props}: props) => {
   const timer = useRef(0);
   const {isOnView} = useOnView({navigation});
   const {ScrollEvent} = useScrollAnimation();
+  const readClientes = async () => {
+    try {
+      const clientList = (((await readAll(
+        'clientList',
+      )) as unknown) as Cliente[]);
+      const clientes = clientList[0]?.clients
+      setClientes(clientes)
+    } catch (e) {
+      console.log(e, 'errooooor');
+    }
+  };
   useEffect(() => {
     readUbicaciones();
+    readClientes();
     return () => {
       timer?.current && clearTimeout(timer.current || 0);
     };
   }, []);
 
-  useEffect(() => {
-    if (!calling?.loading) {
-      clientes && setClientes([...clientes]);
-    }
-  }, [clientes]);
 
   useEffect(() => {
     buscarEnZona();
@@ -119,12 +117,12 @@ const Home = ({pressed, visual, navigation, ...props}: props) => {
 
   return (
     <View >
-      <View style={{backgroundColor:theme.primary}}>
+      <TopBarContent>
       <Navbar navigation={navigation} name="Home" pressed={pressed}></Navbar>
       <Animated.View >
         <SearchInput  buscar={Buscar} />
       </Animated.View>
-      </View>
+      </TopBarContent>
       {show && (
         <AnimatedList
           scrollEventThrottle={16}

@@ -2,25 +2,23 @@ import styled from "styled-components/native";
 import { Font } from "styles";
 import {StyleSheet} from "react-native";
 export const Container = styled.View`
-  width: 100%;
-  padding-left: 30px;
+  width: 70%;
+
+  align-self: center;
   padding-top:15px;
-  align-items: flex-start;
+  align-items: center;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;
+  text-align: center;
   position: relative;
  
 `;
 export const Portada = styled.View`
-  width: 60%;
-  background-color: white;
-  border-radius: 15px;
   align-items: center;
-  padding: 10px;
   justify-content: center;
 `;
 export const Name = styled(Font)`
-  font-size: 25px;
+  font-size: 23px;
   color: white;
   padding-bottom: 10px;
 `;

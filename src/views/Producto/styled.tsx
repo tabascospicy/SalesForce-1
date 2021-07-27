@@ -2,17 +2,20 @@ import { Dimensions, Pressable } from "react-native";
 import styled from "styled-components/native";
 import {StyleSheet} from "react-native";
 import { Font } from "styles";
-
+import {theme} from "theme"
+import { SafeAreaView, ScrollView, StatusBar } from 'react-native';
 export const {height,width} = Dimensions.get('window');
-export const Container = styled.View`
+export const Container = styled(SafeAreaView)`
   flex-grow: 1;
   position: relative;
   background-color: #f5f5f8;
   z-index: 1;
 `;
+export const Scroll = styled(ScrollView)`
 
+`
 export const BlueBackground = styled.View`
-  background-color: #484aa3;
+  background-color: ${theme.primary};
   width: 100%;
   position: absolute;
   top: 0;
@@ -24,51 +27,53 @@ export const TopContent = styled.View`
   width: 100%;
 `;
 export const TopElements = styled.View`
-  justify-content:space-between;
-  padding:${height/16}px;
-  align-items: center;
-  height:${height/6}px;
+
 `;
 export const Tags = styled.View`
   align-items: flex-start;
   flex-wrap: wrap;
-  background-color: #6567cc;
+  background-color: ${theme.primary};
   border-radius:5px;
   padding:10px;
-
   justify-content: space-between;
 `;
 export const Tag = styled(Font)`
-  font-size: 15px;
-  padding: 3px;
-  border-radius: 10px;
-  margin:2px;
   opacity: 0.9;
 `;
+export const Codigo = styled(Tag)`
+font-weight:bold;
+font-size:17px;
+opacity:0.5;
+`
+export const Name = styled(Tag)`
+  font-weight:bold;
+  font-size:23px;
+  letter-spacing: 0.6px;
+`
+
+
 export const Bold = styled(Tag)`
   font-weight:bold;
 `
 export const Card = styled.View`
   padding: 20px;
-  margin:10px;
-  min-width:${width -50}px;
+  width:${width -20}px;
   border-radius: 17px;
   align-self: center;
   align-items: flex-start;
-  background-color: white;
   position: relative;
-  z-index:2;
 `;
 export const Card2 = styled(Card)`
-  width: 100%;
-  z-index:9;
-  height:${height/2+140}px;
+ flex-direction: row;
+ flex-wrap: wrap;
 `
-export const Description = styled(Font)`
+export const Descripcion = styled(Font)`
   font-size: 15px;
-  color: black;
-  background-color:#ffff;
-  border-radius:20px;
+  opacity:0.5;
+`;
+export const DescriptionTitle = styled(Font)`
+  font-size: 18px;
+  font-weight:bold;
 `;
 export const Price = styled(Font)`
   font-size: 15px;
@@ -118,14 +123,38 @@ export const Title = styled(Font)`
   font-size: 20px;
   padding-bottom: 10px;
 `;
+
+export const ButtonBox = styled(Pressable)`
+  padding-top:12px;
+  padding-bottom:12px;
+  padding-left:28px;
+  padding-right: 28px;
+  border-radius:25px;
+  background-color: ${theme.secondary};
+`
+export const ButtonText = styled(Font)`
+color: white;
+  letter-spacing: 0.6px;
+  font-weight: bold;
+  font-size:15px;
+  
+`
+export const Box = styled.View`
+ padding:8px;
+ border-radius:10px;
+ margin:10px;
+ background-color:white;
+ flex-direction: column;
+`
+
 export const Line = styled.View`
   flex-direction: row;
-  flex-wrap: wrap;
-  padding:5px;
+  width: 100%;
+  justify-content: space-between;
 `;
 export const LineTitle = styled(Font)`
   font-weight: bold;
-  font-size: 13px;
+  font-size: 15px;
   letter-spacing: 0.3px;
   padding-top: 2px;
 `;
@@ -140,7 +169,4 @@ export const Separator = styled.View`
   opacity:0.2;
   background-color:black;
   align-self:flex-start;
-`
-export const InvTitle = styled(Font)`
-
 `

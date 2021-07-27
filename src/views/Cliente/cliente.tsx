@@ -72,10 +72,9 @@ const Cliente = ({navigation, route, ...props}: PropsClienteScreen) => {
   };
   const nav = () => {
     if (payments.method === '') {
-      setVisible(true);
-    } else {
+      handleDescuento && handleDescuento({descuento:"0",dia_inicial:0,dia_final:0,nombre:"",id:0})
+    } 
       navigation.navigate('Agregar',{disabled:false});
-    }
   };
 
   const readFacturas = async () => {
@@ -109,16 +108,19 @@ const Cliente = ({navigation, route, ...props}: PropsClienteScreen) => {
       </Portal>
       <Content>
         <Tab.Navigator
-          initialRouteName="Description"
+          initialRouteName="Descriptíon"
           tabBarPosition="top"
+
           tabBarOptions={{
-            activeTintColor: '#484aa3',
+            indicatorStyle:{backgroundColor:colors.secondary},
+            activeTintColor: colors.secondary,
+            pressColor:colors.secondary,
             labelStyle: {
               fontSize: 11,
               fontWeight: 'bold',
             },
           }}>
-          <Tab.Screen name="Descripcion">
+          <Tab.Screen name="Descripción">
             {(props) => (
               <ClientDescription
                 isCreditNotAvaible={isCreditNotAvaible}

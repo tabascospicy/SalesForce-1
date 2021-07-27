@@ -22,7 +22,7 @@ import Reload from './ReloadData';
 import styled from 'styled-components/native';
 import MinifiedList from './MinifiedList';
 import Sesion from './Sesion';
-import Cart from 'components/Cart/Cart';
+import Cart from './Cart';
 
 const Styles = StyleSheet.create({
   viewsContainer: {
@@ -68,16 +68,12 @@ const Stack = createStackNavigator<RouteParamsList>();
 const index = ({productos, clientes, startAll}: any) => {
   const routeNameRef = React.useRef('');
   const previousRouteName = React.useRef('');
-  const MenuTapRef = React.useRef(null);
   const {pressed, transform, isOpen} = useGrowAnimation();
   const {
     handleSelectedView,
     SesionState,
     VerificarStorage,
     empresa,
-    showQr,
-    transformCarrito,
-    toggleCarrito,
   } = useContext(Context);
   const CloseMenu = () => {
     return (
@@ -118,14 +114,6 @@ const index = ({productos, clientes, startAll}: any) => {
       <SideMenu pressed={pressed} />
       <CloseMenu />
       <Animated.View style={{...Styles.viewsContainer, transform}}>
-        <Animated.View style={{...cart.cart, transform: transformCarrito}}>
-          <Toggle onPress={toggleCarrito} />
-          <Cart
-            pressed={toggleCarrito}
-            navigation={navigationRef.current}
-            showQr={showQr}
-          />
-        </Animated.View>
         <Mensaje />
         <NavigationContainer
           onReady={CheckStorageAtInit}
@@ -151,7 +139,11 @@ const index = ({productos, clientes, startAll}: any) => {
                       <Clientes clientes={clientes} {...props} pressed={pressed}></Clientes>
                   )}
                 </Stack.Screen>
-
+                <Stack.Screen name="Cart">
+                  {(props: any) => (
+                      <Cart {...props} pressed={pressed}></Cart>
+                  )}
+                </Stack.Screen>
                 <Stack.Screen name="Load">
                   {(props: any) => (
                     <Reload startAll={startAll} {...props} pressed={pressed}></Reload>

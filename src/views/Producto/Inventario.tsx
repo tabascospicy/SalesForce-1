@@ -6,10 +6,10 @@ import styled from 'styled-components/native';
 import Context from 'services/context';
 import Empresa from 'services/FetchApis/Empresa';
 import {ActivityIndicator, Colors} from 'react-native-paper';
-let CardInventario = styled.View`
-  padding: 20px;
-  margin: 10px;
 
+const CardInventario = styled.View`
+  padding: 20px;
+  width:${width -20}px;
   border-radius: 17px;
   align-self: center;
   background-color: white;
@@ -66,14 +66,11 @@ const Inventario: React.FC<Props> = ({concepto = 8}) => {
       <DataTable style={{width: width - 80}}>
         <DataTable.Header>
           <DataTable.Title>Deposito</DataTable.Title>
-          <DataTable.Title numeric>existencia</DataTable.Title>
+          <DataTable.Title numeric>Existencia</DataTable.Title>
         </DataTable.Header>
 
         {loading ? (
           <DataTable.Row>
-            <DataTable.Cell>
-              <ActivityIndicator animating={loading} color={Colors.red800} />
-            </DataTable.Cell>
             <DataTable.Cell>
               {' '}
               <ActivityIndicator animating={loading} color={Colors.red800} />
@@ -83,7 +80,7 @@ const Inventario: React.FC<Props> = ({concepto = 8}) => {
             existencias.map((element, key: number) => {
             if (fromR <= key && key < toR) {
               return (
-                <DataTable.Row>
+                <DataTable.Row key={key}>
                   <DataTable.Cell>{element.nombre}</DataTable.Cell>
                   <DataTable.Cell numeric>{element.existencia}</DataTable.Cell>
                 </DataTable.Row>

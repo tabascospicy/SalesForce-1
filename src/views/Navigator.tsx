@@ -12,6 +12,7 @@ import Checkout from './Checkout';
 import Cliente from './Cliente';
 import Pedidos from './Pedidos';
 import Factura from './Factura';
+import Cart from "./Cart";
 import ProductList from './ProductList';
 import Login from './Login/Login';
 import Reload from './ReloadData';
@@ -103,6 +104,11 @@ const Navigator:React.FC<NavigatorProps> = ({productos, clientes, startAll,press
                 <Stack.Screen name="Clientes">
                   {(props: any) => (
                       <Clientes clientes={clientes} {...props} pressed={pressed}></Clientes>
+                  )}
+                </Stack.Screen>
+                <Stack.Screen name="Cart">
+                  {(props: any) => (
+                      <Cart  {...props} pressed={pressed}></Cart>
                   )}
                 </Stack.Screen>
 

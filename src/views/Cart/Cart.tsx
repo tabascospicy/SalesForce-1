@@ -1,18 +1,15 @@
 import React, {useEffect, useContext, Fragment, useState} from 'react';
-import {Easing, Dimensions, Pressable, Text} from 'react-native';
+import { Pressable, Text} from 'react-native';
 import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import List from './List';
-import {Surface} from 'react-native-paper';
 import Context from 'services/context';
-import reactotron from 'reactotron-react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Font } from 'styles';
+import { IconButton } from 'react-native-paper';
 const CartContainer = styled.View`
   flex-grow: 1;
   z-index: 5;
-  height: 100%;
-  width: 80%;
   background-color: #f8f9fa;
   flex-direction: column;
   z-index: 20;
@@ -85,14 +82,21 @@ const Cart = ({navigation, showQr, ...props}:CartProps) => {
       navigation.navigate('Checkout');
     })
   };
-  reactotron.log(props.isOpen,"menu");
-  const {carrito,colors} = useContext(Context);
+  const handleBack = () => {
+    props.navigation.goBack();
+  };
+  const {colors} = useContext(Context);
   return (
     <CartContainer>
       <TitleContainer>
         <IconContainer>
-          <Number style={{color:colors["primary-font"]}}>{carrito.length}</Number>
-          <Icon name="cart" size={30} color={colors["primary-font"]} />
+        <IconButton
+          icon="arrow-left"
+         
+          onPress={handleBack}
+          color={"black"}
+          size={25}
+        />
         </IconContainer>
         <Title style={{color:colors["primary-font"]}} >Carrito</Title>
       </TitleContainer>

@@ -6,7 +6,7 @@ import Modal from 'components/Animate/modal';
 
 import SearchInput from 'components/Inputs/SearchInput';
 import Context from 'services/context';
-
+import {theme} from "theme";
 import QRCode from 'react-native-qrcode-generator';
 import {useRef} from 'react';
 import SnackBar from 'components/Animate/SnackBar';
@@ -33,7 +33,7 @@ const cart = StyleSheet.create({
 
 const BlueBackground = styled.View`
   max-height: 130px;
-  background-color: #484aa3;
+  background-color: ${theme.primary};
   flex-grow: 1;
   z-index: 1;
 `;

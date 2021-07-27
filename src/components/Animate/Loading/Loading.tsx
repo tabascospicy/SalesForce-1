@@ -22,7 +22,7 @@ const Loading:React.FC<LoadingProps>= ({calling,message=""}) => {
       duration: 5000,
       useNativeDriver: true,
     }).start(() => {
-      console.log(stop.current)
+     
       if (!stop.current) {
         anim();
       }

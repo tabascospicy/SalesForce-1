@@ -1,5 +1,5 @@
 import styled from "styled-components/native";
-
+import {theme} from "theme";
 export const GlobalContainer = styled.View`
   flex-grow: 1;
   background-color: #f5f5f8;
@@ -15,7 +15,7 @@ export const Content = styled.View`
 export const BlueBackground = styled.View`
   border-bottom-right-radius:20px;
   border-bottom-left-radius:20px;
-  background-color: #484aa3;
+  background-color:${theme.primary};
   width: 100%;
   padding-bottom:20px;
 `;

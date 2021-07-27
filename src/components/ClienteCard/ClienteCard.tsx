@@ -15,7 +15,6 @@ import CustomImage from 'components/Image';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { shadowSetting } from 'theme';
-import {BoxShadow} from 'react-native-shadow';
 
 
 type ProfileScreenNavigationProp = StackNavigationProp<{}>;
@@ -24,30 +23,22 @@ type ClienteCardProps = {
   navigation: ProfileScreenNavigationProp;
   item: Item;
 };
+
 const color = '#e0dddd';
+
 const ClienteCard: FC<ClienteCardProps> = ({ item, navigation }) => {
   const { handleCDestino, colors } = useContext(Context);
-  const shadowSet = {
-    ...shadowSetting,
-    width: width - 30,
-    height: height / 10,
-    style: {
-      marginHorizontal:"auto",
-       marginVertical:10,
-       alignItems:"center",
-       alignSelf:"center",
-      justifyContent:"center"
-      }
-  };
+
   const selected = useCallback(() => {
     handleCDestino && handleCDestino(item.item);
 
     navigation.navigate('Cliente');
   }, []);
+  const isStore = item.item?.cedula?.includes("J") || item.item?.nombre?.includes("C.A")
   return (
     
     <Container android_ripple={{ color }} onPress={selected}>
-        <CustomImage />
+        <CustomImage src={isStore ?require("assets/shops.png") : require("assets/people.png")} />
         <Info>
           <Name>{item.item.nombre}</Name>
           <Direccion>
@@ -56,7 +47,7 @@ const ClienteCard: FC<ClienteCardProps> = ({ item, navigation }) => {
               name={'md-location-sharp'}
               size={12}
             />
-            {item.item.direccion}
+            {item.item.direccion.toLowerCase()}
           </Direccion>
         </Info>
     </Container>

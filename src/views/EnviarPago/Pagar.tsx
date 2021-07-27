@@ -70,7 +70,7 @@ const Pagar: React.FC<PagarProps> = ({navigation, route}) => {
     const convertir =
       pagoTemplate.current.moneda.includes("Bs")
         ? parseFloat(pagoTemplate.current.monto) / parseFloat(tasa)
-        : parseFloat(pagoTemplate.current.monto);
+        : parseFoat(pagoTemplate.current.monto);
     const isNotValid = convertir + total.current > objetivoPagar;
    
     console.log({valid:isNotValid && !isAbono,total:convertir + total.current,bs:pagoTemplate.current.moneda })

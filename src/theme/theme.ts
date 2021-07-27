@@ -5,7 +5,7 @@ export const theme: appTheme = {
   secondary: '#03588C',
   "secondary-light": '#FCEEEF',
   "secondary-dark": "#34090C",
-  terceary: '#639CBF',
+  terceary: '#9BA0FD',
   Light: "#F2F2F2",
   ButtonStrong: "#03588C",
   buttonLight: "#03588C",

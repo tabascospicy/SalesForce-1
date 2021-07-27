@@ -2,7 +2,7 @@ import styled from 'styled-components/native';
 import {Dimensions, StyleSheet} from 'react-native';
 import {Transitioning} from 'react-native-reanimated';
 import {Font} from "styles"
-import { shadowSetting } from 'theme';
+import { shadowSetting,theme } from 'theme';
 
 const {height,width} = Dimensions.get("window");
 export const GlobalContainer = styled.View`
@@ -36,7 +36,7 @@ export const BlueBackground = styled.View`
   height: 25%;
   border-radius: 10px;
   height: 23%;
-  background-color: #484aa3;
+  background-color:${theme.primary};
   width: 100%;
 `;
 export const Card = styled.View`
@@ -90,6 +90,8 @@ export const PickerContainer = styled.View`
   border-radius:10px;
   margin-top: 20px;
   margin-bottom: 20px;
+  border-bottom-color:${theme.secondary};
+  border-bottom-width:2px;
 `
 export const shadowSet = {
   ...shadowSetting,

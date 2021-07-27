@@ -3,28 +3,26 @@ import styled from "styled-components/native";
 import { Font } from "styles";
 
 export const Product = styled(Pressable)`
-  flex-grow: 1;
   min-height: 40px;
   max-height:120px;
-  background-color:white;
   border-radius:10px;
   padding: 10px;
   justify-content: center;
   align-items:center;
   margin-bottom: 10px;
+  flex-wrap:wrap;
   flex-direction: row;
-  flex-wrap: wrap;
 `;
 export const Description = styled(Font)`
-  flex-wrap: wrap;
+  
   flex-direction: column;
   font-weight: bold;
   color: black;
   opacity:0.7;
-  font-size: 8px;
+  font-size: 15px;
 `;
 export const Cantidad = styled.TextInput`
-  flex-wrap: wrap;
+
   flex-direction: column;
   font-weight: bold;
   color: black;
@@ -38,7 +36,6 @@ export const DescriptionContent = styled.View`
 `;
 export const PlusActions = styled.View`
   height: 100%;
-  max-width: 50px;
   align-items: center;
   justify-content: space-between;
 `;
