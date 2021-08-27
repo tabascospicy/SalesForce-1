@@ -21,7 +21,7 @@ const pendientes:React.FC<Props> = ({pendientes,select,status}) => {
   return (
     <DataTable >
     <DataTable.Header>
-      <DataTable.Title >numero</DataTable.Title>
+      <DataTable.Title >Número</DataTable.Title>
       <DataTable.Title  >Cliente</DataTable.Title>
       <DataTable.Title>Fecha</DataTable.Title>
       <DataTable.Title numeric>Total</DataTable.Title>

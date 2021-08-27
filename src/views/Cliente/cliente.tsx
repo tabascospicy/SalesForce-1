@@ -12,7 +12,7 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 const Tab = createMaterialTopTabNavigator();
 import ClientDescription from 'views/Cliente/Data';
 import {StackNavigationProp} from '@react-navigation/stack';
-
+import Pagos from "./Pagos"
 type ProfileScreenNavigationProp = StackNavigationProp<RouteParamsList,"Cliente">;
 interface PropsClienteScreen {
   navigation: ProfileScreenNavigationProp;
@@ -20,6 +20,7 @@ interface PropsClienteScreen {
 }
 const {readAll} = DataBase();
 const Cliente = ({navigation, route, ...props}: PropsClienteScreen) => {
+
   const {cliente, resetCarrito, colors, handleDescuento} = useContext(Context);
   const [facturas, setFacturas] = useState<Factura[]>([]);
   const tipos = useRef<TipoFactura[]>([{inicial: '', id: 0, nombre: ''}]);
@@ -138,6 +139,17 @@ const Cliente = ({navigation, route, ...props}: PropsClienteScreen) => {
               isOnView ? (
                 <Facturas
                   {...{isOnView,facturas, tipos: tipos.current, navigation, route}}
+                />
+              ) : (
+                <></>
+              )
+            }
+          </Tab.Screen>
+          <Tab.Screen name="Pagos enviados">
+            {(props) =>
+              isOnView ? (
+                <Pagos
+                  {...{isOnView, navigation, route}}
                 />
               ) : (
                 <></>

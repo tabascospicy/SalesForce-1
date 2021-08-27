@@ -1,11 +1,12 @@
 import React, {useEffect, useContext, Fragment, useState} from 'react';
-import { Pressable, Text} from 'react-native';
+import { Pressable, Text, View} from 'react-native';
 import styled from 'styled-components/native';
-import Icon from 'react-native-vector-icons/Ionicons';
+
 import List from './List';
 import Context from 'services/context';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Font } from 'styles';
+import {theme } from "theme"
 import { IconButton } from 'react-native-paper';
 const CartContainer = styled.View`
   flex-grow: 1;
@@ -30,6 +31,7 @@ const Title = styled(Font)`
 `;
 const IconContainer = styled.View`
   flex-direction: row;
+  flex:1;
   align-items: center;
 `;
 const Number = styled(Font)`
@@ -40,27 +42,32 @@ const Number = styled(Font)`
   border-color: black;
 `;
 const BottomLabel = styled.View`
-  flex-direction: row;
   padding: 20px;
   justify-content: space-around;
   background-color: white;
   align-items: center;
 `;
-const Label = styled(Font)``
+const Label = styled(Font)`
+font-size: 15px;
+  font-weight:bold;`
 const Total = styled(Font)`
-  font-size: 13px;
+  font-size: 15px;
+  font-weight:bold;
 `;
 
 const Ordernar = styled(Pressable)`
-  padding: 10px;
+  padding: 15px;
   color: white;
-  background-color: #e05263;
+  width:85%;
+  border-radius:25px;
+  elevation:3;
+  background-color: ${theme.secondary};
+  align-items: center;
 `;
-const QrButton = styled(Pressable)`
-  background-color: white;
-  padding: 20px;
-  border-radius: 10px;
-`;
+const OrdernarText = styled(Font)`
+  font-weight: bold;
+  font-size:15px;
+`
 const TotalBox = styled.View`
   flex-grow: 1;
   align-items: center;
@@ -77,7 +84,6 @@ type CartProps = {
 }
 const Cart = ({navigation, showQr, ...props}:CartProps) => {
   const nav = () => {
-    props.pressed();
     requestAnimationFrame(()=>{
       navigation.navigate('Checkout');
     })
@@ -99,12 +105,10 @@ const Cart = ({navigation, showQr, ...props}:CartProps) => {
         />
         </IconContainer>
         <Title style={{color:colors["primary-font"]}} >Carrito</Title>
+        <View style={{flex:1}}></View>
       </TitleContainer>
       <List {...{isOpen:false}}  />
       <BottomLabel>
-        <QrButton onPress={showQr} android_ripple={{color: 'pink', radius: 20}}>
-          <Icon size={20} name="qr-code-outline"></Icon>
-        </QrButton>
         <Totales {...{ nav,navigation}} />
       </BottomLabel>
     </CartContainer>
@@ -139,7 +143,7 @@ const Totales = ({navigation,nav}:TotalesProps) => {
       <TotalBox>
         <Row>
           <Label>Total:</Label>
-          <Total>{Monto}</Total>
+          <Total>${Monto}</Total>
         </Row>
         {parseInt(desUi) !== 0 && (
           <Row>
@@ -148,8 +152,8 @@ const Totales = ({navigation,nav}:TotalesProps) => {
           </Row>
         )}
       </TotalBox>
-      <Ordernar onPress={nav}>
-        <Text style={{color: 'white'}}>Ordenar</Text>
+      <Ordernar onPress={nav} android_ripple={{color:"white"}}>
+        <OrdernarText style={{color: 'white',fontWeight:"bold"}}>ORDENAR</OrdernarText>
       </Ordernar>
     </Fragment>
   );

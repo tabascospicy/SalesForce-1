@@ -4,10 +4,10 @@ import ActionButtons from 'components/NavActionButtons';
 import Pagar from "./Pagar";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RouteProp } from "@react-navigation/native";
+
 const Container = styled.View`
   flex-grow:1;
   flex-direction:column;
-  background-color:#484aa3;
   padding:10px;
 `
 type ProfileScreenNavigationProp = StackNavigationProp<RouteParamsList,'Pagar'>;
@@ -19,7 +19,7 @@ type PagarProps = {
 const EnviarPago:React.FC<PagarProps> = ({navigation,route,...props}) => {
   return (
     <Container>
-      <ActionButtons  menu={false} back {...props} />
+      <ActionButtons color={"black"} menu={false} back {...props} />
       <Pagar {...{navigation,route}} {...props}/>
     </Container>
   );

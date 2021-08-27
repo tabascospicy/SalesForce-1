@@ -17,7 +17,7 @@ const DataBase = () => {
       return 'error';
     }
   };
-  const SaveElements = async (elements: any, name:DB.models) => {
+  const SaveElements = async (elements: any=[], name:DB.models) => {
     try {
       var result = true;
       realm.write(() => {

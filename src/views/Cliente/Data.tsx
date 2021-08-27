@@ -65,8 +65,8 @@ const ClientData:React.FC<Props> = ({handleDescuento,setPayments,payments,client
       })}
     </Picker>
     </PickerContainer>
-    <Button labelStyle={{color:"white"}}  disabled={isCreditNotAvaible || (cliente?.limite_credito===null)} onPress={nav} mode={'contained'} color={colors.secondary}>
-      Generar Pedido
+    <Button style={{width:"100%"}} labelStyle={{color:"white"}}  disabled={isCreditNotAvaible || (cliente?.limite_credito===null)} onPress={nav} mode={'contained'} color={colors.secondary}>
+      Continuar
     </Button>
    {(isCreditNotAvaible || (cliente?.limite_credito===null)) && <Caption>Este Usuario no posee credito disponible</Caption>} 
   </Card>

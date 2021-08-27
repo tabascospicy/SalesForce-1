@@ -8,6 +8,7 @@ import {View} from 'react-native';
 import { Badge } from 'react-native-paper';
 import moment from "moment";
 import {BoxShadow} from 'react-native-shadow';
+import accounting from "accounting"
 type facturaProps = {
   item: Factura;
   tipo:string;
@@ -61,14 +62,24 @@ const Factura = ({item,tipo="",ShowDetalles,showPagar,id}: facturaProps) => {
       <Row>
         <View>
           <View style={{flexDirection:"row"}}>
-            <Badge style={{marginBottom:"auto",marginTop:"auto",backgroundColor:colors?.buttonsLight2}} visible={true} size={10}></Badge>
+            <Badge style={{marginBottom:"auto",marginTop:"auto",backgroundColor:colors?.secondary}} visible={true} size={10}></Badge>
              <Title> Nro {item.numero_factura}</Title>
           </View>
-          <Caption>SubTotal : {item.subtotal_dolar}</Caption>
-          <Text>Monto : {monto.toFixed(2)}</Text>
+          <Caption>SubTotal : {accounting.formatMoney(item.subtotal_dolar, {
+          symbol: '$',
+          thousand: '.',
+          decimal: ',',
+          precision: 2,}
+          )}</Caption>
+          <Text>Monto :  {accounting.formatMoney(monto, {
+          symbol: '$',
+          thousand: '.',
+          decimal: ',',
+          precision: 2,}
+          )}</Text>
           <Caption>{moment(item.fecha_at).format("LLL")}</Caption>
         </View>
-        <Button color={colors?.buttonsLight2} icon={'dots-vertical'} onPress={handlePress}>
+        <Button color={colors?.secondary} icon={'dots-vertical'} onPress={handlePress}>
           Detalles
         </Button>
       </Row>
@@ -86,7 +97,7 @@ const Factura = ({item,tipo="",ShowDetalles,showPagar,id}: facturaProps) => {
             <Caption> Serial Impresora</Caption>
             <Text>{item.serial_impresora}</Text>
           </Row>
-          <Button color={colors?.ButtonStrong} onPress={Action}>Ir a Pagar</Button>
+          <Button color={colors?.secondary} onPress={Action}>Ir a Pagar</Button>
         </>
       )}
     </FacturaContainer>

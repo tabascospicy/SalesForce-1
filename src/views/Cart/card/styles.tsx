@@ -1,7 +1,8 @@
-import { Pressable } from "react-native";
+import { Pressable , Dimensions} from "react-native";
 import styled from "styled-components/native";
 import { Font } from "styles";
 
+const {width} = Dimensions.get("screen");
 export const Product = styled(Pressable)`
   min-height: 40px;
   max-height:120px;
@@ -24,6 +25,7 @@ export const Description = styled(Font)`
 export const Cantidad = styled.TextInput`
 
   flex-direction: column;
+  text-align: center;
   font-weight: bold;
   color: black;
   opacity:0.7;
@@ -31,12 +33,21 @@ export const Cantidad = styled.TextInput`
 `;
 
 export const DescriptionContent = styled.View`
-  justify-content: center;
   flex-grow: 1;
+  height:100%;
+  padding-top:10px;
+  padding-bottom:10px;
+  max-width: ${width/2 -50}px;
 `;
+
+export const ProductTitle = styled(Font)`
+align-self:flex-start;
+font-weight: bold;
+margin-bottom: auto;
+`
 export const PlusActions = styled.View`
   height: 100%;
-  align-items: center;
+  flex:1;
   justify-content: space-between;
 `;
 export const Plus = styled(Pressable)`

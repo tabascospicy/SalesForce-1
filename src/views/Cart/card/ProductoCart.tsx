@@ -8,13 +8,14 @@ import {
   Description,
   DescriptionContent,
   PlusActions,
+  ProductTitle,
   Product,
   Symbol,
 } from './styles';
 import Icon from 'react-native-vector-icons/Octicons';
 import {StackNavigationProp} from '@react-navigation/stack';
 import styled from 'styled-components/native';
-import { View } from 'react-native';
+import { InteractionManager, View } from 'react-native';
 
 type ProfileScreenNavigationProp = StackNavigationProp<{}>;
 
@@ -24,14 +25,16 @@ interface ProductoPros {
   disabled: boolean;
   dispatch: any;
   id: number;
+  edit:boolean
 }
 const Column = styled(View)`
   flex-direction:column;
   align-self:flex-start;
 `
-const ProductoCard = ({disabled = false, producto, id = 0}: ProductoPros) => {
+const ProductoCard = ({disabled = false, producto, id = 0,edit=true}: ProductoPros) => {
   const [text, setText] = useState(`${producto.cantidad}`);
   const input = useRef();
+  const timer = useRef();
   const {EditCantidad, deleteProduct, colors, descuento} = useContext(Context);
   const PercentageDescuento = useMemo(
     () => (producto.oferta || 0) / 100,
@@ -46,28 +49,39 @@ const ProductoCard = ({disabled = false, producto, id = 0}: ProductoPros) => {
     deleteProduct && deleteProduct(producto);
   }, [producto, text]);
 
-  const refresh = useCallback(() => {
-    EditCantidad && EditCantidad(text ? parseInt(text) : 0, id);
-  }, [text]);
+  const plus = () => {
+    const number = producto.cantidad;
 
-  const editar = () => {
-    input?.current && input?.current.focus();
+    InteractionManager.runAfterInteractions(()=>{
+      EditCantidad && EditCantidad(text ? number + 1 : 0, id);
+    })
+      
   };
 
-  const add = useCallback(
+  const rest = () => {
+    const number = producto.cantidad;
+    ///
+  
+    InteractionManager.runAfterInteractions(()=>{
+EditCantidad && EditCantidad(text ? number - 1 : 0, id);
+    })
+    
+  };
+
+
+
+  const add =
     (letter: string) => {
-      setText(letter);
-    },
-    [text],
-  );
+      EditCantidad && EditCantidad( parseInt(letter),id);
+    }
   return (
     <Product disabled={disabled}>
       <Image style={{elevation:3,backgroundColor:"white",maxWidth:90}} W="90px" H={'90px'} producto={producto} />
-      <DescriptionContent style={{flex: 1}}>
-        <Description style={{color: colors['primary-font']}}>
+      <DescriptionContent >
+        <ProductTitle style={{color: colors['primary-font']}}>
           {producto.nombre}
-        </Description>
-        <Description style={{color: colors['primary-font'],opacity:0.2}}>
+        </ProductTitle>
+        <Description style={{color: colors['primary-font'],opacity:0.2,fontSize:12}}>
           CANTIDAD: {producto.cantidad}
         </Description>
         {producto.oferta ? (
@@ -108,7 +122,7 @@ const ProductoCard = ({disabled = false, producto, id = 0}: ProductoPros) => {
         )}
       </DescriptionContent>
       <PlusActions>
-      <Button onPress={del} style={{alignSelf:"flex-end"}}>
+        {edit && <><Button onPress={del} style={{alignSelf:"flex-end"}}>
           <Icon size={20} color={"gray"} name={'x'} />
         </Button>
         <View style={{flexDirection:"row"}}>
@@ -116,24 +130,26 @@ const ProductoCard = ({disabled = false, producto, id = 0}: ProductoPros) => {
           icon="plus"
           style={{backgroundColor:"#EBF4FF"}}
           color={"black"}
-          size={25}
+          size={20}
+          onPress={plus}
         />
         <Cantidad
           style={{color: colors['primary-font']}}
           clearTextOnFocus
           onChangeText={add}
-          onEndEditing={refresh}
           ref={input}
-          value={text}
+          value={producto.cantidad?.toString()}
           keyboardType={'numeric'}
         />
          <IconButton
           icon="minus"
+          onPress={rest}
           style={{backgroundColor:"#EBF4FF"}}
           color={"black"}
-          size={25}
+          size={20}
         />
-        </View>
+        </View></>}
+     
       
       </PlusActions>
     </Product>

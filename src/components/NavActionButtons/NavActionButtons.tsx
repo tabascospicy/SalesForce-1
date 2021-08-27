@@ -37,7 +37,7 @@ const IconButtons = styled(Icon.Button)`
 
 const Fecha = styled(Font)`
   color: white;
-  font-size: 13px;
+  font-size: 16px;
   text-align: center;
   margin:auto;
   flex-grow: 1;
@@ -51,6 +51,7 @@ const NavActionButtons = ({
   outlined = false,
   relo,
   disabled = false,
+  color="white",
   ...props
 }: any) => {
   const {fecha} = useContext(Context);
@@ -81,17 +82,17 @@ const NavActionButtons = ({
           icon="arrow-left"
           outlined={outlined}
           onPress={handleBack}
-          color={"white"}
+          color={color}
           size={25}
         />
         )}
-        <Fecha>{fecha} </Fecha>
+        <Fecha style={{color}}>{fecha} </Fecha>
         {(list && !disabled) && (
            <IconButton
            onPress={gotoCart}
            icon="cart"
            outlined={outlined}
-           color={outlined ? theme.primary : 'white'}
+           color={outlined ? theme.primary : color}
            size={25}
          />
         )}
@@ -102,6 +103,7 @@ const NavActionButtons = ({
           onPress={reload}
           icon="reload"
           size={25}
+
           color={outlined ? theme.primary : 'white'}
         />
         )}

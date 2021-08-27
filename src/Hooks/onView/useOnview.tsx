@@ -9,7 +9,6 @@ type FunctionsParameters = {
   onInit?: voidTemplate;
   callback?: voidTemplate;
   navigation?:ProfileScreenNavigationProp;
-  onEnter?:()=>void;
 };
 
 const useOnview = (
@@ -18,9 +17,10 @@ const useOnview = (
   const [isOnView, setIsOnView] = useState(false);
   const {name} = useRoute();
   useEffect(() => {
-    onInit && onInit();
+   
     const unsubscribe = navigation ? navigation.addListener('focus', () => {
       setIsOnView(true);
+       onInit && onInit();
     }) : setIsOnView(true);
     const subs = navigation && navigation.addListener('blur', () => {
       setIsOnView(false);

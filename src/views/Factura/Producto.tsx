@@ -1,6 +1,7 @@
 import React from "react";
 import {Product,Cantidad,DescriptionContent,Description,PlusActions,Price,width,height,Bold} from "./styles";
 import {BoxShadow} from 'react-native-shadow';
+import accounting from 'accounting';
 import {shadowSetting} from 'theme';
 type DetalleFacturaProps = {
   colors:Theme,
@@ -32,13 +33,24 @@ const Producto = ({colors,producto,nombre}:DetalleFacturaProps) => {
     <Product>
     <DescriptionContent style={{flex: 1}}>
       <Description style={{color:colors["primary-font"]}} >{nombre}</Description>
-      <Price style={{color:colors["primary-font"]}} ><Bold>Precio:</Bold>{producto.precio_dolar}</Price>
+      <Price style={{color:colors["primary-font"]}} ><Bold>Precio:</Bold>${ accounting.formatMoney(parseInt(producto.precio_dolar), {
+              symbol: '',
+              thousand: '.',
+              decimal: ',',
+              precision: 2,
+            })}</Price>
       <Price style={{color:colors["primary-font"]}} ><Bold>Cantidad:</Bold>{Math.round(producto.cantidad as number)}</Price>
     </DescriptionContent>
     <PlusActions>
       <Cantidad
       style={{color:colors["primary-font"]}} 
-      ><Bold>Total</Bold> : {(Math.round(producto.cantidad as number) * parseFloat(producto.precio_dolar)).toFixed(2)}</Cantidad>
+      ><Bold>Total</Bold> : {accounting.formatMoney(parseInt(Math.round(producto.cantidad as number) * parseFloat(producto.precio_dolar)).toFixed(2), {
+          symbol: '$',
+          thousand: '.',
+          decimal: ',',
+          precision: 2,
+        })   
+      }</Cantidad>
     </PlusActions>
   </Product>
   </BoxShadow>

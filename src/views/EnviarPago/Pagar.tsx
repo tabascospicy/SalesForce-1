@@ -26,8 +26,11 @@ import {
   Info,
   PList,
   Total,
+  Client2,
+ClientInfo2,
+ClientSubtitle,
 } from './styles';
-import reactotron from 'reactotron-react-native';
+
 import {InteractionManager, View} from 'react-native';
 import { Checkbox } from 'react-native-paper';
 
@@ -48,11 +51,17 @@ type pago =
   | 'DIVISA';
 
 type NameParameter = keyof enviarInpustValues;
+const format = {
+  symbol: '$',
+  thousand: '.',
+  decimal: ',',
+  precision: 2,
+}
 const {readAll} = Database();
 const Pagar: React.FC<PagarProps> = ({navigation, route}) => {
   const {factura} = route.params;
   const total = useRef(0);
-  const {cliente, showMensaje, hideMensaje, getTenant,colors} = useContext(Context);
+  const {cliente, showMensaje, hideMensaje, getTenant,colors,handlePagos} = useContext(Context);
   const objetivoPagar = parseInt(factura.subtotal_dolar);
   const [pagos, setPagos] = useState<enviarInpustValues[]>([]);
   const [PagoPage, setPagoPage] = useState(0);
@@ -70,16 +79,16 @@ const Pagar: React.FC<PagarProps> = ({navigation, route}) => {
     const convertir =
       pagoTemplate.current.moneda.includes("Bs")
         ? parseFloat(pagoTemplate.current.monto) / parseFloat(tasa)
-        : parseFoat(pagoTemplate.current.monto);
+        : parseFloat(pagoTemplate.current.monto);
     const isNotValid = convertir + total.current > objetivoPagar;
-   
-    console.log({valid:isNotValid && !isAbono,total:convertir + total.current,bs:pagoTemplate.current.moneda })
-    if (isNotValid && !isAbono) {
+    const referencia = pagoTemplate.current?.referencia && pagoTemplate.current?.referencia.length
+    
+    if (isNotValid && !isAbono || referencia < 6) {
       InteractionManager.runAfterInteractions(() => {
         showMensaje({
           visible: true,
           title: '',
-          body: 'ha ingresado un monto mayor al pago',
+          body: 'ha ingresado un monto mayor al pago o una referencia invalida',
           render: SumarPago,
           actions: ActionsModal,
         });
@@ -118,13 +127,15 @@ const Pagar: React.FC<PagarProps> = ({navigation, route}) => {
       guardar={guardar}
       bancos={bancos}
       empBancos={empBancos}
+      restanteDolar={accounting.formatMoney(objetivoPagar - total.current,format) }
+      restanteBs={accounting.formatMoney((objetivoPagar - total.current)* parseInt(tasa),{...format,symbol:""})}
       tiposDisponibles={tiposDisponibles}
     />
   );
   const ActionsModal = () => (
     <>
       <Button onPress={hideMensaje}>Cancelar</Button>
-      <Button disabled={tasa === ''} onPress={send} mode="contained">
+      <Button disabled={tasa === ''} onPress={send} labelStyle={{color:"white"}} mode="contained">
         Agregar Pago
       </Button>
     </>
@@ -141,7 +152,8 @@ const Pagar: React.FC<PagarProps> = ({navigation, route}) => {
     const filtrados = pagos.filter(
       (element, index) => index !== selectedBorrar.current,
     );
-    total.current -= parseFloat(pagos[selectedBorrar.current].monto);
+    const monto = pagos[selectedBorrar.current].moneda === "USD" ? parseFloat(pagos[selectedBorrar.current].monto) : parseFloat(pagos[selectedBorrar.current].monto) / parseFloat(tasa);
+    total.current -= monto;
     showMensaje({visible: false, title: 'A', body: '', render: null});
     setPagos(filtrados);
   };
@@ -168,7 +180,7 @@ const Pagar: React.FC<PagarProps> = ({navigation, route}) => {
     });
   };
   const guardar = (name: NameParameter, value: string | number) => {
-    console.log({name,value})
+
     pagoTemplate.current[name] = value;
   };
   const readTipos = async () => {
@@ -187,6 +199,7 @@ const Pagar: React.FC<PagarProps> = ({navigation, route}) => {
         render: Cargando,
         actions: Cargando,
       });
+ 
       const response = await Pagos.Pagar(
         getTenant(),
         pagos,
@@ -195,7 +208,7 @@ const Pagar: React.FC<PagarProps> = ({navigation, route}) => {
         tasa,
         {isAbono,total:total.current}
       );
-     
+      handlePagos(pagos);
       requestAnimationFrame(() => {
         showMensaje({
           visible: true,
@@ -218,33 +231,29 @@ const Pagar: React.FC<PagarProps> = ({navigation, route}) => {
       });
     }
   };
+
   useEffect(() => {
     readTipos();
     handleLoadTasa('');
   }, []);
- console.log({ob:objetivoPagar,p:total.current})
+
+ 
   return (
     <Container>
-      <Client>
-        <ClientInfo>Enviar Pago</ClientInfo>
-        <ClientInfo>
-          Para: <Bold>{cliente && cliente.nombre}</Bold>
-        </ClientInfo>
-        <ClientInfo>
-          Ubicacion: <Bold>{cliente && cliente.direccion}</Bold>
-        </ClientInfo>
-      </Client>
+      <Client2>
+        <ClientSubtitle style={{color:colors["primary-font"]}}>
+          Para: 
+        </ClientSubtitle>
+        <ClientInfo2 style={{color:colors["primary-font"]}}>
+          <Bold>{cliente && cliente.nombre}</Bold>
+        </ClientInfo2>
+        <ClientSubtitle style={{color:colors["primary-font"]}}>
+          <Bold>{cliente && cliente.direccion}</Bold>
+        </ClientSubtitle>
+      </Client2>
       <PList>
         <Info>Lista de Pagos</Info>
-        <Checkbox.Item
-        label={"Es abono"}
-        disabled={total.current !== 0}
-      status={isAbono ? 'checked' : 'unchecked'}
-      color={colors?.ButtonStrong}
-      onPress={() => {
-        setAbono(!isAbono);
-      }}
-    />
+        
         <Detalles>
           <DataTable>
             <DataTable.Header>
@@ -266,7 +275,7 @@ const Pagar: React.FC<PagarProps> = ({navigation, route}) => {
                           precision: 2,
                         })}
                       </DataTable.Cell>
-                      <DataTable.Cell>{element.moneda}</DataTable.Cell>
+                      <DataTable.Cell>{element.moneda.split('_')[0]}</DataTable.Cell>
                       <DataTable.Cell numeric>
                         {element.adm_tipo_pago_id.split('_')[0]}
                       </DataTable.Cell>
@@ -285,13 +294,13 @@ const Pagar: React.FC<PagarProps> = ({navigation, route}) => {
               onPageChange={(page) => {
                 setPagoPage(page);
               }}
-              label={`  total:${total.current.toFixed(2)}$`}
+              label={`  total:${total.current.toFixed(2)}$  restante:${accounting.formatMoney(objetivoPagar - total.current ,format )}`}
             />
           </DataTable>
           <Caption>
             tasa :
             {accounting.formatMoney(tasa, {
-              symbol: '',
+              symbol: 'Bs',
               thousand: '.',
               decimal: ',',
               precision: 2,
@@ -304,23 +313,32 @@ const Pagar: React.FC<PagarProps> = ({navigation, route}) => {
             <Button
               disabled={tasa === '' || empBancos === []}
               onPress={ShowModal}
+              style={{width:"100%"}}
+              labelStyle={{color:"white"}}
               mode="contained">
               + Agregar Pago
             </Button>
           )}
         </Detalles>
       </PList>
-      <Total>Total a pagar :{objetivoPagar.toFixed(2)}</Total>
-      <View style={{marginTop: 'auto', marginBottom: 20, height: 100}}>
+      <Total>Total a pagar :{
+         accounting.formatMoney(objetivoPagar, {
+          symbol: '$',
+          thousand: '.',
+          decimal: ',',
+          precision: 2,
+        })
+      }</Total>
+      
         <Button
           mode={'contained'}
-          labelStyle={{marginTop: 30}}
+          labelStyle={{color:"white",marginTop:20}}
           disabled={objetivoPagar > (Math.ceil(total.current))}
           onPress={EnviarConfirmado}
-          style={{height: '100%'}}>
+          style={{marginBottom: 10, height: 70,borderRadius:38,marginTop: 'auto'}}>
           Enviar
         </Button>
-      </View>
+     
     </Container>
   );
 };

@@ -6,17 +6,19 @@ import Modal from 'components/Animate/modal';
 import Fetch from 'services/fecth';
 import Database from 'services/realm';
 import moment from 'moment';
-import {Caption, DataTable} from 'react-native-paper';
-import accounting from "accounting";
+import List from "./../Cart/List";
 import { Paragraph, Dialog, Portal,Text} from 'react-native-paper';
-import reactotron from 'reactotron-react-native';
+import {theme} from "theme";
+import {Font} from "styles";
 import useTasa from 'Hooks/Tasa/useTasa';
 const Container = styled.View`
   flex-grow: 1;
   margin-top: 20px;
   position: relative;
+  padding-left:10px;
+  padding-bottom:10px;
+  padding-right:10px;
   z-index: 9;
-  flex-wrap: wrap;
 `;
 const Enviar = styled(Pressable)`
   padding: 20px;
@@ -30,28 +32,10 @@ const EnviarText = styled.Text`
   font-size: 20px;
   color: white;
 `;
-const Detalles = styled.View`
-  justify-content: flex-start;
-  align-items: flex-start;
-  width: 100%;
-`;
-const Info = styled.Text`
-  font-size: 20px;
-  opacity: 0.8;
-  padding: 10px;
-`;
 const {customRequest} = Database();
-const PList = styled.View`
-  background-color: white;
-  width: 97%;
-  border-radius: 12px;
-  align-self: center;
-  padding: 10px;
-  flex-wrap: wrap;
-`;
 const Client = styled.View`
   background-color: white;
-  width: 97%;
+  width: 100%;
   padding: 20px;
   margin-bottom: 10px;
   border-radius: 12px;
@@ -59,21 +43,39 @@ const Client = styled.View`
 `;
 const ClientInfo = styled.Text`
   font-weight: bold;
+  font-size: 21px;
+  letter-spacing: 0.6px;
+`;
+const ClientSubtitle = styled.Text`
+  font-weight: bold;
+  opacity:0.4;
   font-size: 17px;
-`;
+`
 const Bold = styled.Text`
-  font-weight: 500;
+  font-weight: bold;
 `;
-const Total = styled.Text`
+const Total = styled(Font)`
   font-weight: bold;
   font-size: 20px;
   padding: 10px;
-  color: white;
   border-radius: 13px;
-  align-self: flex-end;
-  background-color: #43aa8b;
-  margin-top: 10px;
+  align-self: center;
 `;
+const Ordernar = styled(Pressable)`
+  padding: 20px;
+  color: white;
+  align-self: center;
+  width:85%;
+  margin-top:auto;
+  border-radius:18px;
+  elevation:3;
+  background-color: ${theme.secondary};
+  align-items: center;
+`;
+const OrdernarText = styled(Font)`
+  font-weight: bold;
+  font-size:15px;
+`
 const Checkout = (props: any) => {
   const [modal, setModal] = useState(false);
   const [showPendiente, setPendiente] = useState(false);
@@ -312,59 +314,21 @@ const Checkout = (props: any) => {
         </Dialog>
         </Portal>
       <Client>
+        <ClientSubtitle style={{color:colors["primary-font"]}}>
+          Para: 
+        </ClientSubtitle>
         <ClientInfo style={{color:colors["primary-font"]}}>
-          Para: <Bold>{cliente && cliente.nombre}</Bold>
+          <Bold>{cliente && cliente.nombre}</Bold>
         </ClientInfo>
-        <ClientInfo style={{color:colors["primary-font"]}}>
-          Ubicacion: <Bold>{cliente && cliente.direccion}</Bold>
-        </ClientInfo>
+        <ClientSubtitle style={{color:colors["primary-font"]}}>
+          <Bold>{cliente && cliente.direccion}</Bold>
+        </ClientSubtitle>
       </Client>
-      <PList>
-        <Info style={{color:colors["primary-font"]}}>Lista de Productos</Info>
-      
-        <Detalles>
-          <DataTable collapsable>
-            <DataTable.Header>
-              <DataTable.Title style={{color:colors["primary-font"]}} >Nombre</DataTable.Title>
-              <DataTable.Title style={{color:colors["primary-font"]}} numeric>Precio $/Cantidad</DataTable.Title>
-              <DataTable.Title style={{color:colors["primary-font"]}} numeric>Descuento</DataTable.Title>
-            </DataTable.Header>
-            {carrito && carrito.map((element:Product, key: number) => {
-              if (from <= key && key < to) {
-                return (
-                  <DataTable.Row key={key}>
-                    <View style={{width:90,flexWrap:"wrap",alignItems:"center",justifyContent:"center"}}><Text style={{fontSize:8}}>{element.nombre}</Text></View>
-                    <DataTable.Cell style={{color:colors["primary-font"]}} numeric>
-                      {accounting.formatMoney(element.precio_dolar - element.precio_dolar * element?.oferta/100 , {
-                          symbol: '',
-                          thousand: '.',
-                          decimal: ',',
-                          precision: 2,
-                        })} x {element.cantidad}
-                    </DataTable.Cell>
-                    <DataTable.Cell style={{color:colors["primary-font"]}} numeric>
-                      {element.oferta}%
-                    </DataTable.Cell>
-                  </DataTable.Row>
-                );
-              }
-            })}
-            <DataTable.Pagination
-              page={carritoPage}
-              numberOfPages={Math.floor(carrito.length / 3) + 1}
-              onPageChange={(page) => {
-                setCarritoPage(page);
-              }}
-              label={` Productos :${carrito.length}`}
-            />
-          </DataTable>
-            <Caption>{mensaje}</Caption>
-        </Detalles>
-      </PList>
-      <Total>Total:{total.toFixed(2)}</Total>
-      <Enviar disabled={loadingTasa} android_ripple={{color: '#e8e5e54d'}} onPress={handleProcess}>
-        <EnviarText>Enviar</EnviarText>
-      </Enviar>
+      <List {...{isOpen:false,edit:false}}  />
+      <Total>Total:${total.toFixed(2)}</Total>
+      <Ordernar  android_ripple={{color:"white"}} disabled={loadingTasa}  onPress={handleProcess}>
+        <OrdernarText style={{color: 'white',fontWeight:"bold"}}>ORDENAR</OrdernarText>
+      </Ordernar>
     </Container>
   );
 };

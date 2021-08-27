@@ -88,8 +88,8 @@ export const PickerContainer = styled.View`
   height: 50px;
   width: 100%;
   border-radius:10px;
-  margin-top: 20px;
-  margin-bottom: 20px;
+
+  margin-bottom: 30px;
   border-bottom-color:${theme.secondary};
   border-bottom-width:2px;
 `

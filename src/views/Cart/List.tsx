@@ -14,7 +14,7 @@ const Container = styled.SafeAreaView`
 const List = styled.ScrollView``;
 
 
-const ProductList = ({title = '',productos=[], isOpen ,...props}: any) => {
+const ProductList = ({title = '',productos=[], isOpen ,edit=true,...props}: any) => {
   const {carrito} = useContext(Context);
   return (
     <View style={{flex: 1, width: '100%'}}>
@@ -22,7 +22,7 @@ const ProductList = ({title = '',productos=[], isOpen ,...props}: any) => {
         <List contentContainerStyle={{zIndex: 9}}>
           {
              carrito?.map((element:Product,i:number)=>{
-              return <Producto {...props}  id={i} key={i} producto={element}/>
+              return <Producto edit={edit} {...props}  id={i} key={i} producto={element}/>
             })
           }
           

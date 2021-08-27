@@ -11,6 +11,7 @@ build/
 !default.pbxuser
 /android/*
 *.mode1v3
+android.rar
 !default.mode1v3
 android/
 *.mode2v3

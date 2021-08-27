@@ -1,8 +1,9 @@
 import React, {useContext, useState, useRef, useEffect} from 'react';
 import styled from 'styled-components/native';
-import {GestureResponderEvent, Pressable, StyleSheet} from 'react-native';
+import { Pressable, StyleSheet} from 'react-native';
 import ActionButtons from 'components/NavActionButtons';
 import Producto from 'components/Producto';
+import {theme} from "theme";
 import Modal from 'components/Animate/modal';
 import SearchInput from 'components/Inputs/SearchInput';
 import Context from 'services/context';
@@ -31,7 +32,7 @@ const cart = StyleSheet.create({
 const BlueBackground = styled.View`
   max-height: 160px;
   min-height: 170px;
-  background-color: #484aa3;
+  background-color: ${theme.primary};
   flex-grow: 1;
   z-index: 1;
 `;

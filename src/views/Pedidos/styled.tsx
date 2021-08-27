@@ -1,5 +1,6 @@
 import styled from "styled-components/native";
 import {StyleSheet} from "react-native";
+import {theme} from "theme"
 const GlobalContainer = styled.View`
   flex-grow: 1;
   background-color: #f5f5f8;
@@ -19,7 +20,7 @@ const Card = styled.View`
   align-self: center;
 `;
 const BlueBackground = styled.View`
-  background-color: #484aa3;
+  background-color: ${theme.primary};
   width: 100%;
   z-index: 20;
 `;

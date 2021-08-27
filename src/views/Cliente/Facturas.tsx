@@ -16,20 +16,13 @@ type FacturasProps = {
   navigation:ProfileScreenNavigationProp,
   isOnView:boolean
 }
-type El = {
-  item:Factura
-}
 
 const Facturas = ({tipos,facturas,navigation,isOnView}:FacturasProps) => {
-  const [detalles,setDetalles] = useState<DetalleFactura[]>([]);
-  const [visible,setVisible] = useState(false);
   const {handleSelectedFactura,handleButtonActionFactura} = useContext(Context);
   const idRef = useRef<Factura>();
   const [pagar,setPagar] = useState(false);
   const PagarId = useRef(0);
-  const hidePagar = () =>{
-    setPagar(false);
-  }
+
   const showPagar =(id:number)=>{
     PagarId.current = id
     setPagar(true);
@@ -37,8 +30,7 @@ const Facturas = ({tipos,facturas,navigation,isOnView}:FacturasProps) => {
   const T = useMemo(()=>tipos.reduce((acum,current,index)=>{
     return {[index]:current,...acum}
   },{}),[tipos]);
-  const showDialog = () => {setVisible(true)}
-  const hideDialog = () => {setVisible(false)} 
+
 
   const marcarFacturado = () =>{
       InteractionManager.runAfterInteractions(()=>{

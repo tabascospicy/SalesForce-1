@@ -42,31 +42,33 @@ const AnimatedDropwDown = Animated.createAnimatedComponent(DropDownPicker);
 const {readAll} = DataBase();
 const Home = ({pressed, visual, navigation, ...props}: props) => {
   const {calling, clientes, colors} = useContext(Context);
-  const [list, setClientes] = useState(clientes);
+  const [list, setClientes] = useState([]);
   const [ubicaciones, setUbicaciones] = useState<DropDownItem[]>([def]);
   const [filterZona, setFilterZona] = useState(0);
   const timer = useRef(0);
-  const {isOnView} = useOnView({navigation});
   const {ScrollEvent} = useScrollAnimation();
   const readClientes = async () => {
     try {
       const clientList = (((await readAll(
         'clientList',
       )) as unknown) as Cliente[]);
-      const clientes = clientList[0]?.clients
+      const clientes = clientList[0]?.clients;
+      console.log("ta pasando loco",clientList[0]?.clients.length,{lol:list.length})
       setClientes(clientes)
     } catch (e) {
       console.log(e, 'errooooor');
     }
   };
+  const {isOnView} = useOnView({navigation,onInit:readClientes});
   useEffect(() => {
     readUbicaciones();
-    readClientes();
     return () => {
       timer?.current && clearTimeout(timer.current || 0);
     };
   }, []);
-
+  if(list === [] && isOnView){
+    readClientes();
+  }
 
   useEffect(() => {
     buscarEnZona();
@@ -135,7 +137,7 @@ const Home = ({pressed, visual, navigation, ...props}: props) => {
               id={index}
             />
           )}
-          maxToRenderPerBatch={9}
+          maxToRenderPerBatch={7}
           keyExtractor={(item,index) => (`${item.id}${index}`)}
           data={list}
           onScroll={onScroll}

@@ -102,7 +102,7 @@ const Sesion = ({dispatch, navigation}: any) => {
           )}
         </View>
 
-        <Footer>Desarrollado por Somos Sistemas C.A</Footer>
+        <Footer>Desarrollado para UNIMAR</Footer>
       </Box>
     </Content>
   );

@@ -156,7 +156,7 @@ const ProductoCard = ({
       <Position>
         <Column>
         {
-          parseInt(descuento?.descuento) === 0 ? <>
+          parseInt(descuento?.descuento) === 0 || isNaN(parseInt(descuento?.descuento)) ? <>
           <Price>
             {accounting.formatMoney(precio.current.toFixed(2), {
               symbol: '',

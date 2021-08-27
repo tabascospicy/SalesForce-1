@@ -23,6 +23,7 @@ const useGlobalState = (): UiContext => {
   const [selectedFactura, setSelectedFactura] = useState<Factura>();
   const [ButtonActionFactura, setButtonActionFactura] = useState({action:null});
   const [precios,setPrecios] = useState<number[]>([]);
+  const [globalPagos,setGlobalPagos] = useState([]);
   const showMensaje = ({
     visible,
     title,
@@ -63,9 +64,13 @@ const useGlobalState = (): UiContext => {
     db: null,
   });
   const ofertas = useRef<number[]>([]);
+
   const handleCDestino = (x: Cliente) => {
     setCDestino(x);
   };
+  const handlePagos = (x:any)=>{
+    setGlobalPagos(x);
+  }
   const handleLista = (x: Product[]) => {
     setLista(x);
   };
@@ -169,9 +174,7 @@ const useGlobalState = (): UiContext => {
           ...carrito,
           Object.assign(producto, {cantidad, impuesto}),
         ]);
-        reactotron.log(producto,oferta);
       } else {
-
         setCarrito(
           carrito.map((element, i) => {
             if (element.id === producto.id) ofertas.current[i] = oferta;
@@ -212,6 +215,8 @@ const useGlobalState = (): UiContext => {
     isOnline,
     selectedFactura,
     ButtonActionFactura,
+    handlePagos,
+    globalPagos,
     handleSelectedFactura,
     showQr,
     handleSelectedProduct,

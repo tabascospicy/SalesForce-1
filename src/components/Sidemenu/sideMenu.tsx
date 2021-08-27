@@ -19,7 +19,6 @@ const Menu = styled(SafeAreaView)`
 const LogoView = styled.View`
   flex-grow: 1;
   align-items: center;
-  flex-direction:row;
   justify-content: center;
 `;
 

@@ -70,12 +70,9 @@ const Inventario: React.FC<Props> = ({concepto = 8}) => {
         </DataTable.Header>
 
         {loading ? (
-          <DataTable.Row>
-            <DataTable.Cell>
-              {' '}
+            
               <ActivityIndicator animating={loading} color={Colors.red800} />
-            </DataTable.Cell>
-          </DataTable.Row>
+           
         ) : (
             existencias.map((element, key: number) => {
             if (fromR <= key && key < toR) {

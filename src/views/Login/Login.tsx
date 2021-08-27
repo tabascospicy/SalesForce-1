@@ -127,7 +127,7 @@ const Login = ({dispatch, navigation}: any) => {
             );
           }}
         </SlideComponent>
-        <Footer>Desarrollado por Somos Sistemas C.A</Footer>
+        <Footer>Desarrollado para UNIMAR</Footer>
       </Box>
     </Content>
   );

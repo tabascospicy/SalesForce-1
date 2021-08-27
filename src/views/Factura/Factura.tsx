@@ -4,6 +4,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import {View} from 'react-native';
 import Context from 'services/context';
 import Producto from './Producto';
+
 import realm from 'services/realm/schema';
 import accounting from 'accounting';
 import {
@@ -50,7 +51,7 @@ const Factura = ({navigation, route, ...props}: PropsClienteScreen) => {
                     `id = ${element.adm_conceptos_id}`,
                   ) as unknown) as Product[];
                   
-                nombres.push(productDb[0]?.nombre ? productDb[0]?.nombre : "Nombre no disponible en aplicacon" );
+                nombres.push(productDb[0]?.nombre ? productDb[0]?.nombre : "Nombre no disponible en aplicación" );
               },
             );
           setProductos(nombres);
@@ -76,7 +77,7 @@ const Factura = ({navigation, route, ...props}: PropsClienteScreen) => {
           <Subtitle>
             subTotal:
             {accounting.formatMoney(total, {
-              symbol: '',
+              symbol: '$',
               thousand: '.',
               decimal: ',',
               precision: 2,

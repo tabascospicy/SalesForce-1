@@ -1,6 +1,7 @@
 import { Pressable } from "react-native";
 import styled from "styled-components/native";
-
+import {theme} from "theme";
+import {Font} from "styles";
 export const Container = styled.View`
   flex-grow: 1;
   margin-top: 20px;
@@ -11,11 +12,29 @@ export const Container = styled.View`
 export const Enviar = styled(Pressable)`
   padding: 20px;
   align-self: center;
-  background-color: #e05263;
+  background-color: ${theme.secondary};
   border-radius: 10px;
   margin-top: auto;
   margin-bottom: 30px;
 `;
+export const Client2 = styled.View`
+  background-color: white;
+  width: 100%;
+  padding: 20px;
+  margin-bottom: 10px;
+  border-radius: 12px;
+  align-self: center;
+`;
+export const ClientInfo2 = styled.Text`
+  font-weight: bold;
+  font-size: 21px;
+  letter-spacing: 0.6px;
+`;
+export const ClientSubtitle = styled.Text`
+  font-weight: bold;
+  opacity:0.4;
+  font-size: 17px;
+`
 export const EnviarText = styled.Text`
   font-size: 20px;
   color: white;
@@ -54,23 +73,20 @@ export const ClientInfo = styled.Text`
 export const Bold = styled.Text`
   font-weight: 500;
 `;
-export const Total = styled.Text`
+
+export const Total = styled(Font)`
   font-weight: bold;
   font-size: 20px;
   padding: 10px;
-  color: white;
   border-radius: 13px;
-  align-self: flex-start;
-  background-color: #43aa8b;
-  margin-top: 10px;
+  align-self: center;
 `;
-
 export const Del = styled(Pressable)`
   padding:10px;
-  padding-right:20px;
-  padding-left:20px;
+  padding-right:15px;
+  padding-left:15px;
   border-radius:5px;
-  background-color: #c23c43;
+  background-color: ${theme.secondary};
 `
 export const DelText = styled.Text`
 font-size:13px;

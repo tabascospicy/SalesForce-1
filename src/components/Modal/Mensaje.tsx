@@ -2,14 +2,14 @@
 import React, {useContext} from 'react';
 import {Button, Dialog, Paragraph, Portal} from 'react-native-paper';
 import Context from 'services/context';
-
+import {Font} from "styles";
 const Mensaje = () => {
   const {seeMessage, hideMensaje} = useContext(Context);
   const {visible, title, body, render,actions,lock} = seeMessage as MensajeContent;
   return (
     <Portal>
-      <Dialog dismissable={lock} visible={visible} onDismiss={hideMensaje}>
-        <Dialog.Title>{title}</Dialog.Title>
+      <Dialog style={{backgroundColor:"white"}} dismissable={lock} visible={visible} onDismiss={hideMensaje}>
+        <Dialog.Title><Font>{title}</Font></Dialog.Title>
         <Dialog.Content>
           <Paragraph>
             {body}
